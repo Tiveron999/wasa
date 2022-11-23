@@ -23,6 +23,8 @@ paths:
       description: | 
         Create the username indicated if not present in the database, otherwise change it to 
         the one provided so that the token bearer will be recognized by the new username
+      tags:
+        - users
       requestBody:
         description: username to be created
         required: true
@@ -52,6 +54,8 @@ paths:
       description: |
         Return the user information for the token bearer which includes 
         their username and ID.
+      tags:
+        - users
       responses:
         "200":
           description: user info shown
@@ -77,6 +81,8 @@ paths:
       description: |
         Return the profile information for the searched user which includes 
         their photos in reverse chronological order and the number of uploaded photos, their followers and following.
+      tags:
+        - users
       responses:
         "200":
           description: Request accepted, user profile shown
@@ -103,6 +109,8 @@ paths:
       description: |
         Shows a stream of photos (images) in reverse chronological order, 
         with information about when each photo was uploaded (date and time) and how many likes and comments it has.
+      tags:
+        - users
       responses:
         "200":
           description: |
@@ -128,6 +136,8 @@ paths:
       summary: show the user's uploaded photos
       description: |
         obtain the list of photos for the specified user
+      tags:
+        - photos
       responses:
         "200":
           description: |
@@ -160,6 +170,8 @@ paths:
       summary: obtain the photo's information
       description: |
         Return all the photo's information which includes when each photo was uploaded (date and time) and how many likes and comments it has.
+      tags:
+        - photos
       responses:
         "200":
           description: Request accepted, information obtained
@@ -174,6 +186,8 @@ paths:
       summary: post a new photo
       description: |
         New photo is now present on the user's profile (at the top).
+      tags:
+        - photos
       requestBody:
         description: Photo to be uploaded
         required: true
@@ -193,6 +207,8 @@ paths:
       operationId: deletePhoto
       summary: delete a photo 
       description: Remove a photo from the list of uploaded photos of the token bearer
+      tags:
+        - photos
       responses:
         "204": { description: image deleted successfully }
         "404": { description: image not found }
@@ -218,6 +234,8 @@ paths:
       summary: obtain the list of likes
       description: |
         Return the list of all the users that liked this photo
+      tags:
+        - photos
       responses:
         "200":
           description: Request accepted, likes listed in content
@@ -232,6 +250,8 @@ paths:
       summary: place a like
       description: |
         place a like on the current photo by the token bearer
+      tags:
+        - photos
       responses:
         "200":
           description: like placed
@@ -243,6 +263,8 @@ paths:
       operationId: unlikePhoto
       summary: remove the like 
       description: remove the like from the current photo by the token bearer
+      tags:
+        - photos
       responses:
         "204": { description: like removed successfully }
         "404": 
@@ -270,6 +292,8 @@ paths:
       summary: obtain list of comments 
       description: |
         Return all comments that are placed on this photo by all users
+      tags:
+        - photos
       responses:
         "200":
           description: Request accepted, all comments listed in content
@@ -284,6 +308,8 @@ paths:
       summary: post a new comment 
       description: |
         create a new comment for this photo from the token bearer
+      tags:
+        - photos
       responses:
         "200":
           description: new comment created
@@ -295,6 +321,8 @@ paths:
       operationId: uncommentPhoto
       summary: delete a comment
       description: Remove the comment placed by the token bearer on this photo
+      tags:
+        - photos
       responses:
         "204": { description: comment deleted successfully }
         "404":
@@ -317,6 +345,8 @@ paths:
       description: |
         Show the user's photos (in reverse chronological order), 
         how many photos have been uploaded, and the user's followers and following.
+      tags:
+        - profile
       responses:
         "200":
           description: |
@@ -349,6 +379,8 @@ paths:
               format: binary
       description: |
         Image to be uploaded as the profile picture
+      tags:
+        - profile
       responses:
         "200":
           description: new comment created
@@ -372,6 +404,8 @@ paths:
       summary: follow a new user
       description: |
         the token bearer now follows the specified user 
+      tags:
+        - profile
       responses:
         "200":
           description: new following user added
@@ -383,6 +417,8 @@ paths:
       summary: list all followed users
       description: |
         Obtain the list of all followed users
+      tags:
+        - profile
       responses:
         "200":
           description: |
@@ -397,6 +433,8 @@ paths:
       operationId: unfollowUser
       summary: unfollow a user
       description: Remove the specified user from the following list of the token bearer
+      tags:
+        - profile
       responses:
         "204": { description: user removed from following list}
         "404": { description: user not found in following list}
@@ -415,6 +453,8 @@ paths:
       summary: list all followers for the specified user
       description: |
         Obtain the list of all users that follow the token bearer
+      tags:
+        - profile
       responses:
         "200":
           description: |
@@ -430,6 +470,8 @@ paths:
       description: |
         Remove the specified user from the followers list of the token bearer, so that 
         that user is not following the token bearer anymore
+      tags:
+        - profile
       responses:
         "204": { description: user removed from followers list}
         "404": { description: user not found in followers list}
@@ -448,6 +490,8 @@ paths:
       summary: list all banned users
       description: |
         Obtain the list of all the users that were banned by the token bearer.
+      tags:
+        - users
       responses:
         "200":
           description: |
@@ -464,6 +508,8 @@ paths:
       description: |
         Ban the indicated user, so that they are not able to see anything on
         the token bearer's profile aside from the username.
+      tags:
+        - users
       responses:
         "200":
           description: banned a user
@@ -475,6 +521,8 @@ paths:
       operationId: unbanUser
       summary: unban a user
       description: unban a previously-and-until-now-currently banned user
+      tags:
+        - users
       responses:
         "204": { description: user unbanned successfully}
         "404": { description: user not found among the banned users}  
