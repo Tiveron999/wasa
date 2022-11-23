@@ -573,6 +573,7 @@ paths:
                     # or any other type of identifier
                     type: string
                     example: "abcdef012345"
+                    pattern: 'ˆ.*?$'
 
 components:
   schemas:
