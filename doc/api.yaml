@@ -5,6 +5,16 @@ info:
     This API allows you to keep in touch with your friends by sharing photos of special moments. 
     You can upload your photos directly from your PC, and they will be visible to everyone following you.
   version: 0.0.1
+tags:
+  - name: users
+    description: Everything regarding the specific users
+    
+  - name: photos
+    description: Everything regarding the photos uploaded by the users
+  
+  - name: profile
+    description: Everything regarding the profile of the users
+    
 paths:
   /users:
     put:
@@ -188,7 +198,7 @@ paths:
         "404": { description: image not found }
 
 
-  /photos/{photo-id}/likes:
+  /users/{user-id}/photos/{photo-id}/likes:
     parameters:
     - name: photo-id
       in: path
@@ -233,7 +243,7 @@ paths:
             like not found, meaning it was never put on this picture by this user
 
 
-  /photos/{photo-id}/comments:
+  /users/{user-id}/photos/{photo-id}/comments:
     parameters:
     - name: photo-id
       in: path
@@ -317,6 +327,7 @@ paths:
     put:
       summary: Upload a profile picture
       requestBody:
+        description: Photo to be uploaded as the profile picture (not mandatory)
         content:
           image/png:
             schema:
@@ -557,6 +568,10 @@ components:
         username:
           type: string
           description: username of the user's profile
+        
+        profile-pic:
+          type: string
+          description: URL of profile picture of this user
 
     feed-info:
       type: object
@@ -655,4 +670,4 @@ components:
     UnauthorizedError:
       description: Access token is missing or invalid
 security: # Apply the security globally to all operations
-  - BearerAuthorization: []         
+  - BearerAuthorization: []      
