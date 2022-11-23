@@ -200,6 +200,13 @@ paths:
 
   /users/{user-id}/photos/{photo-id}/likes:
     parameters:
+    - name: user-id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
     - name: photo-id
       in: path
       required: true
@@ -245,6 +252,13 @@ paths:
 
   /users/{user-id}/photos/{photo-id}/comments:
     parameters:
+    - name: user-id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
     - name: photo-id
       in: path
       required: true
