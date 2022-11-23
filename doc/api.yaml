@@ -13,6 +13,14 @@ paths:
       description: | 
         Create the username indicated if not present in the database, otherwise change it to 
         the one provided so that the token bearer will be recognized by the new username
+      requestBody:
+        description: username to be created
+        required: true
+        content:
+          image/png:
+            schema:
+              type: string
+              format: binary
       responses:
         "200": 
            description: An existing username is changed
@@ -296,6 +304,33 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/profile-info"
+
+  /users/{user-id}/profile/picture:
+    parameters:
+    - name: user-id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
+    put:
+      summary: Upload a profile picture
+      requestBody:
+        content:
+          image/png:
+            schema:
+              type: string
+              format: binary
+      description: |
+        Image to be uploaded as the profile picture
+      responses:
+        "200":
+          description: new comment created
+          content:
+            application/json:
+              schema:
+                type: integer
 
 
   /users/{user-id}/following:
