@@ -156,6 +156,14 @@ paths:
       summary: post a new photo
       description: |
         New photo is now present on the user's profile (at the top).
+      requestBody:
+        description: Photo to be uploaded
+        required: true
+        content:
+          image/png:
+            schema:
+              type: string
+              format: binary
       responses:
         "200":
           description: new photo uploaded
@@ -214,7 +222,7 @@ paths:
         "204": { description: like removed successfully }
         "404": 
           description: |
-          like not found, meaning it was never put on this picture by this user
+            like not found, meaning it was never put on this picture by this user
 
 
   /photos/{photo-id}/comments:
@@ -613,4 +621,3 @@ components:
       description: Access token is missing or invalid
 security: # Apply the security globally to all operations
   - BearerAuthorization: []         
-  
