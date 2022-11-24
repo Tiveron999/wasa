@@ -119,6 +119,7 @@ paths:
             application/json:
               schema:
                 type: array
+                description: list of photos to present as the feed
                 items:
                   $ref: "#/components/schemas/feed-info"
 
@@ -147,6 +148,7 @@ paths:
             application/json:
               schema:
                 type: array
+                description: list of photos to show as the user's uploaded photos
                 items:
                   $ref: "#/components/schemas/photos-list"
 
@@ -181,6 +183,7 @@ paths:
             application/json:
               schema:
                 type: array
+                description: list of information of the photo
                 items:
                   $ref: "#/components/schemas/photo-info"
     post:
@@ -198,6 +201,7 @@ paths:
             schema:
               type: string
               format: binary
+              description: image to upload
       responses:
         "200":
           description: new photo uploaded
@@ -205,6 +209,7 @@ paths:
             application/json:
               schema:
                 type: integer
+                description: photo correctly uploaded
     delete:
       operationId: deletePhoto
       summary: delete a photo 
@@ -246,6 +251,7 @@ paths:
             application/json:
               schema:
                 type: array
+                description: list of users that liked this picture
                 items:
                   $ref: "#/components/schemas/likes-list"
     post:
@@ -262,6 +268,7 @@ paths:
             application/json:
               schema:
                 type: integer
+                description: liked put successfully
     delete:
       operationId: unlikePhoto
       summary: remove the like 
@@ -305,6 +312,7 @@ paths:
             application/json:
               schema:
                 type: array
+                description: list of comments under this picture
                 items:
                   $ref: "#/components/schemas/comments-list"
     post:
@@ -321,6 +329,7 @@ paths:
             application/json:
               schema:
                 type: integer
+                description: comment successfully posted
     delete:
       operationId: uncommentPhoto
       summary: delete a comment
@@ -360,6 +369,7 @@ paths:
             application/json:
               schema:
                 type: array
+                description: list of profile information
                 items:
                   $ref: "#/components/schemas/profile-info"
 
@@ -382,17 +392,26 @@ paths:
             schema:
               type: string
               format: binary
+              description: picture to be uploaded
       description: |
         Image to be uploaded as the profile picture
       tags:
         - profile
       responses:
         "200":
-          description: new comment created
+          description: profile photo updated
           content:
             application/json:
               schema:
                 type: integer
+                description: profile photo successfully updated
+        "201":
+          description: profile photo added
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: profile photo successfully added
 
 
   /users/{user-id}/following:
@@ -418,6 +437,7 @@ paths:
             application/json:
               schema:
                 type: integer
+                description: user successfully followed
     get:
       operationId: getFollowing
       summary: list all followed users
@@ -433,6 +453,7 @@ paths:
             application/json:
               schema:
                 type: array
+                description: list of users followed
                 items:
                   $ref: "#/components/schemas/following-list"
     delete:
@@ -470,6 +491,7 @@ paths:
             application/json:
               schema:
                 type: array
+                description: list of users that follow the token bearer
                 items:
                   $ref: "#/components/schemas/followers-list"
     delete:
@@ -504,11 +526,12 @@ paths:
       responses:
         "200":
           description: |
-            A list of banned users
+            An object containing all of the users banned by the token bearer
           content:
             application/json:
               schema:
                 type: array
+                description: list of banned users
                 items:
                   $ref: "#/components/schemas/banned-users"
     post:
@@ -526,6 +549,7 @@ paths:
             application/json:
               schema:
                 type: integer
+                description: user successfully banned
     delete:
       operationId: unbanUser
       summary: unban a user
