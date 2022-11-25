@@ -66,6 +66,7 @@ paths:
             application/json:
               schema:
                 type: array
+                description: User details
                 items:
                   $ref: "#/components/schemas/user-info"
                 maxItems: 10
@@ -100,6 +101,7 @@ paths:
             application/json:
               schema:
                 type: array
+                description: info of the profile of the user
                 items:
                   $ref: "#/components/schemas/profile-info"
                 maxItems: 10
@@ -535,7 +537,7 @@ paths:
         "404": { description: user not found in followers list}
 
 
-  /users/{user-id}/banned:
+  /users/{user-id}/banned/{banned-id}:
     parameters:
     - name: user-id
       in: path
@@ -544,6 +546,13 @@ paths:
       schema:
         type: integer
         description: e.g., /users/1234
+    - name: banned-id
+      in: path
+      required: true
+      description: this is the banned user id
+      schema:
+        type: integer
+        description: e.g., /banned/1234
     get:
       operationId: getBannedList
       summary: list all banned users
@@ -605,6 +614,7 @@ paths:
         content:
           application/json:
             schema:
+              description: User details for the login
               type: object
               properties:
                 name:
@@ -621,6 +631,7 @@ paths:
             application/json:
               schema:
                 type: object
+                description: login successful
                 properties:
                   identifier:
                     # change here if you decide to use an integer
