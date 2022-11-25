@@ -32,7 +32,8 @@ paths:
               type: string
               description: username chosen by user
               example: "John5_doe7"
-              pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$" #range 6-15 for the username length since I forced the first character to be [A-Za-z]
+              pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$" # all alphanumeric characters and the underscores are accepted, with length 6-15
+              # (range is 6-15 for the username length since I forced the first character to be [A-Za-z], meaning it has to be a letter)
               minLength: 6
               maxLength: 15
       responses:
@@ -82,8 +83,9 @@ paths:
       schema:
         type: string
         description: string that is searched in the database of usernames
-        example: "John5_doe7"
-        pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$" #range 6-15 for the username length since I forced the first character to be [A-Za-z]
+        example: "John5_doe7"  
+        pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$" # all alphanumeric characters and the underscores are accepted, with length 6-15
+        # (range is 6-15 for the username length since I forced the first character to be [A-Za-z], meaning it has to be a letter)
         minLength: 6
         maxLength: 15
     get:
@@ -105,7 +107,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/profile-info"
                 maxItems: 10
-                minItems: 1
+                minItems: 0
 
 
   /users/{user-id}/feed:
@@ -223,7 +225,7 @@ paths:
               format: binary
               description: image to upload
       responses:
-        "200":
+        "201":
           description: new photo uploaded
           content:
             application/json:
@@ -284,7 +286,7 @@ paths:
       tags:
         - photos
       responses:
-        "200":
+        "201":
           description: like placed
           content:
             application/json:
@@ -347,7 +349,7 @@ paths:
       tags:
         - photos
       responses:
-        "200":
+        "201":
           description: new comment created
           content:
             application/json:
@@ -457,7 +459,7 @@ paths:
       tags:
         - profile
       responses:
-        "200":
+        "201":
           description: new following user added
           content:
             application/json:
@@ -582,7 +584,7 @@ paths:
       tags:
         - users
       responses:
-        "200":
+        "201":
           description: banned a user
           content:
             application/json:
