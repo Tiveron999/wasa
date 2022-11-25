@@ -358,6 +358,50 @@ paths:
               schema:
                 type: integer
                 description: comment successfully posted
+
+  
+  /users/{user-id}/photos/{photo-id}/comments/{comment-id}:
+    parameters:
+    - name: user-id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
+    - name: photo-id
+      in: path
+      required: true
+      description: this is the photo id
+      schema:
+        type: integer
+        description: e.g., /photos/1234
+    - name: comment-id
+      in: path
+      required: true
+      description: this is the comment id
+      schema:
+        type: integer
+        description: e.g., /comments/1234
+    get:
+      operationId: getCommentInfo
+      summary: obtain information about a comment
+      description: |
+        Return all the information about a comment posted
+      tags:
+        - photos
+      responses:
+        "200":
+          description: Request accepted, all comments info in content
+          content:
+            application/json:
+              schema:
+                type: array
+                description: list of comment's info
+                maxItems: 10
+                minItems: 1
+                items:
+                  $ref: "#/components/schemas/comments-info"
     delete:
       operationId: uncommentPhoto
       summary: delete a comment
@@ -649,6 +693,7 @@ paths:
                     description: identifier
                     minLength: 3
                     maxLength: 16
+      "security": []
 
 components:
   schemas:
