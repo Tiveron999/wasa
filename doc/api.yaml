@@ -31,6 +31,8 @@ paths:
             schema:
               type: string
               description: username chosen by user
+              example: "John5_doe7"
+              pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$" #range 6-15 for the username length since I forced the first character to be [A-Za-z]
       responses:
         "200": 
            description: An existing username is changed
@@ -75,6 +77,8 @@ paths:
       schema:
         type: string
         description: string that is searched in the database of usernames
+        example: "John5_doe7"
+        pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$" #range 6-15 for the username length since I forced the first character to be [A-Za-z]
     get:
       operationId: getSearchedUserInfo
       summary: obtain the searched user's information 
@@ -580,7 +584,7 @@ paths:
                 name:
                   type: string
                   example: Maria
-                  pattern: 'ˆ.*?$'
+                  pattern: "^.*?$"
                   minLength: 3
                   maxLength: 16
         required: true
@@ -597,7 +601,7 @@ paths:
                     # or any other type of identifier
                     type: string
                     example: "abcdef012345"
-                    pattern: 'ˆ.*?$'
+                    pattern: "^.*?$"
 
 components:
   schemas:
