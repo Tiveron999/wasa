@@ -224,6 +224,8 @@ paths:
               type: string
               format: binary
               description: image to upload
+              minLength: 1
+              maxLength: 500
       responses:
         "201":
           description: new photo uploaded
@@ -421,6 +423,8 @@ paths:
               type: string
               format: binary
               description: picture to be uploaded
+              minLength: 1
+              maxLength: 500
       description: |
         Image to be uploaded as the profile picture
       tags:
@@ -623,6 +627,7 @@ paths:
                   type: string
                   example: Maria
                   pattern: "^.*?$"
+                  description: User details for the login
                   minLength: 3
                   maxLength: 16
         required: true
@@ -641,6 +646,7 @@ paths:
                     type: string
                     example: "abcdef012345"
                     pattern: "^.*?$"
+                    description: identifier
                     minLength: 3
                     maxLength: 16
 
@@ -725,6 +731,8 @@ components:
         profile-pic:
           type: string
           description: URL of profile picture of this user
+          minLength: 5
+          maxLength: 100
 
     feed-info:
       type: object
