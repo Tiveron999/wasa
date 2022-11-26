@@ -1027,7 +1027,7 @@ components:
       description: The request was not compliant with the documentation (e.g. missing fields, etc).
     
     Unauthorized:
-      description: Authentication is required to complete this action. The user should log in.
+      description: Authentication is required to complete this action. The access token is missing or invalid. The user should log in.
     
     Forbidden:
       description: This action is not allowed (e.g. the token bearer was banned by the user they were trying to follow, etc).
@@ -1037,9 +1037,6 @@ components:
 
     InternalServerError:
       description: The server encountered an internal error. Further info in server logs.
-
-    UnauthorizedError:
-      description: Access token is missing or invalid
 
   securitySchemes:
     BearerAuthorization:         
