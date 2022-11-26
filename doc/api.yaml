@@ -831,7 +831,7 @@ paths:
                     description: identifier
                     minLength: 3
                     maxLength: 16
-      "security": []
+      "security": [] # login is not needed to perform the login
 
 components:
   schemas:
@@ -889,6 +889,8 @@ components:
           type: string
           format: date-time
           description: upload date and time of the photo
+          minLength: 20
+          maxLength: 20
 
         num-likes:
           type: integer
@@ -988,6 +990,8 @@ components:
           type: string
           format: date-time
           description: date and time of when the comment was posted
+          minLength: 20
+          maxLength: 20
 
     following-list:
       type: object
