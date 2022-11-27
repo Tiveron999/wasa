@@ -25,10 +25,10 @@ paths:
         description: e.g., /users/1234
     get:
       operationId: getUserInfo
-      summary: obtain the user's information 
+      summary: obtain the user's information by using the ID
       description: |
         Return the user information for the token bearer which includes 
-        their username and ID.
+        their username, ID and profile picture.
       tags:
         - users
       responses:
@@ -80,17 +80,23 @@ paths:
                   $ref: "#/components/schemas/user-info"
                 maxItems: 10
                 minItems: 1
+          links:
+            GetUserByUserId:
+              $ref: '#/components/links/GetUserByUserId'
         "201":
-           description: A new username is created
-           content:
+          description: A new username is created
+          content:
             application/json:
               schema:
-                type: array
+                type: object
                 description: User details
                 items:
                   $ref: "#/components/schemas/user-info"
                 maxItems: 10
                 minItems: 1
+          links:
+            GetUserByUserId:
+              $ref: '#/components/links/GetUserByUserId'          
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "404": { $ref: "#/components/responses/Not-Found"}
@@ -131,6 +137,9 @@ paths:
                   $ref: "#/components/schemas/profile-info"
                 maxItems: 10
                 minItems: 0
+          links:
+            GetUserByUserId:
+              $ref: '#/components/links/GetUserByUserId'
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "404": { $ref: "#/components/responses/Not-Found"}
@@ -649,6 +658,9 @@ paths:
                 minItems: 1
                 items:
                   $ref: "#/components/schemas/profile-info"
+          links:
+            GetUserByUserId:
+              $ref: '#/components/links/GetUserByUserId'
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -740,7 +752,9 @@ paths:
                 items:
                   $ref: "#/components/schemas/user-info"
                 description: user successfully followed
-          
+          links:
+              GetUserByUserId:
+                $ref: '#/components/links/GetUserByUserId'
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -766,6 +780,9 @@ paths:
                 minItems: 0
                 items:
                   $ref: "#/components/schemas/following-list"
+          links:
+            GetUserByUserId:
+              $ref: '#/components/links/GetUserByUserId'
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -788,6 +805,9 @@ paths:
                 description: list of banned user
                 items:
                   $ref: "#/components/responses/Not-Found"
+          links:
+            GetUserByUserId:
+              $ref: '#/components/links/GetUserByUserId'
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -830,6 +850,9 @@ paths:
                 minItems: 0
                 items:
                   $ref: "#/components/schemas/followers-list"
+          links:
+            GetUserByUserId:
+              $ref: '#/components/links/GetUserByUserId'
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -854,6 +877,9 @@ paths:
                 description: list of banned user
                 items:
                   $ref: "#/components/responses/Not-Found"
+          links:
+            GetUserByUserId:
+              $ref: '#/components/links/GetUserByUserId'
           
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
@@ -897,6 +923,9 @@ paths:
                 minItems: 0
                 items:
                   $ref: "#/components/schemas/banned-users"
+          links:
+            GetUserByUserId:
+              $ref: '#/components/links/GetUserByUserId'
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -920,7 +949,9 @@ paths:
                   $ref: "#/components/schemas/banned-users"
                 description: user successfully banned
                 type: object
-          
+          links:
+            GetUserByUserId:
+              $ref: '#/components/links/GetUserByUserId'          
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -943,6 +974,9 @@ paths:
                 description: list of banned user
                 items:
                   $ref: "#/components/responses/Not-Found"
+          links:
+            GetUserByUserId:
+              $ref: '#/components/links/GetUserByUserId'
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -1077,7 +1111,7 @@ components:
         profile-pic:
           type: string
           description: URL of profile picture of this user
-          minLength: 5
+          minLength: 0
           maxLength: 100
 
     feed-info:
@@ -1186,6 +1220,17 @@ components:
           minItems: 0
           items:
             $ref: "#/components/schemas/user-info"
+            
+
+  links:
+    GetUserByUserId:  
+      operationId: getUserInfo
+      parameters:
+        user-id: '$response.body#/user-id'
+      description: >
+        The user-id value returned in the response can be used as
+        the user-id parameter in `GET /users/{user-id}`
+
   
   responses:
     BadRequest:
