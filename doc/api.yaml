@@ -412,6 +412,31 @@ paths:
         "403": { $ref: "#/components/responses/Forbidden"}
         "404": { $ref: "#/components/responses/Not-Found"}
         "500": { $ref: "#/components/responses/InternalServerError"}
+  
+
+  /users/{user-id}/photos/{photo-id}/likes/{liker-id}:
+    parameters:
+    - name: user-id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
+    - name: photo-id
+      in: path
+      required: true
+      description: this is the photo id
+      schema:
+        type: integer
+        description: e.g., /photos/1234
+    - name: liker-id
+      in: path
+      required: true
+      description: this is the id of the user that put a like on the picture
+      schema:
+        type: integer
+        description: e.g., /likes/1234
     put:
       operationId: likePhoto
       summary: place a like
