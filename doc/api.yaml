@@ -221,6 +221,42 @@ paths:
       schema:
         type: integer
         description: e.g., /users/1234
+    - name: sorting
+      in: query
+      description: this is how the images will be sorted in reverse chronological order
+      schema:
+        type: string
+        description: date-time string that is passed as parameter to sort the pictures
+    - name: filtering
+      in: query
+      style: deepObject
+      allowReserved: true
+      description: this is how the images will be filtered according to whom the user follows
+      schema:
+        type: object
+        description: |
+          It's necessary to filter both for who uploaded the picture and the date of when it was posted since
+          it could be posted by the wanted user but the image is not in the range of dates that are
+          being viewed by the current limited number of photos presented.
+        properties:
+          uploader:
+            type: string
+            description: this is the username of the user whose photos the token bearer wants to visualize
+          date-times:
+            type: array
+            description: this is the list dates accepted 
+            items:
+              type: string
+    - name: limit
+      in: query
+      description: The numbers of images to show (the user can see more by scrolling)
+      schema:
+        type: integer
+    - name: offset
+      in: query
+      description: The number of images to skip before starting to see new ones (so that scrolling will produce new pictures)
+      schema:
+        type: integer
     get:
       operationId: getUserPhotos
       summary: show the user's uploaded photos
@@ -646,7 +682,7 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
 
-  /users/{user-id}/following:
+  /users/{user-id}/following/{following-id}:
     parameters:
     - name: user-id
       in: path
@@ -655,6 +691,13 @@ paths:
       schema:
         type: integer
         description: e.g., /users/1234
+    - name: following-id
+      in: path
+      required: true
+      description: this is the following user id
+      schema:
+        type: integer
+        description: e.g., /following/1234
     post:
       operationId: followUser
       summary: follow a new user
@@ -726,7 +769,7 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
   
-  /users/{user-id}/followers:
+  /users/{user-id}/followers/{follower-id}:
     parameters:
     - name: user-id
       in: path
@@ -735,6 +778,13 @@ paths:
       schema:
         type: integer
         description: e.g., /users/1234
+    - name: follower-id
+      in: path
+      required: true
+      description: this is the follower id
+      schema:
+        type: integer
+        description: e.g., /followers/1234
     get:
       operationId: getFollowers
       summary: list all followers for the specified user
