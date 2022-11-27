@@ -146,6 +146,45 @@ paths:
       schema:
         type: integer
         description: e.g., /users/1234
+    - name: sorting
+      in: query
+      description: this is how the images will be sorted in reverse chronological order
+      schema:
+        type: string
+        description: date-time string that is passed as parameter to sort the pictures
+    - name: filtering
+      in: query
+      style: deepObject
+      allowReserved: true
+      description: this is how the images will be filtered according to whom the user follows
+      schema:
+        type: object
+        description: |
+          It's necessary to filter both for who uploaded the picture and the date of when it was posted since
+          it could be posted by someone the user follows but the image is not in the range of dates that are
+          being viewed by the current limited number of photos presented.
+        properties:
+          uploader:
+            type: array
+            description: this is the list of following of the token bearer, the only people whose photos I show in the feed
+            items:
+              type: string
+          date-times:
+            type: array
+            description: this is the list dates accepted 
+            items:
+              type: string
+    - name: limit
+      in: query
+      description: The numbers of images to show (the user can see more by scrolling)
+      schema:
+        type: integer
+    - name: offset
+      in: query
+      description: The number of images to skip before starting to see new ones (so that scrolling will produce new pictures)
+      schema:
+        type: integer
+      
     get:
       operationId: getMyStream
       summary: show the stream of photos (feed)
@@ -273,8 +312,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/photo-info"
+                items: 
+                  $ref: "#/components/schemas/photo-info"
                 description: photo correctly uploaded
+                type: object
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -348,8 +389,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/user-info"
+                items:
+                  $ref: "#/components/schemas/user-info"
                 description: liked put successfully
+                type: object
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -366,7 +409,13 @@ paths:
         "404": 
           description: |
             like not found, meaning it was never put on this picture by this user
-          $ref: "#/components/responses/Not-Found"
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: list of banned user
+                items:
+                  $ref: "#/components/responses/Not-Found"
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -426,8 +475,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/comments-info"
+                items: 
+                  $ref: "#/components/schemas/comments-info"
                 description: comment successfully posted
+                type: object
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -493,7 +544,13 @@ paths:
         "404":
           description: |
             comment not found, meaning it was never put on this picture by this user
-          $ref: "#/components/responses/Not-Found"
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: list of banned user
+                items:
+                  $ref: "#/components/responses/Not-Found"
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -569,15 +626,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/photo-info"
+                items:
+                  $ref: "#/components/schemas/photo-info"
                 description: profile photo successfully updated
+                type: object
         "201":
           description: profile photo added
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/photo-info"
+                items:
+                  $ref: "#/components/schemas/photo-info"
                 description: profile photo successfully added
+                type: object
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -607,8 +668,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/user-info"
+                type: object
+                items:
+                  $ref: "#/components/schemas/user-info"
                 description: user successfully followed
+          
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -649,7 +713,13 @@ paths:
         "204": { description: user removed from following list}
         "404": 
           description: user not found in following list
-          $ref: "#/components/responses/Not-Found"
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: list of banned user
+                items:
+                  $ref: "#/components/responses/Not-Found"
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -702,7 +772,14 @@ paths:
         "204": { description: user removed from followers list}
         "404":
           description: user not found in followers list
-          $ref: "#/components/responses/Not-Found"
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: list of banned user
+                items:
+                  $ref: "#/components/responses/Not-Found"
+          
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -764,8 +841,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/user-info"
+                items:
+                  $ref: "#/components/schemas/banned-users"
                 description: user successfully banned
+                type: object
+          
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -781,7 +861,13 @@ paths:
         "204": { description: user unbanned successfully}
         "404": 
           description: user not found among the banned users
-          $ref: "#/components/responses/Not-Found"
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: list of banned user
+                items:
+                  $ref: "#/components/responses/Not-Found"
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
