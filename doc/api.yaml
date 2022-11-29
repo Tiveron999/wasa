@@ -80,9 +80,9 @@ paths:
                   $ref: "#/components/schemas/user-info"
                 maxItems: 10
                 minItems: 1
-          links:
-            GetUserByUserId:
-              $ref: '#/components/links/GetUserByUserId'
+          #links:
+           # GetUserByUserId:
+            #  $ref: '#/components/links/GetUserByUserId'
         "201":
           description: A new username is created
           content:
@@ -94,9 +94,9 @@ paths:
                   $ref: "#/components/schemas/user-info"
                 maxItems: 10
                 minItems: 1
-          links:
-            GetUserByUserId:
-              $ref: '#/components/links/GetUserByUserId'          
+        #  links:
+         #   GetUserByUserId:
+          #    $ref: '#/components/links/GetUserByUserId'          
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "404": { $ref: "#/components/responses/Not-Found"}
@@ -137,9 +137,9 @@ paths:
                   $ref: "#/components/schemas/profile-info"
                 maxItems: 10
                 minItems: 0
-          links:
-            GetUserByUserId:
-              $ref: '#/components/links/GetUserByUserId'
+        #  links:
+         #   GetUserByUserId:
+          #    $ref: '#/components/links/GetUserByUserId'
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "404": { $ref: "#/components/responses/Not-Found"}
@@ -658,9 +658,9 @@ paths:
                 minItems: 1
                 items:
                   $ref: "#/components/schemas/profile-info"
-          links:
-            GetUserByUserId:
-              $ref: '#/components/links/GetUserByUserId'
+          #links:
+           # GetUserByUserId:
+            #  $ref: '#/components/links/GetUserByUserId'
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -752,9 +752,9 @@ paths:
                 items:
                   $ref: "#/components/schemas/user-info"
                 description: user successfully followed
-          links:
-              GetUserByUserId:
-                $ref: '#/components/links/GetUserByUserId'
+         # links:
+          #    GetUserByUserId:
+           #     $ref: '#/components/links/GetUserByUserId'
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -780,9 +780,9 @@ paths:
                 minItems: 0
                 items:
                   $ref: "#/components/schemas/following-list"
-          links:
-            GetUserByUserId:
-              $ref: '#/components/links/GetUserByUserId'
+          #links:
+           # GetUserByUserId:
+            #  $ref: '#/components/links/GetUserByUserId'
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -805,9 +805,9 @@ paths:
                 description: list of banned user
                 items:
                   $ref: "#/components/responses/Not-Found"
-          links:
-            GetUserByUserId:
-              $ref: '#/components/links/GetUserByUserId'
+         # links:
+          #  GetUserByUserId:
+           #   $ref: '#/components/links/GetUserByUserId'
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -850,9 +850,9 @@ paths:
                 minItems: 0
                 items:
                   $ref: "#/components/schemas/followers-list"
-          links:
-            GetUserByUserId:
-              $ref: '#/components/links/GetUserByUserId'
+         # links:
+          #  GetUserByUserId:
+           #   $ref: '#/components/links/GetUserByUserId'
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -877,9 +877,9 @@ paths:
                 description: list of banned user
                 items:
                   $ref: "#/components/responses/Not-Found"
-          links:
-            GetUserByUserId:
-              $ref: '#/components/links/GetUserByUserId'
+          #links:
+           # GetUserByUserId:
+            #  $ref: '#/components/links/GetUserByUserId'
           
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
@@ -923,9 +923,9 @@ paths:
                 minItems: 0
                 items:
                   $ref: "#/components/schemas/banned-users"
-          links:
-            GetUserByUserId:
-              $ref: '#/components/links/GetUserByUserId'
+          #links:
+           # GetUserByUserId:
+            #  $ref: '#/components/links/GetUserByUserId'
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -949,9 +949,9 @@ paths:
                   $ref: "#/components/schemas/banned-users"
                 description: user successfully banned
                 type: object
-          links:
-            GetUserByUserId:
-              $ref: '#/components/links/GetUserByUserId'          
+         # links:
+          #  GetUserByUserId:
+           #   $ref: '#/components/links/GetUserByUserId'          
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -974,9 +974,9 @@ paths:
                 description: list of banned user
                 items:
                   $ref: "#/components/responses/Not-Found"
-          links:
-            GetUserByUserId:
-              $ref: '#/components/links/GetUserByUserId'
+         # links:
+          #  GetUserByUserId:
+           #   $ref: '#/components/links/GetUserByUserId'
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -1222,16 +1222,16 @@ components:
             $ref: "#/components/schemas/user-info"
             
 
-  links:
-    GetUserByUserId:  
-      operationId: getUserInfo
-      parameters:
-        user-id: '$response.body#/user-id'
-      description: >
-        The user-id value returned in the response can be used as
-        the user-id parameter in `GET /users/{user-id}`
+  #links:
+   # GetUserByUserId:  
+    #  operationId: getUserInfo
+     # parameters:
+      #  user-id: '$response.body#/user-id'
+      #description: >
+        #The user-id value returned in the response can be used as
+        #the user-id parameter in `GET /users/{user-id}`
 
-  
+
   responses:
     BadRequest:
       description: The request was not compliant with the documentation (e.g. missing fields, etc).
