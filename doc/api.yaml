@@ -37,12 +37,8 @@ paths:
           content:
             application/json:
               schema:
-                type: array
                 description: User details
-                items:
-                  $ref: "#/components/schemas/user-info"
-                maxItems: 10
-                minItems: 1
+                $ref: "#/components/schemas/user-info"
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "404": { $ref: "#/components/responses/Not-Found"}
@@ -74,12 +70,8 @@ paths:
           content:
             application/json:
               schema:
-                type: array
                 description: User details
-                items:
-                  $ref: "#/components/schemas/user-info"
-                maxItems: 10
-                minItems: 1
+                $ref: "#/components/schemas/user-info"
           #links:
            # GetUserByUserId:
             #  $ref: '#/components/links/GetUserByUserId'
@@ -88,12 +80,8 @@ paths:
           content:
             application/json:
               schema:
-                type: object
                 description: User details
-                items:
-                  $ref: "#/components/schemas/user-info"
-                maxItems: 10
-                minItems: 1
+                $ref: "#/components/schemas/user-info"
         #  links:
          #   GetUserByUserId:
           #    $ref: '#/components/links/GetUserByUserId'          
@@ -131,12 +119,8 @@ paths:
           content:
             application/json:
               schema:
-                type: array
                 description: info of the profile of the user
-                items:
-                  $ref: "#/components/schemas/profile-info"
-                maxItems: 10
-                minItems: 0
+                $ref: "#/components/schemas/profile-info"
         #  links:
          #   GetUserByUserId:
           #    $ref: '#/components/links/GetUserByUserId'
@@ -322,12 +306,8 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                description: list of information of the photo
-                maxItems: 10
-                minItems: 1
-                items:
-                  $ref: "#/components/schemas/photo-info"
+                description: information of the photo
+                $ref: "#/components/schemas/photo-info"
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -357,10 +337,8 @@ paths:
           content:
             application/json:
               schema:
-                items: 
-                  $ref: "#/components/schemas/photo-info"
+                $ref: "#/components/schemas/photo-info"
                 description: photo correctly uploaded
-                type: object
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -459,10 +437,8 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: "#/components/schemas/user-info"
+                $ref: "#/components/schemas/user-info"
                 description: liked put successfully
-                type: object
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -476,16 +452,7 @@ paths:
         - photos
       responses:
         "204": { description: like removed successfully }
-        "404": 
-          description: |
-            like not found, meaning it was never put on this picture by this user
-          content:
-            application/json:
-              schema:
-                type: integer
-                description: list of banned user
-                items:
-                  $ref: "#/components/responses/Not-Found"
+        "404": { $ref: "#/components/responses/Not-Found"}
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -545,10 +512,8 @@ paths:
           content:
             application/json:
               schema:
-                items: 
-                  $ref: "#/components/schemas/comments-info"
+                $ref: "#/components/schemas/comments-info"
                 description: comment successfully posted
-                type: object
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -592,12 +557,9 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                description: list of comment's info
-                maxItems: 10
-                minItems: 1
-                items:
-                  $ref: "#/components/schemas/comments-info"
+                $ref: "#/components/schemas/comments-info"
+                description: comment's info
+
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -611,16 +573,7 @@ paths:
         - photos
       responses:
         "204": { description: comment deleted successfully }
-        "404":
-          description: |
-            comment not found, meaning it was never put on this picture by this user
-          content:
-            application/json:
-              schema:
-                type: integer
-                description: list of banned user
-                items:
-                  $ref: "#/components/responses/Not-Found"
+        "404": { $ref: "#/components/responses/Not-Found"}
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -652,12 +605,9 @@ paths:
           content:
             application/json:
               schema:
-                type: array
+                $ref: "#/components/schemas/profile-info"
                 description: list of profile information
-                maxItems: 10
-                minItems: 1
-                items:
-                  $ref: "#/components/schemas/profile-info"
+
           #links:
            # GetUserByUserId:
             #  $ref: '#/components/links/GetUserByUserId'
@@ -699,19 +649,15 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: "#/components/schemas/photo-info"
+                $ref: "#/components/schemas/photo-info"
                 description: profile photo successfully updated
-                type: object
         "201":
           description: profile photo added
           content:
             application/json:
               schema:
-                items:
-                  $ref: "#/components/schemas/photo-info"
+                $ref: "#/components/schemas/photo-info"
                 description: profile photo successfully added
-                type: object
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -748,9 +694,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: "#/components/schemas/user-info"
+                $ref: "#/components/schemas/user-info"
                 description: user successfully followed
          # links:
           #    GetUserByUserId:
@@ -796,15 +740,7 @@ paths:
         - profile
       responses:
         "204": { description: user removed from following list}
-        "404": 
-          description: user not found in following list
-          content:
-            application/json:
-              schema:
-                type: integer
-                description: list of banned user
-                items:
-                  $ref: "#/components/responses/Not-Found"
+        "404": { $ref: "#/components/responses/Not-Found"}
          # links:
           #  GetUserByUserId:
            #   $ref: '#/components/links/GetUserByUserId'
@@ -868,15 +804,7 @@ paths:
         - profile
       responses:
         "204": { description: user removed from followers list}
-        "404":
-          description: user not found in followers list
-          content:
-            application/json:
-              schema:
-                type: integer
-                description: list of banned user
-                items:
-                  $ref: "#/components/responses/Not-Found"
+        "404": { $ref: "#/components/responses/Not-Found"}
           #links:
            # GetUserByUserId:
             #  $ref: '#/components/links/GetUserByUserId'
@@ -945,10 +873,8 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: "#/components/schemas/banned-users"
+                $ref: "#/components/schemas/user-info"
                 description: user successfully banned
-                type: object
          # links:
           #  GetUserByUserId:
            #   $ref: '#/components/links/GetUserByUserId'          
@@ -965,15 +891,7 @@ paths:
         - users
       responses:
         "204": { description: user unbanned successfully}
-        "404": 
-          description: user not found among the banned users
-          content:
-            application/json:
-              schema:
-                type: integer
-                description: list of banned user
-                items:
-                  $ref: "#/components/responses/Not-Found"
+        "404": { $ref: "#/components/responses/Not-Found"}
          # links:
           #  GetUserByUserId:
            #   $ref: '#/components/links/GetUserByUserId'
