@@ -954,6 +954,8 @@ components:
         username:
           type: string
           description: username of the user's profile
+          example: "John5_doe7"
+          pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$"
           minLength: 6
           maxLength: 15
 
@@ -995,6 +997,8 @@ components:
         creator:
           type: string
           description: username of the poster of the photo
+          example: "John5_doe7"
+          pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$"
           minLength: 6
           maxLength: 15
 
@@ -1002,6 +1006,7 @@ components:
           type: string
           format: date-time
           description: upload date and time of the photo
+          example: "2022-12-25T00:07:59+00:00"
           minLength: 20
           maxLength: 20
 
@@ -1023,6 +1028,8 @@ components:
         username:
           type: string
           description: username of the user's profile
+          example: "John5_doe7"
+          pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$"
           minLength: 6
           maxLength: 15
         
@@ -1103,6 +1110,7 @@ components:
           type: string
           format: date-time
           description: date and time of when the comment was posted
+          example: "2022-12-25T00:07:59+00:00"
           minLength: 20
           maxLength: 20
 
