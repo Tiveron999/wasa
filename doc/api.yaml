@@ -37,7 +37,6 @@ paths:
           content:
             application/json:
               schema:
-                description: User details
                 $ref: "#/components/schemas/user-info"
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
@@ -70,7 +69,6 @@ paths:
           content:
             application/json:
               schema:
-                description: User details
                 $ref: "#/components/schemas/user-info"
           #links:
            # GetUserByUserId:
@@ -80,7 +78,6 @@ paths:
           content:
             application/json:
               schema:
-                description: User details
                 $ref: "#/components/schemas/user-info"
         #  links:
          #   GetUserByUserId:
@@ -119,7 +116,6 @@ paths:
           content:
             application/json:
               schema:
-                description: info of the profile of the user
                 $ref: "#/components/schemas/profile-info"
         #  links:
          #   GetUserByUserId:
@@ -144,7 +140,10 @@ paths:
       description: this is how the images will be sorted in reverse chronological order
       schema:
         type: string
+        format: date-time
         description: date-time string that is passed as parameter to sort the pictures
+        minLength: 20
+        maxLength: 20
     - name: filtering
       in: query
       style: deepObject
@@ -157,16 +156,26 @@ paths:
           it could be posted by someone the user follows but the image is not in the range of dates that are
           being viewed by the current limited number of photos presented.
         properties:
-          uploader:
+          uploaders:
             type: array
             description: this is the list of following of the token bearer, the only people whose photos I show in the feed
+            minItems: 0
+            maxItems: 200
             items:
               type: string
+              pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$"
+              minLength: 1
+              maxLength: 50
           date-times:
             type: array
-            description: this is the list dates accepted 
+            description: this is the list of dates accepted (range)
+            minItems: 1
+            maxItems: 2
             items:
               type: string
+              format: date-time
+              minLength: 20
+              maxLength: 20
     - name: limit
       in: query
       description: The numbers of images to show (the user can see more by scrolling)
@@ -192,13 +201,7 @@ paths:
             Request accepted, feed shown
           content:
             application/json:
-              schema:
-                type: array
-                description: list of photos to present as the feed
-                maxItems: 200 # total number of photos one can see, after scrolling several times
-                minItems: 0
-                items:
-                  $ref: "#/components/schemas/feed-info"
+              schema: {$ref: "#/components/schemas/feed-info"}
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "404": { $ref: "#/components/responses/Not-Found"}
@@ -219,7 +222,10 @@ paths:
       description: this is how the images will be sorted in reverse chronological order
       schema:
         type: string
+        format: date-time
         description: date-time string that is passed as parameter to sort the pictures
+        minLength: 20
+        maxLength: 20
     - name: filtering
       in: query
       style: deepObject
@@ -234,12 +240,20 @@ paths:
         properties:
           uploader:
             type: string
+            pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$"
             description: this is the username of the user whose photos the token bearer wants to visualize
+            minLength: 6
+            maxLength: 15
           date-times:
             type: array
             description: this is the list dates accepted 
+            minItems: 1
+            maxItems: 2
             items:
               type: string
+              format: date-time
+              minLength: 20
+              maxLength: 20
     - name: limit
       in: query
       description: The numbers of images to show (the user can see more by scrolling)
@@ -263,13 +277,7 @@ paths:
             An array of objects, each one containing information about one uploaded photo.
           content:
             application/json:
-              schema:
-                type: array
-                description: list of photos to show as the user's uploaded photos
-                maxItems: 200 # total number of photos one can see, after scrolling several times
-                minItems: 0
-                items:
-                  $ref: "#/components/schemas/photos-list"
+              schema: {$ref: "#/components/schemas/photos-list"}
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -306,7 +314,6 @@ paths:
           content:
             application/json:
               schema:
-                description: information of the photo
                 $ref: "#/components/schemas/photo-info"
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
@@ -338,7 +345,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/photo-info"
-                description: photo correctly uploaded
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -387,13 +393,7 @@ paths:
           description: Request accepted, likes listed in content
           content:
             application/json:
-              schema:
-                type: array
-                description: list of users that liked this picture
-                maxItems: 200
-                minItems: 0
-                items:
-                  $ref: "#/components/schemas/likes-list"
+              schema: {$ref: "#/components/schemas/likes-list"}
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -438,7 +438,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/user-info"
-                description: liked put successfully
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -513,7 +512,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/comments-info"
-                description: comment successfully posted
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -558,7 +556,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/comments-info"
-                description: comment's info
 
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
@@ -601,13 +598,11 @@ paths:
         "200":
           description: |
             An array of objects, each one containing information about this 
-            user's profile
+            user's profile.  
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/profile-info"
-                description: list of profile information
-
           #links:
            # GetUserByUserId:
             #  $ref: '#/components/links/GetUserByUserId'
@@ -645,19 +640,17 @@ paths:
         - profile
       responses:
         "200":
-          description: profile photo updated
+          description: profile photo successfully updatedo updated
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/photo-info"
-                description: profile photo successfully updated
         "201":
-          description: profile photo added
+          description: profile photo successfully added
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/photo-info"
-                description: profile photo successfully added
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
@@ -874,7 +867,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/user-info"
-                description: user successfully banned
          # links:
           #  GetUserByUserId:
            #   $ref: '#/components/links/GetUserByUserId'          
@@ -950,6 +942,7 @@ components:
   schemas:
     profile-info:
       type: object
+      description: the information about the profile
       properties:
         username:
           type: string
@@ -971,24 +964,13 @@ components:
           type: integer
           description: number of uploaded photos
         
-        followers:
-          type: array
-          description: followers list
-          maxItems: 500
-          minItems: 0
-          items:
-            $ref: "#/components/schemas/followers-list"
+        followers: {$ref: "#/components/schemas/followers-list"}
         
-        following:
-          type: array
-          description: following list
-          maxItems: 500
-          minItems: 0
-          items:
-            $ref: "#/components/schemas/following-list"
+        following: {$ref: "#/components/schemas/following-list"}
 
     photo-info:
       type: object
+      description: the information about the photo
       properties:
         photo-id:
           type: integer
@@ -1006,7 +988,7 @@ components:
           type: string
           format: date-time
           description: upload date and time of the photo
-          example: "2022-12-25T00:07:59+00:00"
+          # example: "2022-12-25T00:07:59+00:00"
           minLength: 20
           maxLength: 20
 
@@ -1020,6 +1002,7 @@ components:
 
     user-info:
       type: object
+      description: the information about the user
       properties:
         user-id:
           type: integer
@@ -1036,11 +1019,15 @@ components:
         profile-pic:
           type: string
           description: URL of profile picture of this user
+          pattern: '(www|http:|https:)+[^\s"]+[\w]'
+          # first part checks that the URL starts with "http", "https" or "www"; the rest is just for allowing all characters in the 
+          # URL, except whitespaces and quotation marks.
           minLength: 0
           maxLength: 100
 
     feed-info:
       type: object
+      description: the feed object
       properties:
         photos:
           type: array
@@ -1052,6 +1039,7 @@ components:
 
     photos-list:
       type: object
+      description: the photos of a user
       properties:
         photos:
           type: array
@@ -1063,6 +1051,7 @@ components:
 
     likes-list:
       type: object
+      description: the likes list for a photo
       properties:
         photo-id:
           type: integer
@@ -1078,6 +1067,7 @@ components:
 
     comments-list:
       type: object
+      description: the comments list for a photo
       properties:
         photo-id:
           type: integer
@@ -1093,16 +1083,19 @@ components:
     
     comments-info:
       type: object
+      description: the information in a comment
       properties:
         poster:
           type: string
           description: username of the person that commented this string on the picture
+          pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$"
           minLength: 6
           maxLength: 15
 
         comment:
           type: string
           description: comment posted on the picture
+          pattern: "^[a-zA-Z0-9 \.,:;\n]*$" # all "normal" characters allowed, including line-feed
           minLength: 1
           maxLength: 500
         
@@ -1110,12 +1103,13 @@ components:
           type: string
           format: date-time
           description: date and time of when the comment was posted
-          example: "2022-12-25T00:07:59+00:00"
+          # example: "2022-12-25T00:07:59+00:00"
           minLength: 20
           maxLength: 20
 
     following-list:
       type: object
+      description: the list of followings of a user
       properties:
         users:
           type: array
@@ -1127,6 +1121,7 @@ components:
 
     followers-list:
       type: object
+      description: the list of followers of a user
       properties:
         users:
           type: array
@@ -1138,6 +1133,7 @@ components:
          
     banned-users:
       type: object
+      description: the list of banned users of a user
       properties:
         users:
           type: array
