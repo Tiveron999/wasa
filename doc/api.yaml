@@ -141,6 +141,7 @@ paths:
       schema:
         type: string
         format: date-time
+        pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\+[0-9]{2}:[0-9]{2}"
         description: date-time string that is passed as parameter to sort the pictures
         minLength: 20
         maxLength: 20
@@ -174,6 +175,7 @@ paths:
             items:
               type: string
               format: date-time
+              pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\+[0-9]{2}:[0-9]{2}"
               minLength: 20
               maxLength: 20
     - name: limit
@@ -223,6 +225,7 @@ paths:
       schema:
         type: string
         format: date-time
+        pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\+[0-9]{2}:[0-9]{2}"
         description: date-time string that is passed as parameter to sort the pictures
         minLength: 20
         maxLength: 20
@@ -252,6 +255,7 @@ paths:
             items:
               type: string
               format: date-time
+              pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\+[0-9]{2}:[0-9]{2}"
               minLength: 20
               maxLength: 20
     - name: limit
@@ -924,18 +928,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                description: login successful
-                properties:
-                  identifier:
-                    # change here if you decide to use an integer
-                    # or any other type of identifier
-                    type: string
-                    example: "abcdef012345"
-                    pattern: "^.*?$"
-                    description: identifier
-                    minLength: 3
-                    maxLength: 16
+                $ref: "#/components/schemas/login-info"
       "security": [] # login is not needed to perform the login
 
 components:
@@ -987,6 +980,7 @@ components:
         date-time: 
           type: string
           format: date-time
+          pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\+[0-9]{2}:[0-9]{2}"
           description: upload date and time of the photo
           # example: "2022-12-25T00:07:59+00:00"
           minLength: 20
@@ -1095,13 +1089,14 @@ components:
         comment:
           type: string
           description: comment posted on the picture
-          pattern: "^[a-zA-Z0-9 .,:;\n]*$" # all "normal" characters allowed, including line-feed
+          pattern: "^[a-zA-Z0-9 \\.,:;\n]*$" # all "normal" characters allowed, including line-feed
           minLength: 1
           maxLength: 500
         
         date-time: 
           type: string
           format: date-time
+          pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\+[0-9]{2}:[0-9]{2}"
           description: date and time of when the comment was posted
           # example: "2022-12-25T00:07:59+00:00"
           minLength: 20
@@ -1142,6 +1137,20 @@ components:
           minItems: 0
           items:
             $ref: "#/components/schemas/user-info"
+    
+    login-info:
+      type: object
+      description: login successful
+      properties:
+        identifier:
+          # change here if you decide to use an integer
+          # or any other type of identifier
+          type: string
+          example: "abcdef012345"
+          pattern: "^.*?$"
+          description: identifier
+          minLength: 3
+          maxLength: 16
             
 
   #links:
