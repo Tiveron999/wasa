@@ -14,6 +14,8 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+	"github.com/Tiveron999/Wasa/service/doc"
+	"git.sapienzaapps.it/gamificationlab/wasa-fontanelle/service/database"
 )
 
 // main is the program entry point. The only purpose of this function is to call run() and set the exit code if there is
