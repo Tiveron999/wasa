@@ -1095,7 +1095,7 @@ components:
         comment:
           type: string
           description: comment posted on the picture
-          pattern: "^[a-zA-Z0-9 \.,:;\n]*$" # all "normal" characters allowed, including line-feed
+          pattern: "^[a-zA-Z0-9 .,:;\n]*$" # all "normal" characters allowed, including line-feed
           minLength: 1
           maxLength: 500
         
