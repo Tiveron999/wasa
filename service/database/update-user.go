@@ -11,7 +11,7 @@ func (db *appdbimpl) UpdateUser(f User) error {
 	if err != nil {
 		return err
 	} else if affected == 0 {
-		// If we didn't delete any row, then the fountain didn't exist
+		// If we didn't delete any row, then the user didn't exist
 		return ErrUserDoesNotExist
 	}
 	return nil
