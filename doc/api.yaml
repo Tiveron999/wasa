@@ -692,7 +692,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/user-info"
-                description: user successfully followed
          # links:
           #    GetUserByUserId:
            #     $ref: '#/components/links/GetUserByUserId'

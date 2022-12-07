@@ -5,8 +5,10 @@ import (
 	"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/database"
 	"github.com/julienschmidt/httprouter"
 	"github.com/sirupsen/logrus"
-	"net/http")
-@@ -47,6 +48,9 @@ import (
+	"net/http"
+)
+
+// Config is used to provide dependencies and configuration to the New function.
 type Config struct {
 	// Logger where log entries are sent
 	Logger logrus.FieldLogger
@@ -16,7 +18,17 @@ type Config struct {
 }
 
 // Router is the package API interface representing an API handler builder
-@@ -64,6 +68,9 @@ func New(cfg Config) (Router, error) {
+type Router interface {
+	// Handler returns an HTTP handler for APIs provided in this package
+	Handler() http.Handler
+
+	// Close terminates any resource used in the package
+	Close() error
+}
+
+// New returns a new Router instance
+func New(cfg Config) (Router, error) {
+	// Check if the configuration is correct
 	if cfg.Logger == nil {
 		return nil, errors.New("logger is required")
 	}
@@ -26,7 +38,10 @@ type Config struct {
 
 	// Create a new router where we will register HTTP endpoints. The server will pass requests to this router to be
 	// handled.
-@@ -74,6 +81,7 @@ func New(cfg Config) (Router, error) {
+	router := httprouter.New()
+	router.RedirectTrailingSlash = false
+	router.RedirectFixedPath = false
+
 	return &_router{
 		router:     router,
 		baseLogger: cfg.Logger,
@@ -34,7 +49,9 @@ type Config struct {
 	}, nil
 }
 
-@@ -83,4 +91,6 @@ type _router struct {
+type _router struct {
+	router *httprouter.Router
+
 	// baseLogger is a logger for non-requests contexts, like goroutines or background tasks not started by a request.
 	// Use context logger if available (e.g., in requests) instead of this logger.
 	baseLogger logrus.FieldLogger
