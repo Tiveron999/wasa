@@ -5,7 +5,7 @@ import (
 	"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/database"
 	"github.com/julienschmidt/httprouter"
 	"github.com/sirupsen/logrus"
-	"net/http"
+	"net/http")
 @@ -47,6 +48,9 @@ import (
 type Config struct {
 	// Logger where log entries are sent
