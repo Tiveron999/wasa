@@ -2,7 +2,6 @@ package api
 
 import (
 	"errors"
-	//"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/database"
 	"net/http"
 
 	"github.com/Tiveron999/Wasa/service/database"

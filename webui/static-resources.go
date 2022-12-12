@@ -1,4 +1,4 @@
-///go:build webui
+// /go:build webui
 
 // Package webui contains the web user interface for embedding
 package webui
