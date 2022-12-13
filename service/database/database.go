@@ -61,12 +61,13 @@ func New(db *sql.DB) (AppDatabase, error) {
 	}
 
 	var photos string
-	err1 := db.QueryRow(`SELECT username FROM sqlite_master WHERE type='table' AND name='users';`).Scan(&photos)
+	_, _ = db.Exec("PRAGMA foreign_keys = ON;")
+
+	err1 := db.QueryRow(`SELECT url FROM sqlite_master WHERE type='table' AND name='photos';`).Scan(&photos)
 	if errors.Is(err1, sql.ErrNoRows) {
 		sqlStmt := `CREATE TABLE photos (
     id INTEGER NOT NULL PRIMARY KEY,
     url TEXT NOT NULL,
-	url TEXT NOT NULL,
 	poster INTEGER NOT NULL foreign key,
 	datetime TEXT NOT NULL,
 	numlikes INTEGER NOT NULL,
