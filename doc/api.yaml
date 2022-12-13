@@ -944,6 +944,10 @@ components:
           minLength: 6
           maxLength: 15
 
+        user-id:
+          type: integer
+          description: user id
+
         photos:
           type: array
           description: uploaded photos
@@ -969,12 +973,8 @@ components:
           description: photo id
 
         creator:
-          type: string
-          description: username of the poster of the photo
-          example: "John5_doe7"
-          pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$"
-          minLength: 6
-          maxLength: 15
+          type: integer
+          description: user id of the poster of the photo
 
         date-time: 
           type: string

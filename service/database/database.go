@@ -29,6 +29,8 @@ type AppDatabase interface {
 	// DeleteFountain removes the fountain with the given ID
 	// DeleteFountain(id uint64) error
 
+	GetUserInfo(User) error
+
 	// Ping checks whether the database is available or not (in that case, an error will be returned)
 	Ping() error
 }
@@ -45,8 +47,8 @@ func New(db *sql.DB) (AppDatabase, error) {
 	}
 
 	// Check if table exists. If not, the database is empty, and we need to create the structure
-	var tableName string
-	err := db.QueryRow(`SELECT username FROM sqlite_master WHERE type='table' AND name='users';`).Scan(&tableName)
+	var users string
+	err := db.QueryRow(`SELECT username FROM sqlite_master WHERE type='table' AND name='users';`).Scan(&users)
 	if errors.Is(err, sql.ErrNoRows) {
 		sqlStmt := `CREATE TABLE users (
     id INTEGER NOT NULL PRIMARY KEY,
@@ -55,6 +57,24 @@ func New(db *sql.DB) (AppDatabase, error) {
 		_, err = db.Exec(sqlStmt)
 		if err != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err)
+		}
+	}
+
+	var photos string
+	err1 := db.QueryRow(`SELECT username FROM sqlite_master WHERE type='table' AND name='users';`).Scan(&photos)
+	if errors.Is(err1, sql.ErrNoRows) {
+		sqlStmt := `CREATE TABLE photos (
+    id INTEGER NOT NULL PRIMARY KEY,
+    url TEXT NOT NULL,
+	url TEXT NOT NULL,
+	poster INTEGER NOT NULL foreign key,
+	datetime TEXT NOT NULL,
+	numlikes INTEGER NOT NULL,
+	numcomments INTEGER NOT NULL
+);`
+		_, err1 = db.Exec(sqlStmt)
+		if err1 != nil {
+			return nil, fmt.Errorf("error creating database structure: %w", err1)
 		}
 	}
 
