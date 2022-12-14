@@ -71,7 +71,8 @@ func New(db *sql.DB) (AppDatabase, error) {
 	poster INTEGER NOT NULL foreign key,
 	datetime TEXT NOT NULL,
 	numlikes INTEGER NOT NULL,
-	numcomments INTEGER NOT NULL
+	numcomments INTEGER NOT NULL,
+	FOREIGN KEY(poster) REFERENCES users(id)
 );`
 		_, err1 = db.Exec(sqlStmt)
 		if err1 != nil {
