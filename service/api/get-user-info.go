@@ -2,15 +2,16 @@ package api
 
 import (
 	"encoding/json"
-	"git.sapienzaapps.it/gamificationlab/wasa-fontanelle/service/api/reqcontext"
-	"git.sapienzaapps.it/gamificationlab/wasa-fontanelle/service/database"
-	"git.sapienzaapps.it/gamificationlab/wasa-fontanelle/service/locationutils"
-	"github.com/julienschmidt/httprouter"
 	"net/http"
 	"strconv"
+
+	"github.com/Tiveron999/Wasa/service/api/reqcontext"
+	"github.com/Tiveron999/Wasa/service/database"
+	"github.com/Tiveron999/Wasa/service/locationutils"
+	"github.com/julienschmidt/httprouter"
 )
 
-func (rt *_router) listFountains(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+func (rt *_router) listUsers(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 
 	// Parse the query string part. To do that, we need to check whether the latitude, longitude and range exists.
 	// If latitude and longitude are specified, we parse them, and we filter results for them. If range is specified,
@@ -19,7 +20,7 @@ func (rt *_router) listFountains(w http.ResponseWriter, r *http.Request, ps http
 	// If one of latitude or longitude is not specified (or both), no filter will be applied.
 
 	var err error
-	var fountains []database.Fountain
+	var users []database.User
 	if r.URL.Query().Has("latitude") && r.URL.Query().Has("longitude") {
 		var lat, lng, filterRange float64
 
@@ -51,27 +52,27 @@ func (rt *_router) listFountains(w http.ResponseWriter, r *http.Request, ps http
 			return
 		}
 
-		// Request a filtered list of fountains from the DB
-		fountains, err = rt.db.ListFountainsWithFilter(lat, lng, filterRange)
+		// Request a filtered list of users from the DB
+		users, err = rt.db.ListUsersWithFilter(lat, lng, filterRange)
 	} else {
-		// Request an unfiltered list of fountains from the DB
-		fountains, err = rt.db.ListFountains()
+		// Request an unfiltered list of users from the DB
+		users, err = rt.db.ListUsers()
 	}
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the user
 		// Note: we are using the "logger" inside the "ctx" (context) because the scope of this issue is the request.
-		ctx.Logger.WithError(err).Error("can't list fountains")
+		ctx.Logger.WithError(err).Error("can't list users")
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	// Before sending the list to the client we need to convert it to the "frontend" type
-	var frontendFountains = make([]Fountain, len(fountains))
-	for idx := range fountains {
-		frontendFountains[idx].FromDatabase(fountains[idx])
+	var frontendUsers = make([]User, len(users))
+	for idx := range users {
+		frontendUsers[idx].FromDatabase(users[idx])
 	}
 
 	// Send the list to the user.
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(frontendFountains)
+	_ = json.NewEncoder(w).Encode(frontendUsers)
 }

@@ -8,28 +8,41 @@ import (
 
 var ErrUserDoesNotExist = errors.New("User does not exist")
 
-// Fountain struct represent a fountain in every API call between this package and the outside world.
-// Note that the internal representation of fountain in the database might be different.
+var ErrPhotoDoesNotExist = errors.New("Photo does not exist")
+
+// User struct represent a user in every API call between this package and the outside world.
+// Note that the internal representation of user in the database might be different.
 type User struct {
 	ID       uint64
 	username string
 }
 
+type Photo struct {
+	id          uint64
+	url         string
+	posterid    uint64
+	datetime    string
+	numlikes    uint64
+	numcomments uint64
+}
+
 // AppDatabase is the high level interface for the DB
 type AppDatabase interface {
-	// ListFountains returns the list of fountains with their status
-	// ListFountains() ([]Fountain, error)
+	// ListUsers returns the list of users with their status
+	// ListUsers() ([]User, error)
 
-	// CreateFountain creates a new fountain in the database. It returns an updated Fountain object (with the ID)
+	// CreateUser creates a new user in the database. It returns an updated User object (with the ID)
 	CreateUser(User) (User, error)
 
-	// UpdateFountain updates the fountain, replacing every value with those provided in the argument
+	// UpdateUser updates the user, replacing every value with those provided in the argument
 	UpdateUser(User) error
 
-	// DeleteFountain removes the fountain with the given ID
-	// DeleteFountain(id uint64) error
+	// DeleteUser removes the user with the given ID
+	// DeleteUser(id uint64) error
 
 	GetUserInfo(User) error
+
+	GetUserPhotos(Photo) error
 
 	// Ping checks whether the database is available or not (in that case, an error will be returned)
 	Ping() error
@@ -68,7 +81,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 		sqlStmt := `CREATE TABLE photos (
     id INTEGER NOT NULL PRIMARY KEY,
     url TEXT NOT NULL,
-	poster INTEGER NOT NULL foreign key,
+	posterid INTEGER NOT NULL
 	datetime TEXT NOT NULL,
 	numlikes INTEGER NOT NULL,
 	numcomments INTEGER NOT NULL,
