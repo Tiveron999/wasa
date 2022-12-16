@@ -1,7 +1,7 @@
 package database
 
 func (db *appdbimpl) GetUserPhotos(f Photo) error {
-	res, err := db.c.Exec(`SELECT * FROM photos WHERE posterid=?`,
+	res, err := db.c.Exec(`SELECT * FROM photos WHERE posterid=? AND datetime >= ? and datetime <= ? SORT BY datetime DESC`,
 		f.posterid)
 	if err != nil {
 		return err

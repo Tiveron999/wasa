@@ -233,7 +233,7 @@ paths:
       in: query
       style: deepObject
       allowReserved: true
-      description: this is how the images will be filtered according to whom the user follows
+      description: this is how the images will be filtered according to the dates that cause interest
       schema:
         type: object
         description: |
