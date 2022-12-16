@@ -14,6 +14,15 @@ type User struct {
 	username string `json:"username"`
 }
 
+type Photo struct {
+	id          uint64
+	url         string
+	posterid    uint64
+	datetime    string
+	numlikes    uint64
+	numcomments uint64
+}
+
 // FromDatabase populates the struct with data from the database, overwriting all values.
 // You might think this is code duplication, which is correct. However, it's "good" code duplication because it allows
 // us to uncouple the database and API packages.

@@ -44,6 +44,12 @@ type AppDatabase interface {
 
 	GetUserPhotos(Photo) error
 
+	GetPhotoInfo(Photo) error
+
+	CreatePhoto(Photo) (Photo, error)
+
+	DeletePhoto(id uint64) error
+
 	// Ping checks whether the database is available or not (in that case, an error will be returned)
 	Ping() error
 }
