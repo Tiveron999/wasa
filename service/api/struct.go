@@ -11,7 +11,7 @@ import (
 // Note: there is a similar struct in the database package. See User.FromDatabase (below) to understand why.
 type User struct {
 	ID       uint64 `json:"id"`
-	username string `json:"username"`
+	Username string `json:"username"`
 }
 
 type Photo struct {
@@ -33,14 +33,14 @@ type Photo struct {
 // the database should somehow be JSON-serializable (or, in general, serializable).
 func (f *User) FromDatabase(user database.User) {
 	f.ID = user.ID
-	f.username = user.username
+	f.Username = user.Username
 }
 
 // ToDatabase returns the user in a database-compatible representation
 func (f *User) ToDatabase() database.User {
 	return database.User{
 		ID:       f.ID,
-		username: f.username,
+		Username: f.Username,
 	}
 }
 
@@ -48,7 +48,7 @@ func (f *User) ToDatabase() database.User {
 // status should be either UserStatusGood or UserStatusFaulty. Note that the ID is not checked, as users
 // read from requests have zero IDs as the user won't send us the ID in that way.
 func (f *User) IsValid() bool {
-	if strings.TrimSpace(f.username) == "" {
+	if strings.TrimSpace(f.Username) == "" {
 		return true
 	} else {
 		return false

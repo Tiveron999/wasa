@@ -14,7 +14,7 @@ var ErrPhotoDoesNotExist = errors.New("Photo does not exist")
 // Note that the internal representation of user in the database might be different.
 type User struct {
 	ID       uint64
-	username string
+	Username string
 }
 
 type Photo struct {

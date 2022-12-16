@@ -2,7 +2,7 @@ package database
 
 func (db *appdbimpl) UpdateUser(f User) error {
 	res, err := db.c.Exec(`UPDATE users SET username=? WHERE id=?`,
-		f.username, f.ID)
+		f.Username, f.ID)
 	if err != nil {
 		return err
 	}
