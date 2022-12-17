@@ -15,12 +15,12 @@ type User struct {
 }
 
 type Photo struct {
-	id          uint64
-	url         string
-	posterid    uint64
-	datetime    string
-	numlikes    uint64
-	numcomments uint64
+	ID          uint64 `json:"id"`
+	URL         string `json:"url"`
+	Posterid    uint64 `json:"posterid"`
+	Datetime    string `json:"datetime"`
+	Numlikes    uint64 `json:"numlikes"`
+	Numcomments uint64 `json:"numcomments"`
 }
 
 // FromDatabase populates the struct with data from the database, overwriting all values.

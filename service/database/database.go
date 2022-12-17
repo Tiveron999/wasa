@@ -10,20 +10,20 @@ var ErrUserDoesNotExist = errors.New("User does not exist")
 
 var ErrPhotoDoesNotExist = errors.New("Photo does not exist")
 
-// User struct represent a user in every API call between this package and the outside world.
-// Note that the internal representation of user in the database might be different.
+// User struct represents a user in every API call between this package and the outside world.
+// Note that the internal representation of a user in the database might be different.
 type User struct {
 	ID       uint64
 	Username string
 }
 
 type Photo struct {
-	id          uint64
-	url         string
-	posterid    uint64
-	datetime    string
-	numlikes    uint64
-	numcomments uint64
+	ID          uint64
+	URL         string
+	Posterid    uint64
+	Datetime    string
+	Numlikes    uint64
+	Numcomments uint64
 }
 
 // AppDatabase is the high level interface for the DB
@@ -40,11 +40,11 @@ type AppDatabase interface {
 	// DeleteUser removes the user with the given ID
 	// DeleteUser(id uint64) error
 
-	GetUserInfo(User) error
+	GetUserInfo(User) (User, error)
 
 	GetUserPhotos(Photo) error
 
-	GetPhotoInfo(Photo) error
+	GetPhotoInfo(Photo) (Photo, error)
 
 	CreatePhoto(Photo) (Photo, error)
 

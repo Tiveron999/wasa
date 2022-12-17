@@ -1,18 +1,18 @@
 package database
 
-func (db *appdbimpl) GetPhotoInfo(f Photo) error {
+func (db *appdbimpl) GetPhotoInfo(f Photo) (Photo, error) {
 	res, err := db.c.Exec(`SELECT * FROM photos WHERE id=?`,
-		f.id)
+		f.ID)
 	if err != nil {
-		return err
+		return f, err
 	}
 
 	affected, err := res.RowsAffected()
 	if err != nil {
-		return err
+		return f, err
 	} else if affected == 0 {
 		// If we didn't delete any row, then the photo didn't exist
-		return ErrPhotoDoesNotExist
+		return f, ErrPhotoDoesNotExist
 	}
-	return nil
+	return f, nil
 }
