@@ -26,6 +26,12 @@ type Photo struct {
 	Numcomments uint64
 }
 
+type Likes struct {
+	ID 		uint64
+	LikerID uint64
+	PhotoID uint64
+}
+
 // AppDatabase is the high level interface for the DB
 type AppDatabase interface {
 	// ListUsers returns the list of users with their status
@@ -70,8 +76,8 @@ func New(db *sql.DB) (AppDatabase, error) {
 	err := db.QueryRow(`SELECT username FROM sqlite_master WHERE type='table' AND name='users';`).Scan(&users)
 	if errors.Is(err, sql.ErrNoRows) {
 		sqlStmt := `CREATE TABLE users (
-    id INTEGER NOT NULL PRIMARY KEY,
-    username TEXT NOT NULL
+    id INTEGER NOT NULL PRIMARY KEY ON DELETE CASCADE,
+    username TEXT NOT NULL ON UPDATE CASCADE
 );`
 		_, err = db.Exec(sqlStmt)
 		if err != nil {
@@ -85,17 +91,36 @@ func New(db *sql.DB) (AppDatabase, error) {
 	err1 := db.QueryRow(`SELECT url FROM sqlite_master WHERE type='table' AND name='photos';`).Scan(&photos)
 	if errors.Is(err1, sql.ErrNoRows) {
 		sqlStmt := `CREATE TABLE photos (
-    id INTEGER NOT NULL PRIMARY KEY,
+    id INTEGER NOT NULL PRIMARY KEY ON DELETE CASCADE,
     url TEXT NOT NULL,
-	posterid INTEGER NOT NULL
+	posterid INTEGER NOT NULL,
 	datetime TEXT NOT NULL,
-	numlikes INTEGER NOT NULL,
-	numcomments INTEGER NOT NULL,
+	numlikes INTEGER NOT NULL ON UPDATE CASCADE,
+	numcomments INTEGER NOT NULL ON UPDATE CASCADE,
 	FOREIGN KEY(poster) REFERENCES users(id)
 );`
 		_, err1 = db.Exec(sqlStmt)
 		if err1 != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err1)
+		}
+	}
+
+	var likes string
+	_, _ = db.Exec("PRAGMA foreign_keys = ON;")
+
+	err2 := db.QueryRow(`SELECT ID FROM sqlite_master WHERE type='table' AND name='likes';`).Scan(&likes)
+	if errors.Is(err2, sql.ErrNoRows) {
+		sqlStmt := `CREATE TABLE likes (
+	id INTEGER NOT NULL PRIMARY KEY ON DELETE CASCADE,
+	likerid INTEGER NOT NULL,
+	photoid INTEGER NOT NULL,
+	FOREIGN KEY(likerid) REFERENCES users(id),
+	FOREIGN KEY(photoid) REFERENCES photos(id)
+);`
+ // PRIMARY KEY (likerid, photoid)
+		_, err2 = db.Exec(sqlStmt)
+		if err2 != nil {
+			return nil, fmt.Errorf("error creating database structure: %w", err2)
 		}
 	}
 

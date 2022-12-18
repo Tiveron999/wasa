@@ -18,7 +18,7 @@ func (rt *_router) listLikes(w http.ResponseWriter, r *http.Request, ps httprout
 	// If one of latitude or longitude is not specified (or both), no filter will be applied.
 
 	var err error
-	var likes []database.Photo.likes
+	var likes database.Photo.Numlikes
 
 	// Request an unfiltered list of photos from the DB
 	photos, err = rt.db.GetUserPhotos()

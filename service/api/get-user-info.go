@@ -21,7 +21,7 @@ func (rt *_router) listUserInfo(w http.ResponseWriter, r *http.Request, ps httpr
 	var user database.User
 
 	// Request an unfiltered list of user's info from the DB
-	user, err = rt.db.GetUserInfo()
+	user, err = rt.db.GetUserInfo(user)
 
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the user
@@ -32,12 +32,13 @@ func (rt *_router) listUserInfo(w http.ResponseWriter, r *http.Request, ps httpr
 	}
 
 	// Before sending the list to the client we need to convert it to the "frontend" type
-	var frontendUsers = make([]User, len(user))
+	var fuckyou = make([]user)
+	var frontendUsersInfo = make([]User, len(user))
 	for idx := range user {
-		frontendUsers[idx].FromDatabase(user[idx])
+		frontendUsersInfo[idx].FromDatabase(user[idx])
 	}
 
 	// Send the list to the user.
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(frontendUsers)
+	_ = json.NewEncoder(w).Encode(frontendUsersInfo)
 }
