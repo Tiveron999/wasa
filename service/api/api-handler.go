@@ -10,10 +10,12 @@ func (rt *_router) Handler() http.Handler {
 	//rt.router.GET("/", rt.getHelloWorld)
 	rt.router.GET("/context", rt.wrap(rt.getContextReply))
 
+	rt.router.GET("/users", rt.listUsers)
+	rt.router.GET("/photos", rt.listPhotos)
+	rt.router.GET("/likes", rt.listLikes)
+
 	// Special routes
 	rt.router.GET("/liveness", rt.liveness)
-
-	rt.router.GET("/users", rt.listUsers)
 
 	return rt.router
 }
