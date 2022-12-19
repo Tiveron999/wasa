@@ -32,7 +32,6 @@ func (rt *_router) listUserInfo(w http.ResponseWriter, r *http.Request, ps httpr
 	}
 
 	// Before sending the list to the client we need to convert it to the "frontend" type
-	var fuckyou = make([]user)
 	var frontendUsersInfo = make([]User, len(user))
 	for idx := range user {
 		frontendUsersInfo[idx].FromDatabase(user[idx])
