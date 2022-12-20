@@ -18,26 +18,26 @@ func (rt *_router) listLikes(w http.ResponseWriter, r *http.Request, ps httprout
 	// If one of latitude or longitude is not specified (or both), no filter will be applied.
 
 	var err error
-	var likes database.Photo.Numlikes
+	var likes []database.Likes
 
-	// Request an unfiltered list of photos from the DB
-	photos, err = rt.db.GetUserPhotos()
+	// Request an unfiltered list of likes from the DB
+	likes, err = rt.db.ListLikes()
 
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the photo
 		// Note: we are using the "logger" inside the "ctx" (context) because the scope of this issue is the request.
-		ctx.Logger.WithError(err).Error("can't list photos")
+		ctx.Logger.WithError(err).Error("can't list likes")
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	// Before sending the list to the client we need to convert it to the "frontend" type
-	var frontendPhotos = make([]User, len(photos))
-	for idx := range photos {
-		frontendPhotos[idx].FromDatabase(photos[idx])
+	var frontendLikes = make([]Likes, len(likes))
+	for idx := range likes {
+		frontendLikes[idx].LikeFromDatabase(likes[idx])
 	}
 
 	// Send the list to the photo.
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(frontendPhotos)
+	_ = json.NewEncoder(w).Encode(frontendLikes)
 }

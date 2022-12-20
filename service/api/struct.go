@@ -23,6 +23,12 @@ type Photo struct {
 	Numcomments uint64 `json:"numcomments"`
 }
 
+type Likes struct {
+	ID 		uint64
+	LikerID uint64
+	PhotoID uint64
+}
+
 // FromDatabase populates the struct with data from the database, overwriting all values.
 // You might think this is code duplication, which is correct. However, it's "good" code duplication because it allows
 // us to uncouple the database and API packages.
@@ -31,13 +37,13 @@ type Photo struct {
 // structure is different from the structure of the REST API.
 // Also, in this way the database package is freely usable by other packages without the assumption that structs from
 // the database should somehow be JSON-serializable (or, in general, serializable).
-func (f *User) FromDatabase(user database.User) {
+func (f *User) UserFromDatabase(user database.User) {
 	f.ID = user.ID
 	f.Username = user.Username
 }
 
 // ToDatabase returns the user in a database-compatible representation
-func (f *User) ToDatabase() database.User {
+func (f *User) UserToDatabase() database.User {
 	return database.User{
 		ID:       f.ID,
 		Username: f.Username,
@@ -47,10 +53,50 @@ func (f *User) ToDatabase() database.User {
 // IsValid checks the validity of the content. In particular, coordinates should be in their range of validity, and the
 // status should be either UserStatusGood or UserStatusFaulty. Note that the ID is not checked, as users
 // read from requests have zero IDs as the user won't send us the ID in that way.
-func (f *User) IsValid() bool {
+func (f *User) UserIsValid() bool {
 	if strings.TrimSpace(f.Username) == "" {
 		return true
 	} else {
 		return false
+	}
+}
+
+
+func (f *User) PhotoFromDatabase(user database.User) {
+	f.ID = user.ID
+	f.Username = user.Username
+}
+
+// ToDatabase returns the user in a database-compatible representation
+func (f *User) PhotoToDatabase() database.User {
+	return database.User{
+		ID:       f.ID,
+		Username: f.Username,
+	}
+}
+
+// IsValid checks the validity of the content. In particular, coordinates should be in their range of validity, and the
+// status should be either UserStatusGood or UserStatusFaulty. Note that the ID is not checked, as users
+// read from requests have zero IDs as the user won't send us the ID in that way.
+func (f *User) PhotoIsValid() bool {
+	if strings.TrimSpace(f.Username) == "" {
+		return true
+	} else {
+		return false
+	}
+}
+
+func (f *Likes) LikeFromDatabase(like database.Likes) {
+	f.ID = like.ID
+	f.LikerID = like.LikerID
+	f.PhotoID = like.PhotoID
+}
+
+// ToDatabase returns the user in a database-compatible representation
+func (f *Likes) LikeToDatabase() database.Likes {
+	return database.Likes{
+		ID:       f.ID,
+		LikerID: f.LikerID,
+		PhotoID: f.PhotoID,
 	}
 }

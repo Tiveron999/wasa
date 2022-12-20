@@ -18,7 +18,7 @@ func (rt *_router) listUserInfo(w http.ResponseWriter, r *http.Request, ps httpr
 	// If one of latitude or longitude is not specified (or both), no filter will be applied.
 
 	var err error
-	var user database.User
+	var user []database.User
 
 	// Request an unfiltered list of user's info from the DB
 	user, err = rt.db.GetUserInfo(user)
@@ -34,7 +34,7 @@ func (rt *_router) listUserInfo(w http.ResponseWriter, r *http.Request, ps httpr
 	// Before sending the list to the client we need to convert it to the "frontend" type
 	var frontendUsersInfo = make([]User, len(user))
 	for idx := range user {
-		frontendUsersInfo[idx].FromDatabase(user[idx])
+		frontendUsersInfo[idx].UserFromDatabase(user[idx])
 	}
 
 	// Send the list to the user.

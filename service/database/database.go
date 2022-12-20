@@ -10,6 +10,8 @@ var ErrUserDoesNotExist = errors.New("User does not exist")
 
 var ErrPhotoDoesNotExist = errors.New("Photo does not exist")
 
+var ErrLikeDoesNotExist = errors.New("Like does not exist")
+
 // User struct represents a user in every API call between this package and the outside world.
 // Note that the internal representation of a user in the database might be different.
 type User struct {
@@ -54,7 +56,13 @@ type AppDatabase interface {
 
 	CreatePhoto(Photo) (Photo, error)
 
-	DeletePhoto(id uint64) error
+	DeletePhoto(uint64) error
+
+	ListLikes() ([]Likes, error)
+
+	LikePhoto(User, Photo) (Likes, error)
+
+	DeleteLike(uint64) error
 
 	// Ping checks whether the database is available or not (in that case, an error will be returned)
 	Ping() error
