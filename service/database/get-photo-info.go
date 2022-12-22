@@ -2,7 +2,7 @@ package database
 
 func (db *appdbimpl) GetPhotoInfo(f Photo) (Photo, error) {
 	res, err := db.c.Exec(`SELECT * FROM photos WHERE id=?`,
-		f.ID)
+		f.PID)
 	if err != nil {
 		return f, err
 	}

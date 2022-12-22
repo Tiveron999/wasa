@@ -10,12 +10,12 @@ import (
 // added to the struct to conform to the OpenAPI specifications regarding JSON key names.
 // Note: there is a similar struct in the database package. See User.FromDatabase (below) to understand why.
 type User struct {
-	ID       uint64 `json:"id"`
+	USID     uint64 `json:"id"`
 	Username string `json:"username"`
 }
 
 type Photo struct {
-	ID          uint64 `json:"id"`
+	PID         uint64 `json:"id"`
 	URL         string `json:"url"`
 	Posterid    uint64 `json:"posterid"`
 	Datetime    string `json:"datetime"`
@@ -24,7 +24,7 @@ type Photo struct {
 }
 
 type Likes struct {
-	ID      uint64 `json:"id"`
+	LID     uint64 `json:"id"`
 	LikerID uint64 `json:"likerid"`
 	PhotoID uint64 `json:"photoid"`
 }
@@ -38,14 +38,14 @@ type Likes struct {
 // Also, in this way the database package is freely usable by other packages without the assumption that structs from
 // the database should somehow be JSON-serializable (or, in general, serializable).
 func (f *User) UserFromDatabase(user database.User) {
-	f.ID = user.ID
+	f.USID = user.USID
 	f.Username = user.Username
 }
 
 // ToDatabase returns the user in a database-compatible representation
 func (f *User) UserToDatabase() database.User {
 	return database.User{
-		ID:       f.ID,
+		USID:     f.USID,
 		Username: f.Username,
 	}
 }
@@ -62,7 +62,7 @@ func (f *User) UserIsValid() bool {
 }
 
 func (f *Photo) PhotoFromDatabase(photo database.Photo) {
-	f.ID = photo.ID
+	f.PID = photo.PID
 	f.URL = photo.URL
 	f.Posterid = photo.Posterid
 	f.Datetime = photo.Datetime
@@ -73,7 +73,7 @@ func (f *Photo) PhotoFromDatabase(photo database.Photo) {
 // ToDatabase returns the photo in a database-compatible representation
 func (f *Photo) PhotoToDatabase() database.Photo {
 	return database.Photo{
-		ID:          f.ID,
+		PID:         f.PID,
 		URL:         f.URL,
 		Posterid:    f.Posterid,
 		Datetime:    f.Datetime,
@@ -94,7 +94,7 @@ func (f *Photo) PhotoIsValid() bool {
 }
 
 func (f *Likes) LikeFromDatabase(like database.Likes) {
-	f.ID = like.ID
+	f.LID = like.LID
 	f.LikerID = like.LikerID
 	f.PhotoID = like.PhotoID
 }
@@ -102,7 +102,7 @@ func (f *Likes) LikeFromDatabase(like database.Likes) {
 // ToDatabase returns the like in a database-compatible representation
 func (f *Likes) LikeToDatabase() database.Likes {
 	return database.Likes{
-		ID:      f.ID,
+		LID:     f.LID,
 		LikerID: f.LikerID,
 		PhotoID: f.PhotoID,
 	}

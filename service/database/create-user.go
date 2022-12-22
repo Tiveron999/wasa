@@ -12,6 +12,6 @@ func (db *appdbimpl) CreateUser(f User) (User, error) {
 		return f, err
 	}
 
-	f.ID = uint64(lastInsertID)
+	f.USID = uint64(lastInsertID)
 	return f, nil
 }

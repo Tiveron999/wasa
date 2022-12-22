@@ -13,7 +13,7 @@ func (db *appdbimpl) ListUserPhotos() ([]Photo, error) {
 	// Here we read the resultset and we build the list to be returned
 	for rows.Next() {
 		var f Photo
-		err = rows.Scan(&f.ID, &f.URL, &f.Posterid, &f.Datetime, &f.Numlikes, &f.Numcomments)
+		err = rows.Scan(&f.PID, &f.URL, &f.Posterid, &f.Datetime, &f.Numlikes, &f.Numcomments)
 		if err != nil {
 			return nil, err
 		}

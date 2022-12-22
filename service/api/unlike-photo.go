@@ -12,7 +12,7 @@ import (
 
 func (rt *_router) unlikePhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	// The like ID in the path is a 64-bit unsigned integer. Let's parse it.
-	id, err := strconv.ParseUint(ps.ByName("id"), 10, 64)
+	id, err := strconv.ParseUint(ps.ByName("lid"), 10, 64)
 	if err != nil {
 		// The value was not uint64, reject the action indicating an error on the client side.
 		w.WriteHeader(http.StatusBadRequest)
@@ -29,7 +29,7 @@ func (rt *_router) unlikePhoto(w http.ResponseWriter, r *http.Request, ps httpro
 		// Note: we are using the "logger" inside the "ctx" (context) because the scope of this issue is the request.
 		// Note (2): we are adding the error and an additional field (`id`) to the log entry, so that we will receive
 		// the identifier of the like that triggered the error.
-		ctx.Logger.WithError(err).WithField("id", id).Error("can't delete the like")
+		ctx.Logger.WithError(err).WithField("lid", id).Error("can't delete the like")
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

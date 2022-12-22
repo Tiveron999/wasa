@@ -15,12 +15,12 @@ var ErrLikeDoesNotExist = errors.New("like does not exist")
 // User struct represents a user in every API call between this package and the outside world.
 // Note that the internal representation of a user in the database might be different.
 type User struct {
-	ID       uint64
+	USID     uint64
 	Username string
 }
 
 type Photo struct {
-	ID          uint64
+	PID         uint64
 	URL         string
 	Posterid    uint64
 	Datetime    string
@@ -29,7 +29,7 @@ type Photo struct {
 }
 
 type Likes struct {
-	ID      uint64
+	LID     uint64
 	LikerID uint64
 	PhotoID uint64
 }
@@ -84,7 +84,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 	err := db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='users';`).Scan(&users)
 	if errors.Is(err, sql.ErrNoRows) {
 		sqlStmt := `CREATE TABLE users (
-    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    usid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL
 );`
 		fmt.Print(sqlStmt)
@@ -100,13 +100,13 @@ func New(db *sql.DB) (AppDatabase, error) {
 	err1 := db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='photos';`).Scan(&photos)
 	if errors.Is(err1, sql.ErrNoRows) {
 		sqlStmt := `CREATE TABLE photos (
-    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    pid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     url TEXT NOT NULL,
 	posterid INTEGER NOT NULL,
 	datetime TEXT NOT NULL,
 	numlikes INTEGER NOT NULL,
 	numcomments INTEGER NOT NULL,
-	FOREIGN KEY(posterid) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY(posterid) REFERENCES users(usid) ON UPDATE CASCADE ON DELETE CASCADE
 );`
 
 		_, err1 = db.Exec(sqlStmt)
@@ -121,11 +121,11 @@ func New(db *sql.DB) (AppDatabase, error) {
 	err2 := db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='likes';`).Scan(&likes)
 	if errors.Is(err2, sql.ErrNoRows) {
 		sqlStmt := `CREATE TABLE likes (
-	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	lid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	likerid INTEGER NOT NULL,
 	photoid INTEGER NOT NULL,
-	FOREIGN KEY(likerid) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY(photoid) REFERENCES photos(id) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY(likerid) REFERENCES users(usid) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(photoid) REFERENCES photos(pid) ON UPDATE CASCADE ON DELETE CASCADE
 );`
 		// PRIMARY KEY (likerid, photoid)
 		_, err2 = db.Exec(sqlStmt)

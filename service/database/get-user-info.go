@@ -1,7 +1,7 @@
 package database
 
 func (db *appdbimpl) GetUserInfo(f User) (User, error) {
-	res, err := db.c.Exec(`SELECT * FROM users WHERE id=?`, f.ID)
+	res, err := db.c.Exec(`SELECT * FROM users WHERE id=?`, f.USID)
 	if err != nil {
 		return f, err
 	}

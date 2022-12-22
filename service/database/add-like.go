@@ -31,6 +31,6 @@ func (db *appdbimpl) LikePhoto(f Likes) (Likes, error) {
 		return f, err
 	}
 
-	f.ID = uint64(lastInsertID)
+	f.LID = uint64(lastInsertID)
 	return f, nil
 }

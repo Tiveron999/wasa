@@ -13,7 +13,7 @@ func (db *appdbimpl) ListLikes() ([]Likes, error) {
 	// Here we read the resultset and we build the list to be returned
 	for rows.Next() {
 		var f Likes
-		err = rows.Scan(&f.ID, &f.LikerID, &f.PhotoID)
+		err = rows.Scan(&f.LID, &f.LikerID, &f.PhotoID)
 		if err != nil {
 			return nil, err
 		}
