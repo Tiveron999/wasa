@@ -24,7 +24,7 @@ type Photo struct {
 }
 
 type Likes struct {
-	ID 		uint64 `json:"id"`
+	ID      uint64 `json:"id"`
 	LikerID uint64 `json:"likerid"`
 	PhotoID uint64 `json:"photoid"`
 }
@@ -61,25 +61,24 @@ func (f *User) UserIsValid() bool {
 	}
 }
 
-
 func (f *Photo) PhotoFromDatabase(photo database.Photo) {
 	f.ID = photo.ID
-	f.URL = photo.URL       
+	f.URL = photo.URL
 	f.Posterid = photo.Posterid
-	f.Datetime = photo.Datetime 
-	f.Numlikes = photo.Numlikes  
+	f.Datetime = photo.Datetime
+	f.Numlikes = photo.Numlikes
 	f.Numcomments = photo.Numcomments
 }
 
 // ToDatabase returns the photo in a database-compatible representation
 func (f *Photo) PhotoToDatabase() database.Photo {
 	return database.Photo{
-		ID:       f.ID,
-	URL : f.URL,
-	Posterid : f.Posterid,
-	Datetime : f.Datetime,
-	Numlikes : f.Numlikes,
-	Numcomments : f.Numcomments,
+		ID:          f.ID,
+		URL:         f.URL,
+		Posterid:    f.Posterid,
+		Datetime:    f.Datetime,
+		Numlikes:    f.Numlikes,
+		Numcomments: f.Numcomments,
 	}
 }
 
@@ -103,12 +102,12 @@ func (f *Likes) LikeFromDatabase(like database.Likes) {
 // ToDatabase returns the like in a database-compatible representation
 func (f *Likes) LikeToDatabase() database.Likes {
 	return database.Likes{
-		ID:       f.ID,
+		ID:      f.ID,
 		LikerID: f.LikerID,
 		PhotoID: f.PhotoID,
 	}
 }
 
 func (f *Likes) LikeIsValid() bool {
-		return true
+	return true
 }

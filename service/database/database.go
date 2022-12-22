@@ -29,7 +29,7 @@ type Photo struct {
 }
 
 type Likes struct {
-	ID 		uint64
+	ID      uint64
 	LikerID uint64
 	PhotoID uint64
 }
@@ -125,7 +125,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 	FOREIGN KEY(likerid) REFERENCES users(id),
 	FOREIGN KEY(photoid) REFERENCES photos(id)
 );`
- // PRIMARY KEY (likerid, photoid)
+		// PRIMARY KEY (likerid, photoid)
 		_, err2 = db.Exec(sqlStmt)
 		if err2 != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err2)

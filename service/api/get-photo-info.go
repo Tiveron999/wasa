@@ -19,10 +19,10 @@ func (rt *_router) getPhotoInfo(w http.ResponseWriter, r *http.Request, ps httpr
 
 	var err error
 	var photo database.Photo
-	
+
 	// Request an unfiltered list of photo from the DB
 	photo, err = rt.db.GetPhotoInfo(photo)
-	
+
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the user
 		// Note: we are using the "logger" inside the "ctx" (context) because the scope of this issue is the request.
@@ -34,8 +34,6 @@ func (rt *_router) getPhotoInfo(w http.ResponseWriter, r *http.Request, ps httpr
 	// Before sending the list to the client we need to convert it to the "frontend" type
 	var frontendPhotoInfo Photo
 	frontendPhotoInfo.PhotoFromDatabase(photo)
-
-	
 
 	// Send the list to the user.
 	w.Header().Set("Content-Type", "application/json")
