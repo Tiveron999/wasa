@@ -16,7 +16,7 @@ func (rt *_router) likePhoto(w http.ResponseWriter, r *http.Request, ps httprout
 		// The body was not a parseable JSON, reject it
 		w.WriteHeader(http.StatusBadRequest)
 		return
-	} else {
+	} else if !like.LikeIsValid() {
 		// Here we validated the like structure content (e.g., location coordinates in correct range, etc.), and we
 		// discovered that the like data are not valid.
 		// Note: the IsValid() function skips the ID check (see below).

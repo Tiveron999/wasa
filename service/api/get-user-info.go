@@ -32,9 +32,10 @@ func (rt *_router) listUserInfo(w http.ResponseWriter, r *http.Request, ps httpr
 	}
 
 	// Before sending the list to the client we need to convert it to the "frontend" type
-	//var frontendUsersInfo = rt.db.GetUserInfo(user.ToDatabase())
+	var frontendUsersInfo User
+	frontendUsersInfo.UserFromDatabase(user)
 
 	// Send the list to the user.
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(user)
+	_ = json.NewEncoder(w).Encode(frontendUsersInfo)
 }

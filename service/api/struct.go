@@ -24,9 +24,9 @@ type Photo struct {
 }
 
 type Likes struct {
-	ID 		uint64
-	LikerID uint64
-	PhotoID uint64
+	ID 		uint64 `json:"id"`
+	LikerID uint64 `json:"likerid"`
+	PhotoID uint64 `json:"photoid"`
 }
 
 // FromDatabase populates the struct with data from the database, overwriting all values.
@@ -54,7 +54,7 @@ func (f *User) UserToDatabase() database.User {
 // status should be either UserStatusGood or UserStatusFaulty. Note that the ID is not checked, as users
 // read from requests have zero IDs as the user won't send us the ID in that way.
 func (f *User) UserIsValid() bool {
-	if strings.TrimSpace(f.Username) == "" {
+	if strings.TrimSpace(f.Username) != "" {
 		return true
 	} else {
 		return false
@@ -62,24 +62,32 @@ func (f *User) UserIsValid() bool {
 }
 
 
-func (f *User) PhotoFromDatabase(user database.User) {
-	f.ID = user.ID
-	f.Username = user.Username
+func (f *Photo) PhotoFromDatabase(photo database.Photo) {
+	f.ID = photo.ID
+	f.URL = photo.URL       
+	f.Posterid = photo.Posterid
+	f.Datetime = photo.Datetime 
+	f.Numlikes = photo.Numlikes  
+	f.Numcomments = photo.Numcomments
 }
 
-// ToDatabase returns the user in a database-compatible representation
-func (f *User) PhotoToDatabase() database.User {
-	return database.User{
+// ToDatabase returns the photo in a database-compatible representation
+func (f *Photo) PhotoToDatabase() database.Photo {
+	return database.Photo{
 		ID:       f.ID,
-		Username: f.Username,
+	URL : f.URL,
+	Posterid : f.Posterid,
+	Datetime : f.Datetime,
+	Numlikes : f.Numlikes,
+	Numcomments : f.Numcomments,
 	}
 }
 
 // IsValid checks the validity of the content. In particular, coordinates should be in their range of validity, and the
 // status should be either UserStatusGood or UserStatusFaulty. Note that the ID is not checked, as users
 // read from requests have zero IDs as the user won't send us the ID in that way.
-func (f *User) PhotoIsValid() bool {
-	if strings.TrimSpace(f.Username) == "" {
+func (f *Photo) PhotoIsValid() bool {
+	if strings.TrimSpace(f.URL) != "" {
 		return true
 	} else {
 		return false
@@ -92,11 +100,15 @@ func (f *Likes) LikeFromDatabase(like database.Likes) {
 	f.PhotoID = like.PhotoID
 }
 
-// ToDatabase returns the user in a database-compatible representation
+// ToDatabase returns the like in a database-compatible representation
 func (f *Likes) LikeToDatabase() database.Likes {
 	return database.Likes{
 		ID:       f.ID,
 		LikerID: f.LikerID,
 		PhotoID: f.PhotoID,
 	}
+}
+
+func (f *Likes) LikeIsValid() bool {
+		return true
 }

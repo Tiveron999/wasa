@@ -27,7 +27,7 @@ func (rt *_router) updateUser(w http.ResponseWriter, r *http.Request, ps httprou
 		// The body was not a parseable JSON, reject it
 		w.WriteHeader(http.StatusBadRequest)
 		return
-	} else if !updatedUser.IsValid() {
+	} else if !updatedUser.UserIsValid() {
 		// Here we validated the user structure content (e.g., location coordinates in correct range, etc.), and we
 		// discovered that the user data are not valid.
 		// Note: the IsValid() function skips the ID check (see below).
@@ -40,7 +40,7 @@ func (rt *_router) updateUser(w http.ResponseWriter, r *http.Request, ps httprou
 	updatedUser.ID = id
 
 	// Update the user in the database.
-	err = rt.db.UpdateUser(updatedUser.ToDatabase())
+	err = rt.db.UpdateUser(updatedUser.UserToDatabase())
 	if errors.Is(err, database.ErrUserDoesNotExist) {
 		// The user (indicated by `id`) does not exist, reject the action indicating an error on the client side.
 		w.WriteHeader(http.StatusNotFound)

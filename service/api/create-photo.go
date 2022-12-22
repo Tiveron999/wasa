@@ -16,7 +16,7 @@ func (rt *_router) createPhoto(w http.ResponseWriter, r *http.Request, ps httpro
 		// The body was not a parseable JSON, reject it
 		w.WriteHeader(http.StatusBadRequest)
 		return
-	} else if !photo.IsValid() {
+	} else if !photo.PhotoIsValid() {
 		// Here we validated the photo structure content (e.g., location coordinates in correct range, etc.), and we
 		// discovered that the photo data are not valid.
 		// Note: the IsValid() function skips the ID check (see below).
@@ -26,7 +26,7 @@ func (rt *_router) createPhoto(w http.ResponseWriter, r *http.Request, ps httpro
 
 	// Create the photo in the database. Note that this function will return a new instance of the photo with the
 	// same information, plus the ID.
-	dbphoto, err := rt.db.CreatePhoto(photo.ToDatabase())
+	dbphoto, err := rt.db.CreatePhoto(photo.PhotoToDatabase())
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the photo
 		// Note: we are using the "logger" inside the "ctx" (context) because the scope of this issue is the request.
@@ -36,7 +36,7 @@ func (rt *_router) createPhoto(w http.ResponseWriter, r *http.Request, ps httpro
 	}
 
 	// Here we can re-use `photo` as FromDatabase is overwriting every variabile in the structure.
-	photo.FromDatabase(dbphoto)
+	photo.PhotoFromDatabase(dbphoto)
 
 	// Send the output to the photo.
 	w.Header().Set("Content-Type", "application/json")

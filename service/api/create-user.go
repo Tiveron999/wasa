@@ -16,7 +16,7 @@ func (rt *_router) createUser(w http.ResponseWriter, r *http.Request, ps httprou
 		// The body was not a parseable JSON, reject it
 		w.WriteHeader(http.StatusBadRequest)
 		return
-	} else if !user.IsValid() {
+	} else if !user.UserIsValid() {
 		// Here we validated the user structure content (e.g., location coordinates in correct range, etc.), and we
 		// discovered that the user data are not valid.
 		// Note: the IsValid() function skips the ID check (see below).
@@ -26,7 +26,7 @@ func (rt *_router) createUser(w http.ResponseWriter, r *http.Request, ps httprou
 
 	// Create the user in the database. Note that this function will return a new instance of the user with the
 	// same information, plus the ID.
-	dbuser, err := rt.db.CreateUser(user.ToDatabase())
+	dbuser, err := rt.db.CreateUser(user.UserToDatabase())
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the user
 		// Note: we are using the "logger" inside the "ctx" (context) because the scope of this issue is the request.
@@ -36,7 +36,7 @@ func (rt *_router) createUser(w http.ResponseWriter, r *http.Request, ps httprou
 	}
 
 	// Here we can re-use `user` as FromDatabase is overwriting every variabile in the structure.
-	user.FromDatabase(dbuser)
+	user.UserFromDatabase(dbuser)
 
 	// Send the output to the user.
 	w.Header().Set("Content-Type", "application/json")

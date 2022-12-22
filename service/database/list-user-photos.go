@@ -1,18 +1,28 @@
 package database
 
-func (db *appdbimpl) GetUserPhotos(f Photo) error {
-	res, err := db.c.Exec(`SELECT * FROM photos WHERE posterid=? AND datetime >= ? AND datetime <= ? SORT BY datetime DESC LIMIT 10`,
-		f.Posterid)
+func (db *appdbimpl) ListUserPhotos() ([]Photo, error) {
+	var ret []Photo
+
+	// Plain simple SELECT query
+	rows, err := db.c.Query(`SELECT * FROM photos WHERE posterid=? AND datetime >= ? AND datetime <= ? SORT BY datetime DESC LIMIT 10`)
 	if err != nil {
-		return err
+		return nil, err
+	}
+	defer func() { _ = rows.Close() }()
+
+	// Here we read the resultset and we build the list to be returned
+	for rows.Next() {
+		var f Photo
+		err = rows.Scan(&f.ID, &f.URL, &f.Posterid, &f.Datetime, &f.Numlikes, &f.Numcomments)
+		if err != nil {
+			return nil, err
+		}
+
+		ret = append(ret, f)
+	}
+	if err = rows.Err(); err != nil {
+		return nil, err
 	}
 
-	affected, err := res.RowsAffected()
-	if err != nil {
-		return err
-	} else if affected == 0 {
-		// If we didn't delete any row, then the user didn't exist
-		return ErrUserDoesNotExist
-	}
-	return nil
+	return ret, nil
 }

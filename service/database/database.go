@@ -6,11 +6,11 @@ import (
 	"fmt"
 )
 
-var ErrUserDoesNotExist = errors.New("User does not exist")
+var ErrUserDoesNotExist = errors.New("user does not exist")
 
-var ErrPhotoDoesNotExist = errors.New("Photo does not exist")
+var ErrPhotoDoesNotExist = errors.New("photo does not exist")
 
-var ErrLikeDoesNotExist = errors.New("Like does not exist")
+var ErrLikeDoesNotExist = errors.New("like does not exist")
 
 // User struct represents a user in every API call between this package and the outside world.
 // Note that the internal representation of a user in the database might be different.
@@ -50,7 +50,7 @@ type AppDatabase interface {
 
 	GetUserInfo(User) (User, error)
 
-	GetUserPhotos(Photo) error
+	ListUserPhotos() ([]Photo, error)
 
 	GetPhotoInfo(Photo) (Photo, error)
 
@@ -60,7 +60,7 @@ type AppDatabase interface {
 
 	ListLikes() ([]Likes, error)
 
-	LikePhoto(User, Photo) (Likes, error)
+	LikePhoto(Likes) (Likes, error)
 
 	DeleteLike(uint64) error
 

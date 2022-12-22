@@ -1,9 +1,8 @@
 package database
 
-func (db *appdbimpl) LikePhoto(f User, g Photo) (Likes, error) {
+func (db *appdbimpl) LikePhoto(f Likes) (Likes, error) {
 	res, err := db.c.Exec(`INSERT INTO likes (id, likerid, photoid) VALUES (NULL, ?, ?)`,
-		f.ID, g.ID)
-	var like Likes
+		f.LikerID, f.PhotoID)
 	/*rows, err := db.Query(`INSERT INTO likes (id, likerid, photoid) VALUES (NULL, ?, ?)`,
 	f.ID, g.ID) // db *sql.DB in func
 	// A like slice to hold data from returned rows.
@@ -24,14 +23,14 @@ func (db *appdbimpl) LikePhoto(f User, g Photo) (Likes, error) {
 	
 */
 	if err != nil {
-		return like, err
+		return f, err
 	}
 
 	lastInsertID, err := res.LastInsertId()
 	if err != nil {
-		return like, err
+		return f, err
 	}
 
 	f.ID = uint64(lastInsertID)
-	return like, nil
+	return f, nil
 }

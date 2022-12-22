@@ -21,7 +21,7 @@ func (rt *_router) listUserPhotos(w http.ResponseWriter, r *http.Request, ps htt
 	var photos []database.Photo
 
 	// Request an unfiltered list of photos from the DB
-	photos, err = rt.db.GetUserPhotos()
+	photos, err = rt.db.ListUserPhotos()
 
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the photo
@@ -32,9 +32,9 @@ func (rt *_router) listUserPhotos(w http.ResponseWriter, r *http.Request, ps htt
 	}
 
 	// Before sending the list to the client we need to convert it to the "frontend" type
-	var frontendPhotos = make([]User, len(photos))
+	var frontendPhotos = make([]Photo, len(photos))
 	for idx := range photos {
-		frontendPhotos[idx].FromDatabase(photos[idx])
+		frontendPhotos[idx].PhotoFromDatabase(photos[idx])
 	}
 
 	// Send the list to the photo.
