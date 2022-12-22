@@ -78,14 +78,14 @@ func New(db *sql.DB) (AppDatabase, error) {
 	if db == nil {
 		return nil, errors.New("database is required when building an AppDatabase")
 	}
-	fmt.Print("something")
+	//fmt.Print("something")
 	// Check if table exists. If not, the database is empty, and we need to create the structure
 	var users string
-	err := db.QueryRow(`SELECT username FROM sqlite_master WHERE type='table' AND name='users';`).Scan(&users)
+	err := db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='users';`).Scan(&users)
 	if errors.Is(err, sql.ErrNoRows) {
 		sqlStmt := `CREATE TABLE users (
-    id INTEGER NOT NULL PRIMARY KEY ON DELETE CASCADE,
-    username TEXT NOT NULL ON UPDATE CASCADE
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL
 );`
 		fmt.Print(sqlStmt)
 		_, err = db.Exec(sqlStmt)
@@ -97,16 +97,16 @@ func New(db *sql.DB) (AppDatabase, error) {
 	var photos string
 	_, _ = db.Exec("PRAGMA foreign_keys = ON;")
 
-	err1 := db.QueryRow(`SELECT url FROM sqlite_master WHERE type='table' AND name='photos';`).Scan(&photos)
+	err1 := db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='photos';`).Scan(&photos)
 	if errors.Is(err1, sql.ErrNoRows) {
 		sqlStmt := `CREATE TABLE photos (
-    id INTEGER NOT NULL PRIMARY KEY ON DELETE CASCADE,
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     url TEXT NOT NULL,
 	posterid INTEGER NOT NULL,
 	datetime TEXT NOT NULL,
-	numlikes INTEGER NOT NULL ON UPDATE CASCADE,
-	numcomments INTEGER NOT NULL ON UPDATE CASCADE,
-	FOREIGN KEY(poster) REFERENCES users(id)
+	numlikes INTEGER NOT NULL,
+	numcomments INTEGER NOT NULL,
+	FOREIGN KEY(posterid) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 );`
 
 		_, err1 = db.Exec(sqlStmt)
@@ -118,14 +118,14 @@ func New(db *sql.DB) (AppDatabase, error) {
 	var likes string
 	_, _ = db.Exec("PRAGMA foreign_keys = ON;")
 
-	err2 := db.QueryRow(`SELECT ID FROM sqlite_master WHERE type='table' AND name='likes';`).Scan(&likes)
+	err2 := db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='likes';`).Scan(&likes)
 	if errors.Is(err2, sql.ErrNoRows) {
 		sqlStmt := `CREATE TABLE likes (
-	id INTEGER NOT NULL PRIMARY KEY ON DELETE CASCADE,
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	likerid INTEGER NOT NULL,
 	photoid INTEGER NOT NULL,
-	FOREIGN KEY(likerid) REFERENCES users(id),
-	FOREIGN KEY(photoid) REFERENCES photos(id)
+	FOREIGN KEY(likerid) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(photoid) REFERENCES photos(id) ON UPDATE CASCADE ON DELETE CASCADE
 );`
 		// PRIMARY KEY (likerid, photoid)
 		_, err2 = db.Exec(sqlStmt)
