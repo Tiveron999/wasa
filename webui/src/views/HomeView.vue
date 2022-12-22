@@ -4,7 +4,7 @@ export default {
 		return {
 			errormsg: null,
 			loading: false,
-			some_data: null,
+			users: null,
 		}
 	},
 	methods: {
@@ -12,8 +12,8 @@ export default {
 			this.loading = true;
 			this.errormsg = null;
 			try {
-				let response = await this.$axios.get("/");
-				this.some_data = response.data;
+				let response = await this.$axios.get("/users/:id");
+				this.users = response.data;
 			} catch (e) {
 				this.errormsg = e.toString();
 			}
@@ -49,6 +49,9 @@ export default {
 		</div>
 
 		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
+		<ul>
+			<li> hi </li>
+		</ul>
 	</div>
 </template>
 

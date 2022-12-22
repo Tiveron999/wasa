@@ -78,7 +78,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 	if db == nil {
 		return nil, errors.New("database is required when building an AppDatabase")
 	}
-
+	fmt.Print("something")
 	// Check if table exists. If not, the database is empty, and we need to create the structure
 	var users string
 	err := db.QueryRow(`SELECT username FROM sqlite_master WHERE type='table' AND name='users';`).Scan(&users)
@@ -87,6 +87,7 @@ func New(db *sql.DB) (AppDatabase, error) {
     id INTEGER NOT NULL PRIMARY KEY ON DELETE CASCADE,
     username TEXT NOT NULL ON UPDATE CASCADE
 );`
+		fmt.Print(sqlStmt)
 		_, err = db.Exec(sqlStmt)
 		if err != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err)
@@ -107,6 +108,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 	numcomments INTEGER NOT NULL ON UPDATE CASCADE,
 	FOREIGN KEY(poster) REFERENCES users(id)
 );`
+
 		_, err1 = db.Exec(sqlStmt)
 		if err1 != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err1)
