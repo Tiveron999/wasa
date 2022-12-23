@@ -128,7 +128,7 @@ h2, .h2 {
 }
 @media (min-width: 1200px) {
   h2, .h2 {
-    font-size: 4rem;
+    font-size: 5rem;
     color: var(--bs-purple);
     font-style:italic;
     font-weight:bold;
