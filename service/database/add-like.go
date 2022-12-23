@@ -1,7 +1,7 @@
 package database
 
 func (db *appdbimpl) LikePhoto(f Likes) (Likes, error) {
-	res, err := db.c.Exec(`INSERT INTO likes (id, likerid, photoid) VALUES (NULL, ?, ?)`,
+	res, err := db.c.Exec(`INSERT INTO likes (lid, likerid, photoid) VALUES (NULL, ?, ?)`,
 		f.LikerID, f.PhotoID)
 	/*rows, err := db.Query(`INSERT INTO likes (id, likerid, photoid) VALUES (NULL, ?, ?)`,
 		f.ID, g.ID) // db *sql.DB in func

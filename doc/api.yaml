@@ -1050,13 +1050,28 @@ components:
           type: integer
           description: id of the photo that's being liked
 
-        users:
+        likes:
           type: array
           description: users that liked this picture
           maxItems: 200
           minItems: 1
           items:
-            $ref: "#/components/schemas/user-info"
+            $ref: "#/components/schemas/likes-info"
+
+    likes-info:
+      type: object
+      description: the information of a like
+      properties:
+        like-id:
+          type: integer
+          description: id of the like
+
+        liker:
+          type: string
+          description: username of the person that liked this picture
+          pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$"
+          minLength: 6
+          maxLength: 15
 
     comments-list:
       type: object
@@ -1076,8 +1091,12 @@ components:
     
     comments-info:
       type: object
-      description: the information in a comment
+      description: the information of a comment
       properties:
+        comment-id:
+          type: integer
+          description: id of the comment that's being commented
+
         poster:
           type: string
           description: username of the person that commented this string on the picture

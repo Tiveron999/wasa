@@ -12,6 +12,8 @@ var ErrPhotoDoesNotExist = errors.New("photo does not exist")
 
 var ErrLikeDoesNotExist = errors.New("like does not exist")
 
+var ErrCommentDoesNotExist = errors.New("comment does not exist")
+
 // User struct represents a user in every API call between this package and the outside world.
 // Note that the internal representation of a user in the database might be different.
 type User struct {
@@ -32,6 +34,13 @@ type Likes struct {
 	LID     uint64
 	LikerID uint64
 	PhotoID uint64
+}
+
+type Comment struct {
+	CID         uint64
+	CommenterID uint64
+	PhotoID     uint64
+	Datetime    string
 }
 
 // AppDatabase is the high level interface for the DB
@@ -63,6 +72,8 @@ type AppDatabase interface {
 	LikePhoto(Likes) (Likes, error)
 
 	DeleteLike(uint64) error
+
+	CommentPhoto(Comment) (Comment, error)
 
 	// Ping checks whether the database is available or not (in that case, an error will be returned)
 	Ping() error
@@ -131,6 +142,25 @@ func New(db *sql.DB) (AppDatabase, error) {
 		_, err2 = db.Exec(sqlStmt)
 		if err2 != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err2)
+		}
+	}
+
+	var comments string
+	_, _ = db.Exec("PRAGMA foreign_keys = ON;")
+
+	err3 := db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='comments';`).Scan(&comments)
+	if errors.Is(err3, sql.ErrNoRows) {
+		sqlStmt := `CREATE TABLE comments (
+		cid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+		commenterid INTEGER NOT NULL,
+		photoid INTEGER NOT NULL,
+		datetime TEXT NOT NULL,
+		FOREIGN KEY(commenterid) REFERENCES users(usid) ON UPDATE CASCADE ON DELETE CASCADE,
+		FOREIGN KEY(photoid) REFERENCES photos(pid) ON UPDATE CASCADE ON DELETE CASCADE
+);`
+		_, err3 = db.Exec(sqlStmt)
+		if err3 != nil {
+			return nil, fmt.Errorf("error creating database structure: %w", err3)
 		}
 	}
 
