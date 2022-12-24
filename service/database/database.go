@@ -14,6 +14,8 @@ var ErrLikeDoesNotExist = errors.New("like does not exist")
 
 var ErrCommentDoesNotExist = errors.New("comment does not exist")
 
+var ErrFollowerDoesNotExist = errors.New("follower does not exist")
+
 // User struct represents a user in every API call between this package and the outside world.
 // Note that the internal representation of a user in the database might be different.
 type User struct {
@@ -41,6 +43,11 @@ type Comment struct {
 	CommenterID uint64
 	PhotoID     uint64
 	Datetime    string
+}
+
+type Follower struct {
+	userid     uint64
+	followerid uint64
 }
 
 // AppDatabase is the high level interface for the DB
@@ -80,6 +87,10 @@ type AppDatabase interface {
 	GetCommentInfo(Comment) (Comment, error)
 
 	DeleteComment(uint64) error
+
+	ListFollowers() ([]Follower, error)
+
+	DeleteFollower(uint64, uint64) error
 
 	// Ping checks whether the database is available or not (in that case, an error will be returned)
 	Ping() error
@@ -142,7 +153,6 @@ func New(db *sql.DB) (AppDatabase, error) {
 	FOREIGN KEY(likerid) REFERENCES users(usid) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY(photoid) REFERENCES photos(pid) ON UPDATE CASCADE ON DELETE CASCADE
 );`
-		// PRIMARY KEY (likerid, photoid)
 		_, err2 = db.Exec(sqlStmt)
 		if err2 != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err2)
@@ -155,16 +165,34 @@ func New(db *sql.DB) (AppDatabase, error) {
 	err3 := db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='comments';`).Scan(&comments)
 	if errors.Is(err3, sql.ErrNoRows) {
 		sqlStmt := `CREATE TABLE comments (
-		cid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-		commenterid INTEGER NOT NULL,
-		photoid INTEGER NOT NULL,
-		datetime TEXT NOT NULL,
-		FOREIGN KEY(commenterid) REFERENCES users(usid) ON UPDATE CASCADE ON DELETE CASCADE,
-		FOREIGN KEY(photoid) REFERENCES photos(pid) ON UPDATE CASCADE ON DELETE CASCADE
+	cid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	commenterid INTEGER NOT NULL,
+	photoid INTEGER NOT NULL,
+	datetime TEXT NOT NULL,
+	FOREIGN KEY(commenterid) REFERENCES users(usid) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(photoid) REFERENCES photos(pid) ON UPDATE CASCADE ON DELETE CASCADE
 );`
 		_, err3 = db.Exec(sqlStmt)
 		if err3 != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err3)
+		}
+	}
+
+	var followers string
+	_, _ = db.Exec("PRAGMA foreign_keys = ON;")
+
+	err4 := db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='followers';`).Scan(&followers)
+	if errors.Is(err4, sql.ErrNoRows) {
+		sqlStmt := `CREATE TABLE followers (
+	userid INTEGER NOT NULL,
+	followerid INTEGER NOT NULL,
+	FOREIGN KEY(userid) REFERENCES users(usid) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(followerid) REFERENCES users(usid) ON UPDATE CASCADE ON DELETE CASCADE,
+	PRIMARY KEY (userid, followerid)
+);`
+		_, err4 = db.Exec(sqlStmt)
+		if err4 != nil {
+			return nil, fmt.Errorf("error creating database structure: %w", err4)
 		}
 	}
 
