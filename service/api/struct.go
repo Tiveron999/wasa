@@ -37,8 +37,8 @@ type Comment struct {
 }
 
 type Follower struct {
-	userid     uint64
-	followerid uint64
+	UserID     uint64 `json:"userid"`
+	FollowerID uint64 `json:"followerid"`
 }
 
 // FromDatabase populates the struct with data from the database, overwriting all values.
@@ -146,15 +146,15 @@ func (f *Comment) CommentIsValid() bool {
 }
 
 func (f *Follower) FollowerFromDatabase(follower database.Follower) {
-	f.userid = follower.userid
-	f.followerid = follower.followerid
+	f.UserID = follower.UserID
+	f.FollowerID = follower.FollowerID
 }
 
 // ToDatabase returns the follower in a database-compatible representation
 func (f *Follower) FollowerToDatabase() database.Follower {
 	return database.Follower{
-		userid:     f.userid,
-		followerid: f.followerid,
+		UserID:     f.UserID,
+		FollowerID: f.FollowerID,
 	}
 }
 

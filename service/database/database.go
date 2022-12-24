@@ -46,8 +46,8 @@ type Comment struct {
 }
 
 type Follower struct {
-	userid     uint64
-	followerid uint64
+	UserID     uint64
+	FollowerID uint64
 }
 
 // AppDatabase is the high level interface for the DB

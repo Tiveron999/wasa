@@ -13,7 +13,7 @@ func (db *appdbimpl) ListFollowers() ([]Follower, error) {
 	// Here we read the resultset and we build the list to be returned
 	for rows.Next() {
 		var f Follower
-		err = rows.Scan(&f.userid, &f.followerid)
+		err = rows.Scan(&f.UserID, &f.FollowerID)
 		if err != nil {
 			return nil, err
 		}
