@@ -89,7 +89,6 @@ func New(db *sql.DB) (AppDatabase, error) {
 	if db == nil {
 		return nil, errors.New("database is required when building an AppDatabase")
 	}
-	//fmt.Print("something")
 	// Check if table exists. If not, the database is empty, and we need to create the structure
 	var users string
 	err := db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='users';`).Scan(&users)
@@ -98,7 +97,6 @@ func New(db *sql.DB) (AppDatabase, error) {
     usid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL
 );`
-		fmt.Print(sqlStmt)
 		_, err = db.Exec(sqlStmt)
 		if err != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err)
