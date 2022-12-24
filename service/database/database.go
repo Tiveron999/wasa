@@ -77,6 +77,10 @@ type AppDatabase interface {
 
 	ListComments() ([]Comment, error)
 
+	GetCommentInfo(Comment) (Comment, error)
+
+	DeleteComment(uint64) error
+
 	// Ping checks whether the database is available or not (in that case, an error will be returned)
 	Ping() error
 }

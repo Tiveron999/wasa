@@ -10,7 +10,7 @@ func (db *appdbimpl) DeleteLike(id uint64) error {
 	if err != nil {
 		return err
 	} else if affected == 0 {
-		// If we didn't delete any row, then the photo didn't exist
+		// If we didn't delete any row, then the like didn't exist
 		return ErrLikeDoesNotExist
 	}
 	return nil
