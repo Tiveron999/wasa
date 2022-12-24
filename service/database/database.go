@@ -75,6 +75,8 @@ type AppDatabase interface {
 
 	CommentPhoto(Comment) (Comment, error)
 
+	ListComments() ([]Comment, error)
+
 	// Ping checks whether the database is available or not (in that case, an error will be returned)
 	Ping() error
 }

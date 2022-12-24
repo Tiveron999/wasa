@@ -10,12 +10,12 @@ import (
 // added to the struct to conform to the OpenAPI specifications regarding JSON key names.
 // Note: there is a similar struct in the database package. See User.FromDatabase (below) to understand why.
 type User struct {
-	USID     uint64 `json:"id"`
+	USID     uint64 `json:"usid"`
 	Username string `json:"username"`
 }
 
 type Photo struct {
-	PID         uint64 `json:"id"`
+	PID         uint64 `json:"pid"`
 	URL         string `json:"url"`
 	Posterid    uint64 `json:"posterid"`
 	Datetime    string `json:"datetime"`
@@ -24,9 +24,16 @@ type Photo struct {
 }
 
 type Likes struct {
-	LID     uint64 `json:"id"`
+	LID     uint64 `json:"lid"`
 	LikerID uint64 `json:"likerid"`
 	PhotoID uint64 `json:"photoid"`
+}
+
+type Comment struct {
+	CID         uint64 `json:"cid"`
+	CommenterID uint64 `json:"commenterid"`
+	PhotoID     uint64 `json:"photoid"`
+	Datetime    string `json:"datetime"`
 }
 
 // FromDatabase populates the struct with data from the database, overwriting all values.
@@ -109,5 +116,26 @@ func (f *Likes) LikeToDatabase() database.Likes {
 }
 
 func (f *Likes) LikeIsValid() bool {
+	return true
+}
+
+func (f *Comment) CommentFromDatabase(comment database.Comment) {
+	f.CID = comment.CID
+	f.CommenterID = comment.CommenterID
+	f.PhotoID = comment.PhotoID
+	f.Datetime = comment.Datetime
+}
+
+// ToDatabase returns the comment in a database-compatible representation
+func (f *Comment) CommentToDatabase() database.Comment {
+	return database.Comment{
+		CID:         f.CID,
+		CommenterID: f.CommenterID,
+		PhotoID:     f.PhotoID,
+		Datetime:    f.Datetime,
+	}
+}
+
+func (f *Comment) CommentIsValid() bool {
 	return true
 }
