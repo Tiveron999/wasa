@@ -16,6 +16,8 @@ var ErrCommentDoesNotExist = errors.New("comment does not exist")
 
 var ErrFollowerDoesNotExist = errors.New("follower does not exist")
 
+var ErrBannedDoesNotExist = errors.New("the banned user does not exist")
+
 // User struct represents a user in every API call between this package and the outside world.
 // Note that the internal representation of a user in the database might be different.
 type User struct {
@@ -48,6 +50,11 @@ type Comment struct {
 type Follower struct {
 	UserID     uint64
 	FollowerID uint64
+}
+
+type Banned struct {
+	UserID     uint64
+	BannedID uint64
 }
 
 // AppDatabase is the high level interface for the DB
@@ -91,6 +98,12 @@ type AppDatabase interface {
 	ListFollowers() ([]Follower, error)
 
 	DeleteFollower(uint64, uint64) error
+
+	ListBanned() ([]Banned, error)
+
+	DeleteBanned(uint64, uint64) error
+
+	AddBanned(Banned) (Banned, error)
 
 	// Ping checks whether the database is available or not (in that case, an error will be returned)
 	Ping() error
@@ -193,6 +206,24 @@ func New(db *sql.DB) (AppDatabase, error) {
 		_, err4 = db.Exec(sqlStmt)
 		if err4 != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err4)
+		}
+	}
+
+	var banned string
+	_, _ = db.Exec("PRAGMA foreign_keys = ON;")
+
+	err5 := db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='banned';`).Scan(&banned)
+	if errors.Is(err5, sql.ErrNoRows) {
+		sqlStmt := `CREATE TABLE banned (
+	userid INTEGER NOT NULL,
+	bannedid INTEGER NOT NULL,
+	FOREIGN KEY(userid) REFERENCES users(usid) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(bannedid) REFERENCES users(usid) ON UPDATE CASCADE ON DELETE CASCADE,
+	PRIMARY KEY (userid, bannedid)
+);`
+		_, err5 = db.Exec(sqlStmt)
+		if err5 != nil {
+			return nil, fmt.Errorf("error creating database structure: %w", err5)
 		}
 	}
 

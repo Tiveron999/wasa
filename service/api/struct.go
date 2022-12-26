@@ -41,6 +41,11 @@ type Follower struct {
 	FollowerID uint64 `json:"followerid"`
 }
 
+type Banned struct {
+	UserID     uint64 `json:"userid"`
+	BannedID uint64  `json:"bannedid"`
+}
+
 // FromDatabase populates the struct with data from the database, overwriting all values.
 // You might think this is code duplication, which is correct. However, it's "good" code duplication because it allows
 // us to uncouple the database and API packages.
@@ -159,5 +164,22 @@ func (f *Follower) FollowerToDatabase() database.Follower {
 }
 
 func (f *Follower) FollowerIsValid() bool {
+	return true
+}
+
+func (f *Banned) BannedFromDatabase(banned database.Banned) {
+	f.UserID = banned.UserID
+	f.BannedID = banned.BannedID
+}
+
+// ToDatabase returns the banned in a database-compatible representation
+func (f *Banned) BannedToDatabase() database.Banned {
+	return database.Banned{
+		UserID:     f.UserID,
+		BannedID: f.BannedID,
+	}
+}
+
+func (f *Banned) BannedIsValid() bool {
 	return true
 }
