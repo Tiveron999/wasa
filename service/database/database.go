@@ -53,7 +53,7 @@ type Follower struct {
 }
 
 type Banned struct {
-	UserID     uint64
+	UserID   uint64
 	BannedID uint64
 }
 

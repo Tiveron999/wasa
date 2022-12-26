@@ -42,8 +42,8 @@ type Follower struct {
 }
 
 type Banned struct {
-	UserID     uint64 `json:"userid"`
-	BannedID uint64  `json:"bannedid"`
+	UserID   uint64 `json:"userid"`
+	BannedID uint64 `json:"bannedid"`
 }
 
 // FromDatabase populates the struct with data from the database, overwriting all values.
@@ -175,7 +175,7 @@ func (f *Banned) BannedFromDatabase(banned database.Banned) {
 // ToDatabase returns the banned in a database-compatible representation
 func (f *Banned) BannedToDatabase() database.Banned {
 	return database.Banned{
-		UserID:     f.UserID,
+		UserID:   f.UserID,
 		BannedID: f.BannedID,
 	}
 }
