@@ -30,8 +30,8 @@ func (rt *_router) Handler() http.Handler {
 	rt.router.GET("/users/:usid/photos/:pid/comments/:cid", rt.wrap(rt.getCommentInfo))
 	rt.router.DELETE("/users/:usid/photos/:pid/comments/:cid", rt.wrap(rt.deleteComment))
 
-	rt.router.GET("/users/:usid/followers/:(userid, followerid)", rt.wrap(rt.listFollowers))
-	rt.router.PUT("/users/:usid/followers/:(userid, followerid)", rt.wrap(rt.deleteFollower))
+	rt.router.GET("/users/:usid/followers/:userid/:followerid", rt.wrap(rt.listFollowers))
+	rt.router.PUT("/users/:usid/followers/:userid/:followerid", rt.wrap(rt.deleteFollower))
 
 	// Special routes
 	rt.router.GET("/liveness", rt.liveness)
