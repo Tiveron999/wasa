@@ -13,7 +13,7 @@ func (db *appdbimpl) ListComments() ([]Comment, error) {
 	// Here we read the resultset and we build the list to be returned
 	for rows.Next() {
 		var f Comment
-		err = rows.Scan(&f.CID, &f.CommenterID, &f.PhotoID, &f.Datetime)
+		err = rows.Scan(&f.CID, &f.CommenterID, &f.PhotoID, &f.Text, &f.Datetime)
 		if err != nil {
 			return nil, err
 		}

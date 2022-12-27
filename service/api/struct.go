@@ -33,6 +33,7 @@ type Comment struct {
 	CID         uint64 `json:"cid"`
 	CommenterID uint64 `json:"commenterid"`
 	PhotoID     uint64 `json:"photoid"`
+	Text        string `json:"text"`
 	Datetime    string `json:"datetime"`
 }
 

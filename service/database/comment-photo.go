@@ -1,8 +1,8 @@
 package database
 
 func (db *appdbimpl) CommentPhoto(f Comment) (Comment, error) {
-	res, err := db.c.Exec(`INSERT INTO comments (cid, commenterid, photoid, datetime) VALUES (NULL, ?, ?, ?)`,
-		f.CID, f.CommenterID, f.PhotoID, f.Datetime)
+	res, err := db.c.Exec(`INSERT INTO comments (cid, commenterid, photoid, text, datetime) VALUES (NULL, ?, ?, ?, ?)`,
+		f.CID, f.CommenterID, f.PhotoID, f.Text, f.Datetime)
 	if err != nil {
 		return f, err
 	}

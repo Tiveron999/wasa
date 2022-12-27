@@ -44,6 +44,7 @@ type Comment struct {
 	CID         uint64
 	CommenterID uint64
 	PhotoID     uint64
+	Text        string
 	Datetime    string
 }
 
@@ -55,6 +56,15 @@ type Follower struct {
 type Banned struct {
 	UserID   uint64
 	BannedID uint64
+}
+
+type Profile struct {
+	PRID      uint64
+	Username  string
+	Photos    []Photo
+	NumPhotos uint64
+	Followers []Follower
+	Following []Follower
 }
 
 // AppDatabase is the high level interface for the DB
@@ -108,6 +118,8 @@ type AppDatabase interface {
 	ListFollowing() ([]Follower, error)
 
 	FollowUser(Follower) (Follower, error)
+
+	GetFeed() ([]Photo, error)
 
 	// Ping checks whether the database is available or not (in that case, an error will be returned)
 	Ping() error
@@ -185,6 +197,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 	cid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	commenterid INTEGER NOT NULL,
 	photoid INTEGER NOT NULL,
+	text TEXT NOT NULL,
 	datetime TEXT NOT NULL,
 	FOREIGN KEY(commenterid) REFERENCES users(usid) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY(photoid) REFERENCES photos(pid) ON UPDATE CASCADE ON DELETE CASCADE
@@ -228,6 +241,26 @@ func New(db *sql.DB) (AppDatabase, error) {
 		_, err5 = db.Exec(sqlStmt)
 		if err5 != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err5)
+		}
+	}
+
+	var profiles string
+	_, _ = db.Exec("PRAGMA foreign_keys = ON;")
+
+	err6 := db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='profiles';`).Scan(&profiles)
+	if errors.Is(err6, sql.ErrNoRows) {
+		sqlStmt := `CREATE TABLE profiles (
+	prid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	username TEXT NOT NULL,
+	photosl text NOT NULL,
+	numphotos INTEGER NOT NULL,
+	followers TEXT NOT NULL,
+	following TEXT NOT NULL,
+	FOREIGN KEY(prid) REFERENCES users(usid) ON UPDATE CASCADE ON DELETE CASCADE
+);`
+		_, err6 = db.Exec(sqlStmt)
+		if err6 != nil {
+			return nil, fmt.Errorf("error creating database structure: %w", err6)
 		}
 	}
 

@@ -971,6 +971,15 @@ components:
         photo-id:
           type: integer
           description: photo id
+        
+        photo-url:
+          type: string
+          description: URL of the picture
+          pattern: '(www|http:|https:)+[^\s"]+[\w]'
+          # first part checks that the URL starts with "http", "https" or "www"; the rest is just for allowing all characters in the 
+          # URL, except whitespaces and quotation marks.
+          minLength: 1
+          maxLength: 100
 
         creator:
           type: integer
