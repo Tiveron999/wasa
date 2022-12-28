@@ -1,6 +1,6 @@
 package database
 
-func (db *appdbimpl) ListBanned() ([]Banned, error) {
+func (db *appdbimpl) GetBannedList() ([]Banned, error) {
 	var ret []Banned
 
 	// Plain simple SELECT query

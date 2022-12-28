@@ -1,6 +1,6 @@
 package database
 
-func (db *appdbimpl) ListLikes() ([]Likes, error) {
+func (db *appdbimpl) GetLikesList() ([]Likes, error) {
 	var ret []Likes
 
 	// Plain simple SELECT query

@@ -1,6 +1,6 @@
 package database
 
-func (db *appdbimpl) AddBanned(f Banned) (Banned, error) {
+func (db *appdbimpl) BanUser(f Banned) (Banned, error) {
 	res, err := db.c.Exec(`INSERT INTO banned (userid, bannedid) VALUES (NULL, ?)`,
 		f.BannedID)
 	if err != nil {

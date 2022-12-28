@@ -1,6 +1,6 @@
 package database
 
-func (db *appdbimpl) ListUserPhotos() ([]Photo, error) {
+func (db *appdbimpl) GetUserPhotos() ([]Photo, error) {
 	var ret []Photo
 
 	// Plain simple SELECT query

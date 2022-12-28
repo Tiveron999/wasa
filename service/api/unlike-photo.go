@@ -19,7 +19,7 @@ func (rt *_router) unlikePhoto(w http.ResponseWriter, r *http.Request, ps httpro
 		return
 	}
 
-	err = rt.db.DeleteLike(id)
+	err = rt.db.UnlikePhoto(id)
 	if errors.Is(err, database.ErrLikeDoesNotExist) {
 		// The like (indicated by `id`) does not exist, reject the action indicating an error on the client side.
 		w.WriteHeader(http.StatusNotFound)

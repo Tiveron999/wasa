@@ -75,51 +75,53 @@ type AppDatabase interface {
 	// CreateUser creates a new user in the database. It returns an updated User object (with the ID)
 	CreateUser(User) (User, error)
 
-	// UpdateUser updates the user, replacing every value with those provided in the argument
-	UpdateUser(User) error
+	// SetMyUserName updates the user, replacing every value with those provided in the argument
+	SetMyUserName(User) error
 
 	// DeleteUser removes the user with the given ID
 	// DeleteUser(id uint64) error
 
 	GetUserInfo(User) (User, error)
 
-	ListUserPhotos() ([]Photo, error)
+	GetUserPhotos() ([]Photo, error)
 
 	GetPhotoInfo(Photo) (Photo, error)
 
-	CreatePhoto(Photo) (Photo, error)
+	UploadPhoto(Photo) (Photo, error)
 
 	DeletePhoto(uint64) error
 
-	ListLikes() ([]Likes, error)
+	GetLikesList() ([]Likes, error)
 
 	LikePhoto(Likes) (Likes, error)
 
-	DeleteLike(uint64) error
+	UnlikePhoto(uint64) error
 
 	CommentPhoto(Comment) (Comment, error)
 
-	ListComments() ([]Comment, error)
+	GetCommentsList() ([]Comment, error)
 
 	GetCommentInfo(Comment) (Comment, error)
 
-	DeleteComment(uint64) error
+	UncommentPhoto(uint64) error
 
-	ListFollowers() ([]Follower, error)
+	GetFollowers() ([]Follower, error)
 
-	DeleteFollower(uint64, uint64) error
+	RemoveFollower(uint64, uint64) error
 
-	ListBanned() ([]Banned, error)
+	GetBannedList() ([]Banned, error)
 
-	DeleteBanned(uint64, uint64) error
+	UnbanUser(uint64, uint64) error
 
-	AddBanned(Banned) (Banned, error)
+	BanUser(Banned) (Banned, error)
 
-	ListFollowing() ([]Follower, error)
+	GetFollowing() ([]Follower, error)
 
 	FollowUser(Follower) (Follower, error)
 
-	GetFeed() ([]Photo, error)
+	GetMyStream() ([]Photo, error)
+
+	UnfollowUser(uint64, uint64) error
 
 	// Ping checks whether the database is available or not (in that case, an error will be returned)
 	Ping() error

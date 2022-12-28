@@ -11,7 +11,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func (rt *_router) deleteBanned(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+func (rt *_router) unbanUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	// The user ID in the path is a 64-bit unsigned integer. Let's parse it.
 	uid, err := strconv.ParseUint(ps.ByName(("userid")), 10, 64)
 	if err != nil {
@@ -27,7 +27,7 @@ func (rt *_router) deleteBanned(w http.ResponseWriter, r *http.Request, ps httpr
 		return
 	}
 
-	err = rt.db.DeleteBanned(uid, bid)
+	err = rt.db.UnbanUser(uid, bid)
 	if errors.Is(err, database.ErrBannedDoesNotExist) {
 		// The banned (indicated by `(uid, bid)`) does not exist, reject the action indicating an error on the client side.
 		w.WriteHeader(http.StatusNotFound)

@@ -8,7 +8,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func (rt *_router) createPhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+func (rt *_router) uploadPhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	// Read the new content for the photo from the request body.
 	var photo Photo
 	err := json.NewDecoder(r.Body).Decode(&photo)
@@ -26,7 +26,7 @@ func (rt *_router) createPhoto(w http.ResponseWriter, r *http.Request, ps httpro
 
 	// Create the photo in the database. Note that this function will return a new instance of the photo with the
 	// same information, plus the ID.
-	dbphoto, err := rt.db.CreatePhoto(photo.PhotoToDatabase())
+	dbphoto, err := rt.db.UploadPhoto(photo.PhotoToDatabase())
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the photo
 		// Note: we are using the "logger" inside the "ctx" (context) because the scope of this issue is the request.

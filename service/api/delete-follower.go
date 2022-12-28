@@ -11,7 +11,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func (rt *_router) deleteFollower(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+func (rt *_router) removeFollower(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	// The user ID in the path is a 64-bit unsigned integer. Let's parse it.
 	uid, err := strconv.ParseUint(ps.ByName(("userid")), 10, 64)
 	if err != nil {
@@ -27,7 +27,7 @@ func (rt *_router) deleteFollower(w http.ResponseWriter, r *http.Request, ps htt
 		return
 	}
 
-	err = rt.db.DeleteFollower(uid, fid)
+	err = rt.db.RemoveFollower(uid, fid)
 	if errors.Is(err, database.ErrFollowerDoesNotExist) {
 		// The follower (indicated by `(uid, fid)`) does not exist, reject the action indicating an error on the client side.
 		w.WriteHeader(http.StatusNotFound)

@@ -1,6 +1,6 @@
 package database
 
-func (db *appdbimpl) DeleteComment(id uint64) error {
+func (db *appdbimpl) UncommentPhoto(id uint64) error {
 	res, err := db.c.Exec(`DELETE FROM comments WHERE cid=?`, id)
 	if err != nil {
 		return err

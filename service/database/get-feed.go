@@ -1,6 +1,6 @@
 package database
 
-func (db *appdbimpl) GetFeed() ([]Photo, error) {
+func (db *appdbimpl) GetMyStream() ([]Photo, error) {
 	var ret []Photo
 
 	// Plain simple SELECT query

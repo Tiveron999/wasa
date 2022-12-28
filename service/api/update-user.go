@@ -11,7 +11,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func (rt *_router) updateUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+func (rt *_router) setMyUserName(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	// The User ID in the path is a 64-bit unsigned integer. Let's parse it.
 	id, err := strconv.ParseUint(ps.ByName("usid"), 10, 64)
 	if err != nil {
@@ -40,7 +40,7 @@ func (rt *_router) updateUser(w http.ResponseWriter, r *http.Request, ps httprou
 	updatedUser.USID = id
 
 	// Update the user in the database.
-	err = rt.db.UpdateUser(updatedUser.UserToDatabase())
+	err = rt.db.SetMyUserName(updatedUser.UserToDatabase())
 	if errors.Is(err, database.ErrUserDoesNotExist) {
 		// The user (indicated by `id`) does not exist, reject the action indicating an error on the client side.
 		w.WriteHeader(http.StatusNotFound)

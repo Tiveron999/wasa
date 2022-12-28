@@ -8,7 +8,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func (rt *_router) addBanned(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+func (rt *_router) banUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	// Read the new content for the banned from the request body.
 	var banned Banned
 	err := json.NewDecoder(r.Body).Decode(&banned)
@@ -26,7 +26,7 @@ func (rt *_router) addBanned(w http.ResponseWriter, r *http.Request, ps httprout
 
 	// Create the banned in the database. Note that this function will return a new instance of the banned with the
 	// same information, plus the ID.
-	dbbanned, err := rt.db.AddBanned(banned.BannedToDatabase())
+	dbbanned, err := rt.db.BanUser(banned.BannedToDatabase())
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the banned
 		// Note: we are using the "logger" inside the "ctx" (context) because the scope of this issue is the request.

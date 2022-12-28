@@ -1,6 +1,6 @@
 package database
 
-func (db *appdbimpl) ListFollowers() ([]Follower, error) {
+func (db *appdbimpl) GetFollowers() ([]Follower, error) {
 	var ret []Follower
 
 	// Plain simple SELECT query

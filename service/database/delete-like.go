@@ -1,6 +1,6 @@
 package database
 
-func (db *appdbimpl) DeleteLike(id uint64) error {
+func (db *appdbimpl) UnlikePhoto(id uint64) error {
 	res, err := db.c.Exec(`DELETE FROM likes WHERE lid=?`, id)
 	if err != nil {
 		return err

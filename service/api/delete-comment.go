@@ -10,7 +10,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func (rt *_router) deleteComment(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+func (rt *_router) uncommentPhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	// The Comment ID in the path is a 64-bit unsigned integer. Let's parse it.
 	id, err := strconv.ParseUint(ps.ByName("cid"), 10, 64)
 	if err != nil {
@@ -19,7 +19,7 @@ func (rt *_router) deleteComment(w http.ResponseWriter, r *http.Request, ps http
 		return
 	}
 
-	err = rt.db.DeleteComment(id)
+	err = rt.db.UncommentPhoto(id)
 	if errors.Is(err, database.ErrCommentDoesNotExist) {
 		// The comment (indicated by `id`) does not exist, reject the action indicating an error on the client side.
 		w.WriteHeader(http.StatusNotFound)

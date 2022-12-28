@@ -1,6 +1,6 @@
 package database
 
-func (db *appdbimpl) ListComments() ([]Comment, error) {
+func (db *appdbimpl) GetCommentsList() ([]Comment, error) {
 	var ret []Comment
 
 	// Plain simple SELECT query

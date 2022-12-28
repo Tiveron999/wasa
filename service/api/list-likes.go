@@ -9,7 +9,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func (rt *_router) listLikes(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+func (rt *_router) getLikesList(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 
 	// Parse the query string part. To do that, we need to check whether the latitude, longitude and range exists.
 	// If latitude and longitude are specified, we parse them, and we filter results for them. If range is specified,
@@ -21,7 +21,7 @@ func (rt *_router) listLikes(w http.ResponseWriter, r *http.Request, ps httprout
 	var likes []database.Likes
 
 	// Request an unfiltered list of likes from the DB
-	likes, err = rt.db.ListLikes()
+	likes, err = rt.db.GetLikesList()
 
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the photo
