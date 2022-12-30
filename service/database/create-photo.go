@@ -2,7 +2,7 @@ package database
 
 func (db *appdbimpl) UploadPhoto(f Photo) (Photo, error) {
 	res, err := db.c.Exec(`INSERT INTO photos (pid, url, posterid, datetime, numlikes, numcomments) VALUES (NULL, ?, ?, ?, ?, ?)`,
-		f.PID, f.URL, f.Posterid, f.Datetime, f.Numlikes, f.Numcomments)
+		f.URL, f.Posterid, f.Datetime, f.Numlikes, f.Numcomments)
 	if err != nil {
 		return f, err
 	}

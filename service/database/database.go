@@ -123,6 +123,10 @@ type AppDatabase interface {
 
 	UnfollowUser(uint64, uint64) error
 
+	GetUserProfile(f Profile) (Profile, error)
+
+	GetSearchedUserInfo(f Profile) (Profile, error)
+
 	// Ping checks whether the database is available or not (in that case, an error will be returned)
 	Ping() error
 }
@@ -254,10 +258,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 		sqlStmt := `CREATE TABLE profiles (
 	prid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	username TEXT NOT NULL,
-	photosl text NOT NULL,
 	numphotos INTEGER NOT NULL,
-	followers TEXT NOT NULL,
-	following TEXT NOT NULL,
 	FOREIGN KEY(prid) REFERENCES users(usid) ON UPDATE CASCADE ON DELETE CASCADE
 );`
 		_, err6 = db.Exec(sqlStmt)

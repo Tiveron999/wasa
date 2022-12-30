@@ -47,6 +47,15 @@ type Banned struct {
 	BannedID uint64 `json:"bannedid"`
 }
 
+type Profile struct {
+	PRID      uint64
+	Username  string
+	Photos    []Photo
+	NumPhotos uint64
+	Followers []Follower
+	Following []Follower
+}
+
 // FromDatabase populates the struct with data from the database, overwriting all values.
 // You might think this is code duplication, which is correct. However, it's "good" code duplication because it allows
 // us to uncouple the database and API packages.
@@ -182,5 +191,24 @@ func (f *Banned) BannedToDatabase() database.Banned {
 }
 
 func (f *Banned) BannedIsValid() bool {
+	return true
+}
+
+func (f *Profile) ProfileFromDatabase(profile database.Profile) {
+	f.PRID = profile.PRID
+	f.Username = profile.Username
+	f.NumPhotos = profile.NumPhotos
+}
+
+// ToDatabase returns the profile in a database-compatible representation
+func (f *Profile) ProfileToDatabase() database.Profile {
+	return database.Profile{
+		PRID:      f.PRID,
+		Username:  f.Username,
+		NumPhotos: f.NumPhotos,
+	}
+}
+
+func (f *Profile) ProfileIsValid() bool {
 	return true
 }
