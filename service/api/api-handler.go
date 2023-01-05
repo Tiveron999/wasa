@@ -18,13 +18,13 @@ func (rt *_router) Handler() http.Handler {
 	rt.router.PUT("/users/:usid", rt.wrap(rt.setMyUserName))
 
 	// photos
-	rt.router.GET("/users/:usid/photos/", rt.wrap(rt.getUserPhotos))
+	rt.router.GET("/users/:usid/photos", rt.wrap(rt.getUserPhotos))
 	rt.router.GET("/users/:usid/photos/:pid", rt.wrap(rt.getPhotoInfo))
 	rt.router.POST("/users/:usid/photos/:pid", rt.wrap(rt.uploadPhoto))
 	rt.router.DELETE("/users/:usid/photos/:pid", rt.wrap(rt.deletePhoto))
 
 	// likes
-	rt.router.GET("/users/:usid/photos/:pid/likes/", rt.wrap(rt.getLikesList))
+	rt.router.GET("/users/:usid/photos/:pid/likes", rt.wrap(rt.getLikesList))
 	rt.router.PUT("/users/:usid/photos/:pid/likes/:lid", rt.wrap(rt.likePhoto))
 	rt.router.DELETE("/users/:usid/photos/:pid/likes/:lid", rt.wrap(rt.unlikePhoto))
 

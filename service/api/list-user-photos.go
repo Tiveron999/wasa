@@ -19,8 +19,8 @@ func (rt *_router) getUserPhotos(w http.ResponseWriter, r *http.Request, ps http
 
 	var err error
 	var photos []database.Photo
-	// var u User
 
+	page limit sort, has
 	// Request an unfiltered list of photos from the DB
 	photos, err = rt.db.GetUserPhotos()
 

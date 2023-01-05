@@ -14,7 +14,7 @@ tags:
     description: Everything regarding the profile of the users
     
 paths:
-  /users/{user-id}:
+  /users/{usid}:
     parameters:
     - name: user-id
       in: path
@@ -126,7 +126,7 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
 
-  /users/{user-id}/feed:
+  /users/{usid}/feed:
     parameters:
     - name: user-id
       in: path
@@ -210,7 +210,7 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
 
-  /users/{user-id}/photos:
+  /users/{usid}/photos:
     parameters:
     - name: user-id
       in: path
@@ -289,7 +289,7 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
 
-  /users/{user-id}/photos/{photo-id}:
+  /users/{usid}/photos/{pid}:
     parameters:
     - name: user-id
       in: path
@@ -369,7 +369,7 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
 
-  /users/{user-id}/photos/{photo-id}/likes:
+  /users/{usid}/photos/{pid}/likes:
     parameters:
     - name: user-id
       in: path
@@ -405,7 +405,7 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
   
 
-  /users/{user-id}/photos/{photo-id}/likes/{liker-id}:
+  /users/{usid}/photos/{pid}/likes/{lid}:
     parameters:
     - name: user-id
       in: path
@@ -462,7 +462,7 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
 
-  /users/{user-id}/photos/{photo-id}/comments:
+  /users/{usid}/photos/{pid}/comments:
     parameters:
     - name: user-id
       in: path
@@ -523,7 +523,7 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
   
-  /users/{user-id}/photos/{photo-id}/comments/{comment-id}:
+  /users/{usid}/photos/{pid}/comments/{cid}:
     parameters:
     - name: user-id
       in: path
@@ -581,7 +581,7 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
   
-  /users/{user-id}/profile:
+  /users/{usid}/profile:
     parameters:
     - name: user-id
       in: path
@@ -616,7 +616,7 @@ paths:
         "404": { $ref: "#/components/responses/Not-Found"}
         "500": { $ref: "#/components/responses/InternalServerError"}
 
-  /users/{user-id}/profile/picture:
+  /users/{usid}/profile/picture:
     parameters:
     - name: user-id
       in: path
@@ -662,7 +662,7 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
 
-  /users/{user-id}/following/{following-id}:
+  /users/{usid}/following/{following-id}:
     parameters:
     - name: user-id
       in: path
@@ -746,7 +746,7 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
   
-  /users/{user-id}/followers/{follower-id}:
+  /users/{usid}/followers/{follower-id}:
     parameters:
     - name: user-id
       in: path
@@ -811,7 +811,7 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
 
-  /users/{user-id}/banned/{banned-id}:
+  /users/{usid}/banned/{banned-id}:
     parameters:
     - name: user-id
       in: path
@@ -1187,7 +1187,7 @@ components:
       #  user-id: '$response.body#/user-id'
       #description: >
         #The user-id value returned in the response can be used as
-        #the user-id parameter in `GET /users/{user-id}`
+        #the user-id parameter in `GET /users/{usid}`
 
 
   responses:
