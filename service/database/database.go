@@ -61,10 +61,10 @@ type Banned struct {
 type Profile struct {
 	PRID      uint64
 	Username  string
-	Photos    []Photo
+	Photos    []string
 	NumPhotos uint64
-	Followers []Follower
-	Following []Follower
+	Followers []string
+	Following []string
 }
 
 // AppDatabase is the high level interface for the DB
@@ -147,7 +147,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 	if errors.Is(err, sql.ErrNoRows) {
 		sqlStmt := `CREATE TABLE users (
     usid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL
+    username TEXT UNIQUE NOT NULL
 );`
 		_, err = db.Exec(sqlStmt)
 		if err != nil {
@@ -258,7 +258,10 @@ func New(db *sql.DB) (AppDatabase, error) {
 		sqlStmt := `CREATE TABLE profiles (
 	prid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	username TEXT NOT NULL,
+	photos TEXT NOT NULL,
 	numphotos INTEGER NOT NULL,
+	followers TEXT NOT NULL,
+	following TEXT NOT NULL,
 	FOREIGN KEY(prid) REFERENCES users(usid) ON UPDATE CASCADE ON DELETE CASCADE
 );`
 		_, err6 = db.Exec(sqlStmt)

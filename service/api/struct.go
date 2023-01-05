@@ -50,10 +50,10 @@ type Banned struct {
 type Profile struct {
 	PRID      uint64
 	Username  string
-	Photos    []Photo
+	Photos    []string
 	NumPhotos uint64
-	Followers []Follower
-	Following []Follower
+	Followers []string
+	Following []string
 }
 
 // FromDatabase populates the struct with data from the database, overwriting all values.
