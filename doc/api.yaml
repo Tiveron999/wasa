@@ -16,7 +16,7 @@ tags:
 paths:
   /users/{usid}:
     parameters:
-    - name: user-id
+    - name: usid
       in: path
       required: true
       description: this is the user id
@@ -128,7 +128,7 @@ paths:
 
   /users/{usid}/feed:
     parameters:
-    - name: user-id
+    - name: usid
       in: path
       required: true
       description: this is the user id
@@ -212,52 +212,23 @@ paths:
 
   /users/{usid}/photos:
     parameters:
-    - name: user-id
+    - name: usid
       in: path
       required: true
       description: this is the user id
       schema:
         type: integer
         description: e.g., /users/1234
-    - name: sorting
+    - name: laterthan
       in: query
-      description: this is how the images will be sorted in reverse chronological order
+      description: the user wants to see photos uploaded after this date
       schema:
         type: string
         format: date-time
         pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\+[0-9]{2}:[0-9]{2}"
-        description: date-time string that is passed as parameter to sort the pictures
+        description: date-time string that is passed as parameter to view certain pictures
         minLength: 20
         maxLength: 20
-    - name: filtering
-      in: query
-      style: deepObject
-      allowReserved: true
-      description: this is how the images will be filtered according to the dates that cause interest
-      schema:
-        type: object
-        description: |
-          It's necessary to filter both for who uploaded the picture and the date of when it was posted since
-          it could be posted by the wanted user but the image is not in the range of dates that are
-          being viewed by the current limited number of photos presented.
-        properties:
-          uploader:
-            type: string
-            pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$"
-            description: this is the username of the user whose photos the token bearer wants to visualize
-            minLength: 6
-            maxLength: 15
-          date-times:
-            type: array
-            description: this is the list dates accepted 
-            minItems: 1
-            maxItems: 2
-            items:
-              type: string
-              format: date-time
-              pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\+[0-9]{2}:[0-9]{2}"
-              minLength: 20
-              maxLength: 20
     - name: limit
       in: query
       description: The numbers of images to show (the user can see more by scrolling)
@@ -291,14 +262,14 @@ paths:
 
   /users/{usid}/photos/{pid}:
     parameters:
-    - name: user-id
+    - name: usid
       in: path
       required: true
       description: this is the user id
       schema:
         type: integer
         description: e.g., /users/1234
-    - name: photo-id
+    - name: pid
       in: path
       required: true
       description: this is the photo id
@@ -371,14 +342,14 @@ paths:
 
   /users/{usid}/photos/{pid}/likes:
     parameters:
-    - name: user-id
+    - name: usid
       in: path
       required: true
       description: this is the user id
       schema:
         type: integer
         description: e.g., /users/1234
-    - name: photo-id
+    - name: pid
       in: path
       required: true
       description: this is the photo id
@@ -407,14 +378,14 @@ paths:
 
   /users/{usid}/photos/{pid}/likes/{lid}:
     parameters:
-    - name: user-id
+    - name: usid
       in: path
       required: true
       description: this is the user id
       schema:
         type: integer
         description: e.g., /users/1234
-    - name: photo-id
+    - name: pid
       in: path
       required: true
       description: this is the photo id
@@ -464,14 +435,14 @@ paths:
 
   /users/{usid}/photos/{pid}/comments:
     parameters:
-    - name: user-id
+    - name: usid
       in: path
       required: true
       description: this is the user id
       schema:
         type: integer
         description: e.g., /users/1234
-    - name: photo-id
+    - name: pid
       in: path
       required: true
       description: this is the photo id
@@ -525,21 +496,21 @@ paths:
   
   /users/{usid}/photos/{pid}/comments/{cid}:
     parameters:
-    - name: user-id
+    - name: usid
       in: path
       required: true
       description: this is the user id
       schema:
         type: integer
         description: e.g., /users/1234
-    - name: photo-id
+    - name: pid
       in: path
       required: true
       description: this is the photo id
       schema:
         type: integer
         description: e.g., /photos/1234
-    - name: comment-id
+    - name: cid
       in: path
       required: true
       description: this is the comment id
@@ -583,7 +554,7 @@ paths:
   
   /users/{usid}/profile:
     parameters:
-    - name: user-id
+    - name: usid
       in: path
       required: true
       description: this is the user id
@@ -618,7 +589,7 @@ paths:
 
   /users/{usid}/profile/picture:
     parameters:
-    - name: user-id
+    - name: usid
       in: path
       required: true
       description: this is the user id
@@ -664,7 +635,7 @@ paths:
 
   /users/{usid}/following/{following-id}:
     parameters:
-    - name: user-id
+    - name: usid
       in: path
       required: true
       description: this is the user id
@@ -748,7 +719,7 @@ paths:
   
   /users/{usid}/followers/{follower-id}:
     parameters:
-    - name: user-id
+    - name: usid
       in: path
       required: true
       description: this is the user id
@@ -813,7 +784,7 @@ paths:
 
   /users/{usid}/banned/{banned-id}:
     parameters:
-    - name: user-id
+    - name: usid
       in: path
       required: true
       description: this is the user id

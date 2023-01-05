@@ -1,10 +1,11 @@
 package database
 
-func (db *appdbimpl) GetUserPhotos(f User) ([]Photo, error) {
+func (db *appdbimpl) GetUserPhotos(id uint64, datet string, limit uint64, offset uint64) ([]Photo, error) {
 	var ret []Photo
 
 	// Plain simple SELECT query
-	rows, err := db.c.Query(`SELECT * FROM photos WHERE posterid=? AND datetime >= ? AND datetime <= ? SORT BY datetime DESC LIMIT 10`, f.USID) // 
+	rows, err := db.c.Query(`SELECT * FROM photos WHERE posterid=? AND datetime >= ? SORT BY datetime DESC LIMIT ? OFFSET ?`,
+		id, datet, limit, offset)
 	if err != nil {
 		return nil, err
 	}

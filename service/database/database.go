@@ -83,7 +83,7 @@ type AppDatabase interface {
 
 	GetUserInfo(User) (User, error)
 
-	GetUserPhotos(f User) ([]Photo, error)
+	GetUserPhotos(uint64, string, uint64, uint64) ([]Photo, error)
 
 	GetPhotoInfo(Photo) (Photo, error)
 

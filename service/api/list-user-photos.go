@@ -2,11 +2,11 @@ package api
 
 import (
 	"encoding/json"
-	"net/http"
-
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
 	"github.com/Tiveron999/Wasa/service/database"
 	"github.com/julienschmidt/httprouter"
+	"net/http"
+	"strconv"
 )
 
 func (rt *_router) getUserPhotos(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
@@ -20,9 +20,35 @@ func (rt *_router) getUserPhotos(w http.ResponseWriter, r *http.Request, ps http
 	var err error
 	var photos []database.Photo
 
-	page limit sort, has
+	// page limit sort, has
+	userID, err := strconv.ParseUint(ps.ByName("pid"), 10, 64)
+	if err != nil {
+		// The value was not uint64, reject the action indicating an error on the client side.
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	queryValues := r.URL.Query()
+	laterThan := queryValues.Get("laterthan")
+	limit := queryValues.Get("limit")
+	offset := queryValues.Get("offset")
+
+	// Convert limit and offset to uints
+	limitUint, err := strconv.ParseUint(limit, 10, 64)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+
+	}
+
+	offsetUint, err := strconv.ParseUint(offset, 10, 64)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	// Request an unfiltered list of photos from the DB
-	photos, err = rt.db.GetUserPhotos()
+	photos, err = rt.db.GetUserPhotos(userID, laterThan, limitUint, offsetUint)
 
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the photo
