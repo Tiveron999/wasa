@@ -14,9 +14,9 @@ tags:
     description: Everything regarding the profile of the users
     
 paths:
-  /users/{usid}:
+  /users/{user_id}:
     parameters:
-    - name: usid
+    - name: user_id
       in: path
       required: true
       description: this is the user id
@@ -126,9 +126,9 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
 
-  /users/{usid}/feed:
+  /users/{user_id}/feed:
     parameters:
-    - name: usid
+    - name: user_id
       in: path
       required: true
       description: this is the user id
@@ -210,9 +210,9 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
 
-  /users/{usid}/photos:
+  /users/{user_id}/photos:
     parameters:
-    - name: usid
+    - name: user_id
       in: path
       required: true
       description: this is the user id
@@ -260,16 +260,16 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
 
-  /users/{usid}/photos/{pid}:
+  /users/{user_id}/photos/{photo_id}:
     parameters:
-    - name: usid
+    - name: user_id
       in: path
       required: true
       description: this is the user id
       schema:
         type: integer
         description: e.g., /users/1234
-    - name: pid
+    - name: photo_id
       in: path
       required: true
       description: this is the photo id
@@ -340,16 +340,16 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
 
-  /users/{usid}/photos/{pid}/likes:
+  /users/{user_id}/photos/{photo_id}/likes:
     parameters:
-    - name: usid
+    - name: user_id
       in: path
       required: true
       description: this is the user id
       schema:
         type: integer
         description: e.g., /users/1234
-    - name: pid
+    - name: photo_id
       in: path
       required: true
       description: this is the photo id
@@ -376,23 +376,23 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
   
 
-  /users/{usid}/photos/{pid}/likes/{lid}:
+  /users/{user_id}/photos/{photo_id}/likes/{liker_id}:
     parameters:
-    - name: usid
+    - name: user_id
       in: path
       required: true
       description: this is the user id
       schema:
         type: integer
         description: e.g., /users/1234
-    - name: pid
+    - name: photo_id
       in: path
       required: true
       description: this is the photo id
       schema:
         type: integer
         description: e.g., /photos/1234
-    - name: lid
+    - name: liker_id
       in: path
       required: true
       description: this is the id of the user that put a like on the picture
@@ -433,16 +433,16 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
 
-  /users/{usid}/photos/{pid}/comments:
+  /users/{user_id}/photos/{photo_id}/comments:
     parameters:
-    - name: usid
+    - name: user_id
       in: path
       required: true
       description: this is the user id
       schema:
         type: integer
         description: e.g., /users/1234
-    - name: pid
+    - name: photo_id
       in: path
       required: true
       description: this is the photo id
@@ -494,23 +494,23 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
   
-  /users/{usid}/photos/{pid}/comments/{cid}:
+  /users/{user_id}/photos/{photo_id}/comments/{comment_id}:
     parameters:
-    - name: usid
+    - name: user_id
       in: path
       required: true
       description: this is the user id
       schema:
         type: integer
         description: e.g., /users/1234
-    - name: pid
+    - name: photo_id
       in: path
       required: true
       description: this is the photo id
       schema:
         type: integer
         description: e.g., /photos/1234
-    - name: cid
+    - name: comment_id
       in: path
       required: true
       description: this is the comment id
@@ -552,9 +552,9 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
   
-  /users/{usid}/profile:
+  /users/{user_id}/profile:
     parameters:
-    - name: usid
+    - name: user_id
       in: path
       required: true
       description: this is the user id
@@ -587,9 +587,9 @@ paths:
         "404": { $ref: "#/components/responses/Not-Found"}
         "500": { $ref: "#/components/responses/InternalServerError"}
 
-  /users/{usid}/profile/picture:
+  /users/{user_id}/profile/picture:
     parameters:
-    - name: usid
+    - name: user_id
       in: path
       required: true
       description: this is the user id
@@ -633,16 +633,16 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
 
-  /users/{usid}/following/{following-id}:
+  /users/{user_id}/following/{following_id}:
     parameters:
-    - name: usid
+    - name: user_id
       in: path
       required: true
       description: this is the user id
       schema:
         type: integer
         description: e.g., /users/1234
-    - name: following-id
+    - name: following_id
       in: path
       required: true
       description: this is the following user id
@@ -717,16 +717,16 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
   
-  /users/{usid}/followers/{follower-id}:
+  /users/{user_id}/followers/{follower_id}:
     parameters:
-    - name: usid
+    - name: user_id
       in: path
       required: true
       description: this is the user id
       schema:
         type: integer
         description: e.g., /users/1234
-    - name: follower-id
+    - name: follower_id
       in: path
       required: true
       description: this is the follower id
@@ -782,16 +782,16 @@ paths:
         "500": { $ref: "#/components/responses/InternalServerError"}
 
 
-  /users/{usid}/banned/{banned-id}:
+  /users/{user_id}/banned/{banned_id}:
     parameters:
-    - name: usid
+    - name: user_id
       in: path
       required: true
       description: this is the user id
       schema:
         type: integer
         description: e.g., /users/1234
-    - name: banned-id
+    - name: banned_id
       in: path
       required: true
       description: this is the banned user id
@@ -1141,7 +1141,7 @@ components:
       description: login successful
       properties:
         identifier:
-          # change here if you decide to use an integer
+          # change here if you decomment_ide to use an integer
           # or any other type of identifier
           type: string
           example: "abcdef012345"
@@ -1158,7 +1158,7 @@ components:
       #  user-id: '$response.body#/user-id'
       #description: >
         #The user-id value returned in the response can be used as
-        #the user-id parameter in `GET /users/{usid}`
+        #the user-id parameter in `GET /users/{user_id}`
 
 
   responses:
@@ -1166,7 +1166,7 @@ components:
       description: The request was not compliant with the documentation (e.g. missing fields, etc).
     
     Unauthorized:
-      description: Authentication is required to complete this action. The access token is missing or invalid. The user should log in.
+      description: Authentication is required to complete this action. The access token is missing or invaliker_id. The user should log in.
     
     Forbidden:
       description: This action is not allowed (e.g. the token bearer was banned by the user they were trying to follow, etc).

@@ -67,6 +67,13 @@ type Profile struct {
 	Following []string
 }
 
+type Token struct {
+	Token     string
+	UserID    int
+	ExpiresAt int
+}
+
+
 // AppDatabase is the high level interface for the DB
 type AppDatabase interface {
 	// ListUsers returns the list of users with their status
@@ -123,9 +130,11 @@ type AppDatabase interface {
 
 	UnfollowUser(uint64, uint64) error
 
-	GetUserProfile(f Profile) (Profile, error)
+	GetUserProfile(Profile) (Profile, error)
 
-	GetSearchedUserInfo(f Profile) (Profile, error)
+	GetSearchedUserInfo(Profile) (Profile, error)
+
+	GetToken(uint64) (Token, error)
 
 	// Ping checks whether the database is available or not (in that case, an error will be returned)
 	Ping() error
@@ -267,6 +276,23 @@ func New(db *sql.DB) (AppDatabase, error) {
 		_, err6 = db.Exec(sqlStmt)
 		if err6 != nil {
 			return nil, fmt.Errorf("error creating database structure: %w", err6)
+		}
+	}
+
+	var tokens string
+	_, _ = db.Exec("PRAGMA foreign_keys = ON;")
+
+	err7 := db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='profiles';`).Scan(&tokens)
+	if errors.Is(err7, sql.ErrNoRows) {
+		sqlStmt := `CREATE TABLE tokens (
+	token TEXT NOT NULL PRIMARY KEY,
+	userid INTEGER NOT NULL,
+	expiration INTEGER NOT NULL,
+	FOREIGN KEY(userid) REFERENCES users(usid) ON UPDATE CASCADE ON DELETE CASCADE
+);`
+		_, err7 = db.Exec(sqlStmt)
+		if err7 != nil {
+			return nil, fmt.Errorf("error creating database structure: %w", err7)
 		}
 	}
 

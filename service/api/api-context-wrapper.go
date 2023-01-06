@@ -1,9 +1,9 @@
 package api
 
 import (
-	"fmt"
+	// "fmt"
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
-	jwt "github.com/dgrijalva/jwt-go"
+	// jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gofrs/uuid"
 	"github.com/julienschmidt/httprouter"
 	"github.com/sirupsen/logrus"
@@ -17,7 +17,7 @@ type httpRouterHandler func(http.ResponseWriter, *http.Request, httprouter.Param
 // wrap parses the request and adds a reqcontext.RequestContext instance related to the request.
 func (rt *_router) wrap(fn httpRouterHandler) func(http.ResponseWriter, *http.Request, httprouter.Params) {
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-		authHeader := r.Header.Get("Authorization")
+		/*authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
 			// JWT is not present, return error
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
@@ -36,7 +36,7 @@ func (rt *_router) wrap(fn httpRouterHandler) func(http.ResponseWriter, *http.Re
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}
-		// JWT present and valid
+		// JWT present and valid*/
 
 		reqUUID, err := uuid.NewV4()
 		if err != nil {

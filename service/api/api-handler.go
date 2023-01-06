@@ -13,46 +13,46 @@ func (rt *_router) Handler() http.Handler {
 	rt.router.GET("/context", rt.wrap(rt.getContextReply))
 
 	// users
-	rt.router.GET("/users/:usid", rt.wrap(rt.getUserInfo))
-	rt.router.POST("/users/:usid", rt.wrap(rt.createUser))
-	rt.router.PUT("/users/:usid", rt.wrap(rt.setMyUserName))
+	rt.router.GET("/users/:user_id", rt.wrap(rt.getUserInfo))
+	rt.router.POST("/users/:user_id", rt.wrap(rt.createUser))
+	rt.router.PUT("/users/:user_id", rt.wrap(rt.setMyUserName))
 
 	// photos
-	rt.router.GET("/users/:usid/photos", rt.wrap(rt.getUserPhotos))
-	rt.router.GET("/users/:usid/photos/:pid", rt.wrap(rt.getPhotoInfo))
-	rt.router.POST("/users/:usid/photos/:pid", rt.wrap(rt.uploadPhoto))
-	rt.router.DELETE("/users/:usid/photos/:pid", rt.wrap(rt.deletePhoto))
+	rt.router.GET("/users/:user_id/photos", rt.wrap(rt.getUserPhotos))
+	rt.router.GET("/users/:user_id/photos/:photo_id", rt.wrap(rt.getPhotoInfo))
+	rt.router.POST("/users/:user_id/photos/:photo_id", rt.wrap(rt.uploadPhoto))
+	rt.router.DELETE("/users/:user_id/photos/:photo_id", rt.wrap(rt.deletePhoto))
 
 	// likes
-	rt.router.GET("/users/:usid/photos/:pid/likes", rt.wrap(rt.getLikesList))
-	rt.router.PUT("/users/:usid/photos/:pid/likes/:lid", rt.wrap(rt.likePhoto))
-	rt.router.DELETE("/users/:usid/photos/:pid/likes/:lid", rt.wrap(rt.unlikePhoto))
+	rt.router.GET("/users/:user_id/photos/:photo_id/likes", rt.wrap(rt.getLikesList))
+	rt.router.PUT("/users/:user_id/photos/:photo_id/likes/:liker_id", rt.wrap(rt.likePhoto))
+	rt.router.DELETE("/users/:user_id/photos/:photo_id/likes/:liker_id", rt.wrap(rt.unlikePhoto))
 
 	// comments
-	rt.router.POST("/users/:usid/photos/:pid/comments", rt.wrap(rt.commentPhoto))
-	rt.router.GET("/users/:usid/photos/:pid/comments", rt.wrap(rt.getCommentsList))
-	rt.router.GET("/users/:usid/photos/:pid/comments/:cid", rt.wrap(rt.getCommentInfo))
-	rt.router.DELETE("/users/:usid/photos/:pid/comments/:cid", rt.wrap(rt.uncommentPhoto))
+	rt.router.POST("/users/:user_id/photos/:photo_id/comments", rt.wrap(rt.commentPhoto))
+	rt.router.GET("/users/:user_id/photos/:photo_id/comments", rt.wrap(rt.getCommentsList))
+	rt.router.GET("/users/:user_id/photos/:photo_id/comments/:comment_id", rt.wrap(rt.getCommentInfo))
+	rt.router.DELETE("/users/:user_id/photos/:photo_id/comments/:comment_id", rt.wrap(rt.uncommentPhoto))
 
 	// followers
-	rt.router.GET("/users/:usid/followers/:userid/:followerid", rt.wrap(rt.getFollowers))
-	rt.router.DELETE("/users/:usid/followers/:userid/:followerid", rt.wrap(rt.removeFollower))
+	rt.router.GET("/users/:user_id/followers/:follower_id", rt.wrap(rt.getFollowers))
+	rt.router.DELETE("/users/:user_id/followers/:follower_id", rt.wrap(rt.removeFollower))
 
 	// banned
-	rt.router.GET("/users/:usid/banned/:userid/:bannedid", rt.wrap(rt.getBannedList))
-	rt.router.DELETE("/users/:usid/banned/:userid/:bannedid", rt.wrap(rt.unbanUser))
-	rt.router.PUT("/users/:usid/banned/:userid/:bannedid", rt.wrap(rt.banUser))
+	rt.router.GET("/users/:user_id/banned/:banned_id", rt.wrap(rt.getBannedList))
+	rt.router.DELETE("/users/:user_id/banned/:banned_id", rt.wrap(rt.unbanUser))
+	rt.router.PUT("/users/:user_id/banned/:banned_id", rt.wrap(rt.banUser))
 
 	// following
-	rt.router.GET("/users/:usid/following/:userid/:followerid", rt.wrap(rt.getFollowing))
-	rt.router.DELETE("/users/:usid/following/:userid/:followerid", rt.wrap(rt.unfollowUser))
-	rt.router.PUT("/users/:usid/following/:userid/:followerid", rt.wrap(rt.followUser))
+	rt.router.GET("/users/:user_id/following/:following_id", rt.wrap(rt.getFollowing))
+	rt.router.DELETE("/users/:user_id/following/:following_id", rt.wrap(rt.unfollowUser))
+	rt.router.PUT("/users/:user_id/following/:following_id", rt.wrap(rt.followUser))
 
 	// feed
-	rt.router.GET("/users/:usid/feed", rt.wrap(rt.getMyStream))
+	rt.router.GET("/users/:user_id/feed", rt.wrap(rt.getMyStream))
 
 	// profile
-	rt.router.GET("/users/:usid/profile", rt.wrap(rt.getUserProfile))
+	rt.router.GET("/users/:user_id/profile", rt.wrap(rt.getUserProfile))
 
 	// search
 	rt.router.GET("/users/search", rt.wrap(rt.getSearchedUserInfo))
