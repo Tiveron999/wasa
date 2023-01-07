@@ -1,24 +1,23 @@
 package api
 
 import (
-/*
-"github.com/Tiveron999/Wasa/service/database"
-jwt "github.com/dgrijalva/jwt-go"
-"io/ioutil"
-"log"
-*/
+	"fmt"
+	"github.com/Tiveron999/Wasa/service/api/reqcontext"
+	"github.com/julienschmidt/httprouter"
+	"net/http"
 )
 
-func (rt *_router) storeKey() {
-	/*
-			// Read the secret key file into a byte slice
-			secretKey, err := ioutil.ReadFile("secret.key")
-			if err != nil {
-				log.Fatal(err)
-			}
-			token := rt.db.GetToken("token")
-			// Use the byte slice as the secret key
-			jwt.Parse(token, secretKey)
-		}
-	*/
+func (rt *_router) login(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+	// Parse the username from the request
+	username := r.FormValue("username")
+
+	// Get or create the user in the database
+	userID, err := rt.db.CheckUserExists(username)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Return the user ID to the client
+	fmt.Fprint(w, userID)
 }

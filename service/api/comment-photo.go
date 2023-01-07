@@ -38,7 +38,7 @@ func (rt *_router) commentPhoto(w http.ResponseWriter, r *http.Request, ps httpr
 	// Here we can re-use `comment` as FromDatabase is overwriting every variabile in the structure.
 	comment.CommentFromDatabase(dbcomment)
 
-	// Send the output to the comment.
+	// Send the output to the user.
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(comment)
 }

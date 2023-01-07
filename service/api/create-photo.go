@@ -38,7 +38,7 @@ func (rt *_router) uploadPhoto(w http.ResponseWriter, r *http.Request, ps httpro
 	// Here we can re-use `photo` as FromDatabase is overwriting every variabile in the structure.
 	photo.PhotoFromDatabase(dbphoto)
 
-	// Send the output to the photo.
+	// Send the output to the user.
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(photo)
 }

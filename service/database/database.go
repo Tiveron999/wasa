@@ -67,11 +67,11 @@ type Profile struct {
 	Following []string
 }
 
-type Token struct {
+/*type Token struct {
 	Token     string
 	UserID    int
 	ExpiresAt int
-}
+}*/
 
 // AppDatabase is the high level interface for the DB
 type AppDatabase interface {
@@ -133,7 +133,11 @@ type AppDatabase interface {
 
 	GetSearchedUserInfo(Profile) (Profile, error)
 
-	GetToken(uint64) (Token, error)
+	// GetToken(uint64) (Token, error)
+
+	GetUserID(username string) (int, error)
+
+	CheckUserExists(u string) (int, error)
 
 	// Ping checks whether the database is available or not (in that case, an error will be returned)
 	Ping() error

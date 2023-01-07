@@ -38,7 +38,7 @@ func (rt *_router) banUser(w http.ResponseWriter, r *http.Request, ps httprouter
 	// Here we can re-use `banned` as FromDatabase is overwriting every variabile in the structure.
 	banned.BannedFromDatabase(dbbanned)
 
-	// Send the output to the banned.
+	// Send the output to the user.
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(banned)
 }

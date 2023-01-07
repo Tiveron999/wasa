@@ -38,7 +38,7 @@ func (rt *_router) getUserProfile(w http.ResponseWriter, r *http.Request, ps htt
 	// Here we can re-use `profile` as FromDatabase is overwriting every variabile in the structure.
 	profile.ProfileFromDatabase(dbprofile)
 
-	// Send the output to the profile.
+	// Send the output to the user.
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(profile)
 }

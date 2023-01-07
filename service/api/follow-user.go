@@ -38,7 +38,7 @@ func (rt *_router) followUser(w http.ResponseWriter, r *http.Request, ps httprou
 	// Here we can re-use `following` as FromDatabase is overwriting every variabile in the structure.
 	following.FollowerFromDatabase(dbfollowing)
 
-	// Send the output to the following.
+	// Send the output to the user.
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(following)
 }
