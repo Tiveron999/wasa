@@ -1,11 +1,12 @@
 package database
 
-func (db *appdbimpl) GetMyStream() ([]Photo, error) {
+func (db *appdbimpl) GetMyStream(userid uint64, datet string, limit uint64, offset uint64) ([]Photo, error) {
 	var ret []Photo
 
 	// Plain simple SELECT query
 	rows, err := db.c.Query(`SELECT * FROM photos WHERE posterid IN 
-	(SELECT userid FROM followers WHERE followerid = ?) SORT BY datetime DESC LIMIT 10`) // , u.USID
+	(SELECT userid FROM followers WHERE followerid = ?) AND datetime >= ? SORT BY datetime DESC LIMIT ? OFFSET ?`,
+		userid, datet, limit, offset)
 
 	if err != nil {
 		return nil, err

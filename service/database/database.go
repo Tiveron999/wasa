@@ -73,7 +73,6 @@ type Token struct {
 	ExpiresAt int
 }
 
-
 // AppDatabase is the high level interface for the DB
 type AppDatabase interface {
 	// ListUsers returns the list of users with their status
@@ -126,7 +125,7 @@ type AppDatabase interface {
 
 	FollowUser(Follower) (Follower, error)
 
-	GetMyStream() ([]Photo, error)
+	GetMyStream(uint64, string, uint64, uint64) ([]Photo, error)
 
 	UnfollowUser(uint64, uint64) error
 
