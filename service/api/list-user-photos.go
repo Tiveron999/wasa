@@ -2,11 +2,12 @@ package api
 
 import (
 	"encoding/json"
+	"net/http"
+	"strconv"
+
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
 	"github.com/Tiveron999/Wasa/service/database"
 	"github.com/julienschmidt/httprouter"
-	"net/http"
-	"strconv"
 )
 
 func (rt *_router) getUserPhotos(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
@@ -64,7 +65,7 @@ func (rt *_router) getUserPhotos(w http.ResponseWriter, r *http.Request, ps http
 		frontendPhotos[idx].PhotoFromDatabase(photos[idx])
 	}
 
-	// Send the list to the photo.
+	// Send the list to the user.
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(frontendPhotos)
 }

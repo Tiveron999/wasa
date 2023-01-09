@@ -8,53 +8,53 @@ const router = createRouter({
 	history: createWebHashHistory(import.meta.env.BASE_URL),
 	routes: [
 		{path: '/', component: HomeView, 
-		beforeEnter: (to, from, next) => {
-			if (this.$isLoggedIn()) {
-			  next();
-			} else {
-			  next('/login');
-			}
-		  },},
+		/*beforeEnter: (to, from, next) => {
+			if (!isLoggedIn()) {
+				next('/session')
+			  } else {
+				next()
+			  }
+		  },*/},
 		  {path: '/profile', component: ProfileView, 
 		  beforeEnter: (to, from, next) => {
-			  if (this.$isLoggedIn()) {
-				next();
+			if (!isLoggedIn()) {
+				next('/session')
 			  } else {
-				next('/login');
+				next()
 			  }
 			},},
 		{path: '/link1', component: HomeView, beforeEnter: (to, from, next) => {
-			if (this.$isLoggedIn()) {
-			  next();
-			} else {
-			  next('/login');
-			}
+			if (!isLoggedIn()) {
+				next('/session')
+			  } else {
+				next()
+			  }
 		  },},
 		{path: '/link2', component: HomeView, 
 		/*beforeEnter: (to, from, next) => {
 			if (isLoggedIn()) {
 			  next();
 			} else {
-			  next('/login');
+			  next('/session');
 			}
 		  },*/
 		},
 		{path: '/some/:id/link', component: HomeView, beforeEnter: (to, from, next) => {
-			if (this.$isLoggedIn()) {
-			  next();
-			} else {
-			  next('/login');
-			}
+			if (!isLoggedIn()) {
+				next('/session')
+			  } else {
+				next()
+			  }
 		  },},
-		{path: '/login', component: LoginView, 
-		beforeEnter: (to, from, next) => {
-			if (!this.$isLoggedIn()) {
-			  next();
-			} else {
-			  next('/');
-			}
-		  },
-		},
+		{path: '/session', component: LoginView},
+		{path: '/users/:id/profile', component: HomeView, beforeEnter: (to, from, next) => {
+			if (!isLoggedIn()) {
+				next('/session')
+			  } else {
+				next()
+			  }
+		  },},
+		
 	]
 })
 

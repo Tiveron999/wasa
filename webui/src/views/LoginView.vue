@@ -1,10 +1,14 @@
 <script>
+import axios from 'axios'
+
 export default {
 	data: function() {
 		return {
 			errormsg: null,
 			loading: false,
 			users: null,
+			isLoggedIn: false,
+        	username: '',
 		}
 	},
 	methods: {
@@ -19,14 +23,44 @@ export default {
 			}
 			this.loading = false;
 		},
+		async checkLoginStatus() {
+        try {
+          // Make an HTTP request to the backend to check if the user is logged in
+          const response = await axios.post('/api/session', {
+            username: this.username,
+          })
+          const userID = response.data.userID
+          if (userID) {
+            this.isLoggedIn = true
+          } else {
+            this.isLoggedIn = false
+		}
+		} catch (error) {
+		console.error(error)
+		}
+	},
 	},
 	mounted() {
 		this.refresh()
+	},
+	created() {
+		this.checkLoginStatus()
 	}
 }
 </script>
 
 <template>
+	 <div>
+      <template v-if="isLoggedIn">
+        <!-- Show content for logged in users -->
+      </template>
+      <template v-else>
+        <form @submit.prevent="checkLoginStatus">
+          <input v-model="username" type="text" placeholder="Username" />
+          <button type="submit">Log In</button>
+        </form>
+      </template>
+    </div>
 	<div>
 		<div
 			class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -72,7 +106,6 @@ export default {
 
 <style scoped>
 button {
-  /*margin-top: 1rem;*/
   width: 4rem;
   height: 2rem;
   border-radius: 8px;

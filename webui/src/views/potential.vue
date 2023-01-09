@@ -12,7 +12,7 @@ export default {
 	};
   },
   methods: {
-	...mapActions({ login: "auth/login", signup: "auth/signup" }),
+	...mapActions({ login: "auth/session", signup: "auth/signup" }),
 	loginButtonClicked() {
 	  if (this.loginSelected) {
 		this.login({ username: this.username, password: this.password })

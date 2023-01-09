@@ -37,7 +37,7 @@ func (rt *_router) getFollowing(w http.ResponseWriter, r *http.Request, ps httpr
 		frontendFollowing[idx].FollowerFromDatabase(followers[idx])
 	}
 
-	// Send the list to the photo.
+	// Send the list to the user.
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(frontendFollowing)
 }

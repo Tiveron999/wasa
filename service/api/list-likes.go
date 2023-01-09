@@ -37,7 +37,7 @@ func (rt *_router) getLikesList(w http.ResponseWriter, r *http.Request, ps httpr
 		frontendLikes[idx].LikeFromDatabase(likes[idx])
 	}
 
-	// Send the list to the photo.
+	// Send the list to the user.
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(frontendLikes)
 }
