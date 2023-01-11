@@ -55,10 +55,25 @@ export default {
         <!-- Show content for logged in users -->
       </template>
       <template v-else>
-        <form @submit.prevent="checkLoginStatus">
+		<h6>
+			<span id = "type" class = "special">
+            Login
+			</span>
+        </h6>
+		<base-card>
+		<form @submit.prevent="checkLoginStatus">
+		  <!-- <label for="username">Username</label> -->
+		  <input id="username" type="text" v-model="username" placeholder="Username"/>
+		  <button class="btn btn-sm btn-outline-secondary" type="submit" @click="loginButtonClicked">{{ buttonString }}Enter</button>
+		  <p v-if="error">{{ error }}</p>
+		  <a href="#" @click.prevent="toggleLogin">{{ textLoginString }}</a>
+		</form>
+	  </base-card>
+	
+        <!--  <form @submit.prevent="checkLoginStatus">
           <input v-model="username" type="text" placeholder="Username" />
           <button type="submit">Log In</button>
-        </form>
+        </form> -->
       </template>
     </div>
 	<div>
@@ -86,7 +101,7 @@ export default {
 		</div>
 
 		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
-		<h6>
+		<!--<h6>
 			<span id = "type" class = "special">
             Login
 			</span>
@@ -99,8 +114,8 @@ export default {
 		  <p v-if="error">{{ error }}</p>
 		  <a href="#" @click.prevent="toggleLogin">{{ textLoginString }}</a>
 		</form>
-	  </base-card>
-	</div>
+	  </base-card>-->
+	</div> 
 </template>
 
 
