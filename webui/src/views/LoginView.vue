@@ -50,32 +50,7 @@ export default {
 </script>
 
 <template>
-	 <div>
-      <template v-if="isLoggedIn">
-        <!-- Show content for logged in users -->
-      </template>
-      <template v-else>
-		<h6>
-			<span id = "type" class = "special">
-            Login
-			</span>
-        </h6>
-		<base-card>
-		<form @submit.prevent="checkLoginStatus">
-		  <!-- <label for="username">Username</label> -->
-		  <input id="username" type="text" v-model="username" placeholder="Username"/>
-		  <button class="btn btn-sm btn-outline-secondary" type="submit" @click="loginButtonClicked">{{ buttonString }}Enter</button>
-		  <p v-if="error">{{ error }}</p>
-		  <a href="#" @click.prevent="toggleLogin">{{ textLoginString }}</a>
-		</form>
-	  </base-card>
 	
-        <!--  <form @submit.prevent="checkLoginStatus">
-          <input v-model="username" type="text" placeholder="Username" />
-          <button type="submit">Log In</button>
-        </form> -->
-      </template>
-    </div>
 	<div>
 		<div
 			class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -101,6 +76,33 @@ export default {
 		</div>
 
 		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
+
+		<div>
+      <template v-if="isLoggedIn">
+        <!-- Show content for logged in users -->
+      </template>
+      <template v-else>
+		<h6>
+			<span id = "type" class = "special">
+            Login
+			</span>
+        </h6>
+		<base-card>
+		<form @submit.prevent="checkLoginStatus">
+		  <!-- <label for="username">Username</label> -->
+		  <input id="username" type="text" v-model="username" placeholder="Username"/>
+		  <button class="btn btn-sm btn-outline-secondary" type="submit" @click="loginButtonClicked">{{ buttonString }}Enter</button>
+		  <p v-if="error">{{ error }}</p>
+		  <a href="#" @click.prevent="toggleLogin">{{ textLoginString }}</a>
+		</form>
+	  </base-card>
+	
+        <!--  <form @submit.prevent="checkLoginStatus">
+          <input v-model="username" type="text" placeholder="Username" />
+          <button type="submit">Log In</button>
+        </form> -->
+      </template>
+    </div>
 		<!--<h6>
 			<span id = "type" class = "special">
             Login
