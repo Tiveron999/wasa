@@ -1,6 +1,6 @@
 package database
 
-func (db *appdbimpl) GetUserProfile(f Profile) (Profile, error) {
+func (db *appdbimpl) CreateUserProfile(f Profile) (Profile, error) {
 	res, err := db.c.Exec(`INSERT INTO profiles (prid, username, photos, numphotos, followers, following) VALUES (NULL, ?, ?, ?, ?, ?)`,
 		f.PRID)
 	if err != nil {

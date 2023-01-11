@@ -8,7 +8,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func (rt *_router) getUserProfile(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+func (rt *_router) createUserProfile(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	// Read the new content for the profile from the request body.
 	var profile Profile
 	err := json.NewDecoder(r.Body).Decode(&profile)
@@ -26,7 +26,7 @@ func (rt *_router) getUserProfile(w http.ResponseWriter, r *http.Request, ps htt
 
 	// Create the profile in the database. Note that this function will return a new instance of the profile with the
 	// same information, plus the ID.
-	dbprofile, err := rt.db.GetUserProfile(profile.ProfileToDatabase())
+	dbprofile, err := rt.db.CreateUserProfile(profile.ProfileToDatabase())
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the profile
 		// Note: we are using the "logger" inside the "ctx" (context) because the scope of this issue is the request.

@@ -22,7 +22,7 @@ func (rt *_router) getUserPhotos(w http.ResponseWriter, r *http.Request, ps http
 	var photos []database.Photo
 
 	// page limit sort, has
-	userID, err := strconv.ParseUint(ps.ByName("posterid"), 10, 64)
+	userID, err := strconv.ParseUint(ps.ByName("user_id"), 10, 64)
 	if err != nil {
 		// The value was not uint64, reject the action indicating an error on the client side.
 		w.WriteHeader(http.StatusBadRequest)

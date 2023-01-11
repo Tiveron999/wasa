@@ -111,7 +111,7 @@ type AppDatabase interface {
 
 	UncommentPhoto(uint64) error
 
-	GetFollowers() ([]Follower, error)
+	GetFollowers(id uint64, limit uint64, offset uint64) ([]Follower, error)
 
 	RemoveFollower(uint64, uint64) error
 
@@ -129,9 +129,9 @@ type AppDatabase interface {
 
 	UnfollowUser(uint64, uint64) error
 
-	GetUserProfile(Profile) (Profile, error)
+	CreateUserProfile(Profile) (Profile, error)
 
-	GetSearchedUserInfo(Profile) (Profile, error)
+	GetSearchedUserInfo(username string) (Profile, error)
 
 	// GetToken(uint64) (Token, error)
 

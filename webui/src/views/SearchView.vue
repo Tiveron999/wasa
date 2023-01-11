@@ -19,6 +19,14 @@ export default {
 			}
 			this.loading = false;
 		},
+		async getProfile() {
+      try {
+        const res = await axios.get('/users', {params: {username: this.username}});
+        console.log(res.data); // Log the response data
+      } catch (err) {
+        console.log(err);
+      }
+	}
 	},
 	mounted() {
 		this.refresh()
@@ -54,6 +62,10 @@ export default {
             <input type="text" id="username" name="username"><br>
             <input type="submit" value="Submit">
         </form> 
+	</div>
+	<div>
+	  <input v-model="username" placeholder="Enter username">
+	  <button @click="getProfile">Get Profile</button>
 	</div>
 </template>
 

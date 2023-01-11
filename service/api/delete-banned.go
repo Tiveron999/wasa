@@ -13,14 +13,14 @@ import (
 
 func (rt *_router) unbanUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	// The user ID in the path is a 64-bit unsigned integer. Let's parse it.
-	uid, err := strconv.ParseUint(ps.ByName(("userid")), 10, 64)
+	uid, err := strconv.ParseUint(ps.ByName(("user_id")), 10, 64)
 	if err != nil {
 		// The value was not uint64, reject the action indicating an error on the client side.
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 	// The banned ID in the path is a 64-bit unsigned integer. Let's parse it.
-	bid, err := strconv.ParseUint(ps.ByName(("bannedid")), 10, 64)
+	bid, err := strconv.ParseUint(ps.ByName(("banned_id")), 10, 64)
 	if err != nil {
 		// The value was not uint64, reject the action indicating an error on the client side.
 		w.WriteHeader(http.StatusBadRequest)

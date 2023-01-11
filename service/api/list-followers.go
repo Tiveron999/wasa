@@ -2,11 +2,11 @@ package api
 
 import (
 	"encoding/json"
-	"net/http"
-
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
 	"github.com/Tiveron999/Wasa/service/database"
 	"github.com/julienschmidt/httprouter"
+	"net/http"
+	"strconv"
 )
 
 func (rt *_router) getFollowers(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
@@ -20,8 +20,34 @@ func (rt *_router) getFollowers(w http.ResponseWriter, r *http.Request, ps httpr
 	var err error
 	var followers []database.Follower
 
+	// Extract the user ID from the path
+	userID, err := strconv.ParseUint(ps.ByName("user_id"), 10, 64)
+	if err != nil {
+		// The value was not uint64, reject the action indicating an error on the client side.
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	queryValues := r.URL.Query()
+	limit := queryValues.Get("limit")
+	offset := queryValues.Get("offset")
+
+	// Convert limit and offset to uints
+	limitUint, err := strconv.ParseUint(limit, 10, 64)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+
+	}
+
+	offsetUint, err := strconv.ParseUint(offset, 10, 64)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	// Request an unfiltered list of followers from the DB
-	followers, err = rt.db.GetFollowers()
+	followers, err = rt.db.GetFollowers(userID, limitUint, offsetUint)
 
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the photo

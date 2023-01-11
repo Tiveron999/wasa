@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
-	"github.com/Tiveron999/Wasa/service/database"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -17,11 +16,11 @@ func (rt *_router) getSearchedUserInfo(w http.ResponseWriter, r *http.Request, p
 	// the OpenAPI file).
 	// If one of latitude or longitude is not specified (or both), no filter will be applied.
 
-	var err error
-	var profile database.Profile
+	query := r.URL.Query()
+	username := query.Get("username")
 
 	// Request an unfiltered list of profile's info from the DB
-	profile, err = rt.db.GetSearchedUserInfo(profile)
+	profile, err := rt.db.GetSearchedUserInfo(username)
 
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the profile

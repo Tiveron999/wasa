@@ -1,10 +1,10 @@
 package database
 
-func (db *appdbimpl) GetFollowers() ([]Follower, error) {
+func (db *appdbimpl) GetFollowers(id uint64, limit uint64, offset uint64) ([]Follower, error) {
 	var ret []Follower
 
 	// Plain simple SELECT query
-	rows, err := db.c.Query(`SELECT followerid FROM followers WHERE userid=? LIMIT 10`)
+	rows, err := db.c.Query(`SELECT followerid FROM followers WHERE userid=? LIMIT ? OFFSET ?`)
 	if err != nil {
 		return nil, err
 	}
