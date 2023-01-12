@@ -56,7 +56,7 @@ func (rt *_router) Handler() http.Handler {
 	rt.router.GET("/users", rt.wrap(rt.getSearchedUserInfo))
 
 	// login
-	rt.router.GET("/session", rt.wrap(rt.login))
+	rt.router.POST("/session", rt.wrap(rt.login))
 
 	// Special routes
 	rt.router.GET("/liveness", rt.liveness)

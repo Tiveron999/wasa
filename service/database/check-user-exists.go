@@ -2,19 +2,23 @@ package database
 
 import (
 	"database/sql"
+	"fmt"
 )
 
-func (db *appdbimpl) CheckUserExists(u string) (int, error) {
+func (db *appdbimpl) CheckUserExists(u string) (uint64, error) {
 	// Check if the user exists in the database
-	var userID int
-	err := db.c.QueryRow("SELECT usid FROM users WHERE username = ? ", u).Scan(&userID)
+	var userID uint64
+
+	userID, err := db.GetUserID(u)
 	if err == sql.ErrNoRows {
+		fmt.Print("hii")
 		// User does not exist, register the user and return the new user ID
-		userID, err := db.GetUserID(u)
+		userID, err := db.CreateUser(u)
+		fmt.Print(err)
 		if err != nil {
 			return 0, err
 		}
-		return userID, nil
+		return uint64(userID), nil
 	} else if err != nil {
 		return 0, err
 	}

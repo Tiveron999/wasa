@@ -4,8 +4,8 @@ import (
 	"database/sql"
 )
 
-func (db *appdbimpl) GetUserID(username string) (int, error) {
-	var userID int
+func (db *appdbimpl) GetUserID(username string) (uint64, error) {
+	var userID uint64
 	err := db.c.QueryRow("SELECT usid FROM users WHERE username = ?", username).Scan(&userID)
 	if err == sql.ErrNoRows {
 		return 0, ErrUserDoesNotExist

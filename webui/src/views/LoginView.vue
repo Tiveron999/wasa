@@ -39,11 +39,28 @@ export default {
 		console.error(error)
 		}
 	},
-		login () {
+		/*login () {
 		store.commit('setIsLoggedIn', true)
 		store.commit('setUsername', this.username)
 		this.$router.push('/')
-    }
+    },*/
+	submit() {
+      // Send the username to the Go function
+      this.login(this.username);
+    },
+	login(username) {
+    axios.post('http://localhost:3000/session', {username:username})
+    .then(response => {
+        // Dispatch the Vuex action to update the store
+        this.$store.dispatch('login', response.data.userID)
+        // Redirect to the home page
+        this.$router.push('/')
+    })
+    .catch(error => {
+        // handle the error
+    });
+}
+
 	},
 	mounted() {
 		this.refresh()
@@ -83,30 +100,30 @@ export default {
 		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
 
 		<div>
-      <template v-if="isLoggedIn">
-        <!-- Show content for logged in users -->
+     <!-- <template v-if="isLoggedIn">
+         Show content for logged in users 
       </template>
-      <template v-else>
+      <template v-else>-->
 		<h6>
 			<span id = "type" class = "special">
             Login
 			</span>
         </h6>
-		<base-card>
-		<form @submit.prevent="login">
+		<!-- <base-card> -->
+		<form @submit.prevent="submit">
 		  <!-- <label for="username">Username</label> -->
 		  <input id="username" type="text" v-model="username" placeholder="Username"/>
-		  <button class="btn btn-sm btn-outline-secondary" type="submit" @click="loginButtonClicked">{{ buttonString }}Enter</button>
+		  <button class="btn btn-sm btn-outline-secondary" type="submit" >Enter</button>  <!--@click="loginButtonClicked" {{ buttonString }} -->
 		  <p v-if="error">{{ error }}</p>
-		  <a href="#" @click.prevent="toggleLogin">{{ textLoginString }}</a>
+		 <!--  <a href="#" @click.prevent="toggleLogin">{{ textLoginString }}</a> -->
 		</form>
-	  </base-card>
+	 <!-- </base-card> -->
 	
         <!--  <form @submit.prevent="checkLoginStatus">
           <input v-model="username" type="text" placeholder="Username" />
           <button type="submit">Log In</button>
         </form> -->
-      </template>
+     <!-- </template>   -->
     </div>
 		<!--<h6>
 			<span id = "type" class = "special">

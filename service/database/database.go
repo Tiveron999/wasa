@@ -79,7 +79,7 @@ type AppDatabase interface {
 	// ListUsers() ([]User, error)
 
 	// CreateUser creates a new user in the database. It returns an updated User object (with the ID)
-	CreateUser(User) (User, error)
+	CreateUser(username string) (uint64, error)
 
 	// SetMyUserName updates the user, replacing every value with those provided in the argument
 	SetMyUserName(User) error
@@ -135,9 +135,9 @@ type AppDatabase interface {
 
 	// GetToken(uint64) (Token, error)
 
-	GetUserID(username string) (int, error)
+	GetUserID(username string) (uint64, error)
 
-	CheckUserExists(u string) (int, error)
+	CheckUserExists(u string) (uint64, error)
 
 	// Ping checks whether the database is available or not (in that case, an error will be returned)
 	Ping() error
@@ -158,7 +158,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 	err := db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='users';`).Scan(&users)
 	if errors.Is(err, sql.ErrNoRows) {
 		sqlStmt := `CREATE TABLE users (
-    usid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    usid INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL
 );`
 		_, err = db.Exec(sqlStmt)

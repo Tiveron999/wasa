@@ -10,23 +10,28 @@ import (
 
 func (rt *_router) login(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	// Parse the request body to get the username
-	var loginData struct {
+	type loginData struct {
 		Username string `json:"username"`
 	}
-	err := json.NewDecoder(r.Body).Decode(&loginData)
+
+	var t loginData
+	err := json.NewDecoder(r.Body).Decode(&t)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
+	defer r.Body.Close()
+
 	// Get or create the user in the database
-	userID, err := rt.db.CheckUserExists(loginData.Username)
+	userID, err := rt.db.CheckUserExists(t.Username)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
+	w.Write([]byte("Success!"))
 	// Return the user ID to the user.
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(userID) // map[string]int{"userID": userID}
+	_ = json.NewEncoder(w).Encode(map[string]int{"userID": int(userID)})
 }

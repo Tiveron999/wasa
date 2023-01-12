@@ -12,6 +12,6 @@ func (db *appdbimpl) GetCommentInfo(id uint64) (Comment, error) {
 	/*
 		// If we didn't delete any row, then the comment didn't exist
 		return f, ErrCommentDoesNotExist*/
-	
+
 	return c, nil
 }
