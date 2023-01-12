@@ -1,6 +1,4 @@
 <script>
-import HomeView from '../views/HomeView.vue'
-import LoginView from '../views/LoginView.vue'
 
 export default {
     /*components: {
@@ -48,19 +46,16 @@ export default {
     },
     mounted() {
         this.refresh();
+        /*this.checkLoginStatus();*/
     },
     created() {
         this.checkLoginStatus();
     },
-    components: { LoginView }
 }
 </script>
 
 <template>
-	<div>
-	  <LoginView v-if="!isLoggedIn" />
-	  <HomeView v-if="isLoggedIn" />
-	</div>
+	
 	<div> 
 		<div
 			class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">

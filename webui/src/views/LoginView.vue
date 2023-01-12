@@ -39,13 +39,18 @@ export default {
 		console.error(error)
 		}
 	},
+		login () {
+		store.commit('setIsLoggedIn', true)
+		store.commit('setUsername', this.username)
+		this.$router.push('/')
+    }
 	},
 	mounted() {
 		this.refresh()
-	},
+	},/*
 	created() {
 		this.checkLoginStatus()
-	}
+	}*/
 }
 </script>
 
@@ -88,7 +93,7 @@ export default {
 			</span>
         </h6>
 		<base-card>
-		<form @submit.prevent="checkLoginStatus">
+		<form @submit.prevent="login">
 		  <!-- <label for="username">Username</label> -->
 		  <input id="username" type="text" v-model="username" placeholder="Username"/>
 		  <button class="btn btn-sm btn-outline-secondary" type="submit" @click="loginButtonClicked">{{ buttonString }}Enter</button>
