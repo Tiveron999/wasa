@@ -107,11 +107,11 @@ type AppDatabase interface {
 
 	GetCommentsList() ([]Comment, error)
 
-	GetCommentInfo(Comment) (Comment, error)
+	GetCommentInfo(uint64) (Comment, error)
 
 	UncommentPhoto(uint64) error
 
-	GetFollowers(id uint64, limit uint64, offset uint64) ([]Follower, error)
+	GetFollowers(uint64, uint64, uint64) ([]Follower, error)
 
 	RemoveFollower(uint64, uint64) error
 
@@ -121,7 +121,7 @@ type AppDatabase interface {
 
 	BanUser(Banned) (Banned, error)
 
-	GetFollowing() ([]Follower, error)
+	GetFollowing(uint64, uint64, uint64) ([]Follower, error)
 
 	FollowUser(Follower) (Follower, error)
 

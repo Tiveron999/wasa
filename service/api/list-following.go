@@ -3,7 +3,7 @@ package api
 import (
 	"encoding/json"
 	"net/http"
-
+	"strconv"
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
 	"github.com/Tiveron999/Wasa/service/database"
 	"github.com/julienschmidt/httprouter"
@@ -18,10 +18,36 @@ func (rt *_router) getFollowing(w http.ResponseWriter, r *http.Request, ps httpr
 	// If one of latitude or longitude is not specified (or both), no filter will be applied.
 
 	var err error
-	var followers []database.Follower
+	var following []database.Follower
 
-	// Request an unfiltered list of followers from the DB
-	followers, err = rt.db.GetFollowing()
+	// Extract the user ID from the path
+	userID, err := strconv.ParseUint(ps.ByName("user_id"), 10, 64)
+	if err != nil {
+		// The value was not uint64, reject the action indicating an error on the client side.
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	queryValues := r.URL.Query()
+	limit := queryValues.Get("limit")
+	offset := queryValues.Get("offset")
+
+	// Convert limit and offset to uints
+	limitUint, err := strconv.ParseUint(limit, 10, 64)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+
+	}
+
+	offsetUint, err := strconv.ParseUint(offset, 10, 64)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Request an unfiltered list of following from the DB
+	following, err = rt.db.GetFollowing(userID, limitUint, offsetUint)
 
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the photo
@@ -32,9 +58,9 @@ func (rt *_router) getFollowing(w http.ResponseWriter, r *http.Request, ps httpr
 	}
 
 	// Before sending the list to the client we need to convert it to the "frontend" type
-	var frontendFollowing = make([]Follower, len(followers))
-	for idx := range followers {
-		frontendFollowing[idx].FollowerFromDatabase(followers[idx])
+	var frontendFollowing = make([]Follower, len(following))
+	for idx := range following {
+		frontendFollowing[idx].FollowerFromDatabase(following[idx])
 	}
 
 	// Send the list to the user.

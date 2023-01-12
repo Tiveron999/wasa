@@ -3,7 +3,7 @@ package api
 import (
 	"encoding/json"
 	"net/http"
-
+	"strconv"
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
 	"github.com/Tiveron999/Wasa/service/database"
 	"github.com/julienschmidt/httprouter"
@@ -20,8 +20,16 @@ func (rt *_router) getCommentInfo(w http.ResponseWriter, r *http.Request, ps htt
 	var err error
 	var comment database.Comment
 
-	// Request an unfiltered list of comment from the DB
-	comment, err = rt.db.GetCommentInfo(comment)
+	// Extract the photo ID from the path
+	commentID, err := strconv.ParseUint(ps.ByName("comment_id"), 10, 64)
+	if err != nil {
+		// The value was not uint64, reject the action indicating an error on the client side.
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	// Request an unfiltered list of comment info from the DB
+	comment, err = rt.db.GetCommentInfo(commentID)
 
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the user
