@@ -973,14 +973,14 @@ components:
           type: integer
           description: number of comments on the photo
 
-        profile-pic:
-          type: string
-          description: URL of profile picture of this user
-          pattern: '(www|http:|https:)+[^\s"]+[\w]'
-          # first part checks that the URL starts with "http", "https" or "www"; the rest is just for allowing all characters in the 
-          # URL, except whitespaces and quotation marks.
-          minLength: 0
-          maxLength: 100
+        # profile-pic:
+        #  type: string
+        #  description: URL of profile picture of this user
+        #  pattern: '(www|http:|https:)+[^\s"]+[\w]'
+        #  # first part checks that the URL starts with "http", "https" or "www"; the rest is just for allowing all characters in the 
+        #  # URL, except whitespaces and quotation marks.
+        #  minLength: 0
+        #  maxLength: 100
 
     user-info:
       type: object
@@ -1141,7 +1141,7 @@ components:
       description: login successful
       properties:
         identifier:
-          # change here if you decomment_ide to use an integer
+          # change here if you decide to use an integer
           # or any other type of identifier
           type: string
           example: "abcdef012345"
