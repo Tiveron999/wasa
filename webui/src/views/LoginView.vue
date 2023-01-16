@@ -49,7 +49,7 @@ export default {
       this.login(this.username);
     },
 	login(username) {
-    axios.post('http://localhost:3000/session', {username:username})
+    axios.post('/session', {username:username})
     .then(response => {
         // Dispatch the Vuex action to update the store
         this.$store.dispatch('login', response.data.userID)

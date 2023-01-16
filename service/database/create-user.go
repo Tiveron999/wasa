@@ -1,6 +1,6 @@
 package database
 
-import "fmt"
+// import "fmt"
 
 func (db *appdbimpl) CreateUser(username string) (uint64, error) {
 	/*res, err := db.c.Exec(`INSERT INTO users (usid, username) VALUES (NULL, ?)`,
@@ -17,7 +17,7 @@ func (db *appdbimpl) CreateUser(username string) (uint64, error) {
 		user := User{USID: uint64(lastInsertID), Username: username}
 		return user, nil
 	}*/
-	fmt.Print("tomatoes")
+	// fmt.Print("tomatoes")
 	res, err := db.c.Exec(`INSERT INTO users (usid, username) VALUES (NULL, ?)`, username)
 	if err != nil {
 		return 0, err
