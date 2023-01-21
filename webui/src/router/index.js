@@ -1,5 +1,5 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
-import Vuex from 'vuex'
+// import Vuex from 'vuex'
 // import store from './store'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
@@ -7,7 +7,7 @@ import ProfileView from '../views/ProfileView.vue'
 import SearchView from '../views/SearchView.vue'
 
 
-const store = new Vuex.Store({
+/*const store = new Vuex.Store({
 	state: {
 	  isLoggedIn: false,
 	  username: ''
@@ -29,7 +29,32 @@ const store = new Vuex.Store({
         state.userId = userId
     }
 	}
-  })
+  })*/
+
+  const store = {
+    state: {
+      isLoggedIn: localStorage.getItem('isLoggedIn') || false,
+      username: localStorage.getItem('username') || ''
+    },
+    actions: {
+        login(userId) {
+            localStorage.setItem('isLoggedIn', true)
+            localStorage.setItem('userId', userId)
+        }
+    },    
+    mutations: {
+        setIsLoggedIn (isLoggedIn) {
+            localStorage.setItem('isLoggedIn', isLoggedIn)
+        },
+        setUsername (username) {
+            localStorage.setItem('username', username)
+        },
+        setUserId(userId) {
+            localStorage.setItem('userId', userId)
+        }
+    }
+  }
+
 
 const router = createRouter({
 	history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -49,7 +74,7 @@ const router = createRouter({
 			  } else {
 				next()
 			  }
-			},},
+			}},
 		{path: '/link1', component: HomeView},
 		{path: '/link2', component: HomeView, 
 		/*beforeEnter: (to, from, next) => {
@@ -66,15 +91,21 @@ const router = createRouter({
 			} else {
 				next('/')
 			}
-		  },},
-		{path: '/session', component: LoginView},
+		  }},
+		{path: '/session', component: LoginView, beforeEnter: (to, from, next) => {
+			if (store.state.isLoggedIn) {
+				next('/')
+			} else {
+				next()
+			}
+		}},
 		{path: '/users/:id/profile', component: HomeView, beforeEnter: (to, from, next) => {
 			if (store.state.isLoggedIn) {
 				next()
 			} else {
-				next('/profile')
+				next('/')
 			}
-		  },},
+		  }},
 		{ path: '/search', component: SearchView, beforeEnter: (to, from, next) => {
 		if (store.state.isLoggedIn) {
 			next()
