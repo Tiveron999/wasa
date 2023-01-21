@@ -44,12 +44,13 @@ export default {
 		store.commit('setUsername', this.username)
 		this.$router.push('/')
     },*/
-	submit() {
+	/*submit() {
       // Send the username to the Go function
       this.login(this.username);
-    },
-	login(username) {
-    axios.post('/session', {username:username})
+    },*/
+	submit() {
+	// Send the username to the Go function
+    axios.post('/session', {username:this.username})
     .then(response => {
         // Dispatch the Vuex action to update the store
         this.$store.dispatch('login', response.data.userID)
@@ -109,14 +110,14 @@ export default {
             Login
 			</span>
         </h6>
-		<!-- <base-card> -->
-		<form @submit.prevent="submit">
+		<!-- <base-card> 
+		<form @submit.prevent="submit"> -->
 		  <!-- <label for="username">Username</label> -->
 		  <input id="username" type="text" v-model="username" placeholder="Username"/>
-		  <button class="btn btn-sm btn-outline-secondary" type="submit" >Enter</button>  <!--@click="loginButtonClicked" {{ buttonString }} -->
+		  <button class="btn btn-sm btn-outline-secondary" @click="submit">Enter</button>  <!--@click="loginButtonClicked" {{ buttonString }} type="submit" -->
 		  <p v-if="error">{{ error }}</p>
-		 <!--  <a href="#" @click.prevent="toggleLogin">{{ textLoginString }}</a> -->
-		</form>
+		 <!--  <a href="#" @click.prevent="toggleLogin">{{ textLoginString }}</a> 
+		</form> -->
 	 <!-- </base-card> -->
 	
         <!--  <form @submit.prevent="checkLoginStatus">
