@@ -26,7 +26,7 @@ export default {
 		async checkLoginStatus() {
         try {
           // Make an HTTP request to the backend to check if the user is logged in
-          const response = await axios.post('/api/session', {
+          const response = await this.$axios.post('/api/session', {
             username: this.username,
           })
           const userID = response.data.userID
@@ -50,7 +50,7 @@ export default {
     },*/
 	submit() {
 	// Send the username to the Go function
-    axios.post('/session', {username:this.username})
+    this.$axios.post('/session', {username:this.username})
     .then(response => {
         // Dispatch the Vuex action to update the store
         this.$store.dispatch('login', response.data.userID)
