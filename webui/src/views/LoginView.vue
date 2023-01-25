@@ -9,6 +9,7 @@ export default {
 			users: null,
 			isLoggedIn: false,
         	Username: '',
+			error: null,
 		}
 	},
 	methods: {
@@ -23,10 +24,10 @@ export default {
 			}
 			this.loading = false;
 		},
-		async checkLoginStatus() {
+		/*async checkLoginStatus() {
         try {
           // Make an HTTP request to the backend to check if the user is logged in
-          const response = await this.$axios.post('/api/session', {
+          const response = await this.$axios.post('/session', {
             Username: this.Username,
           })
           const userID = response.data.userID
@@ -38,7 +39,7 @@ export default {
 		} catch (error) {
 		console.error(error)
 		}
-	},
+	},*/
 		/*login () {
 		store.commit('setIsLoggedIn', true)
 		store.commit('setUsername', this.username)
@@ -58,7 +59,7 @@ export default {
         this.$router.push('/')
     })
     .catch(error => {
-        // handle the error
+            this.error = error.message;
     });
 }
 
@@ -99,7 +100,7 @@ export default {
 		</div>
 
 		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
-
+		
 		<div>
      <!-- <template v-if="isLoggedIn">
          Show content for logged in users 
