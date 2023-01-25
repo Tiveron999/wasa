@@ -59,7 +59,7 @@ export default {
         this.$router.push('/')
     })
     .catch(error => {
-            this.error = error.message;
+		this.errormsg = error.toString();
     });
 }
 
