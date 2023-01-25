@@ -8,7 +8,7 @@ export default {
 			loading: false,
 			users: null,
 			isLoggedIn: false,
-        	username: '',
+        	Username: '',
 		}
 	},
 	methods: {
@@ -27,7 +27,7 @@ export default {
         try {
           // Make an HTTP request to the backend to check if the user is logged in
           const response = await this.$axios.post('/api/session', {
-            username: this.username,
+            Username: this.Username,
           })
           const userID = response.data.userID
           if (userID) {
@@ -50,7 +50,7 @@ export default {
     },*/
 	submit() {
 	// Send the username to the Go function
-    this.$axios.post('/session', {username:this.username})
+    this.$axios.post('/session', {Username:this.Username})
     .then(response => {
         // Dispatch the Vuex action to update the store
         this.$store.dispatch('login', response.data.userID)
@@ -112,8 +112,8 @@ export default {
         </h6>
 		<!-- <base-card> 
 		<form @submit.prevent="submit"> -->
-		  <!-- <label for="username">Username</label> -->
-		  <input id="username" type="text" v-model="username" placeholder="Username"/>
+		  <!-- <label for="Username">Username</label> -->
+		  <input id="Username" type="text" v-model="Username" placeholder="Username"/>
 		  <button class="btn btn-sm btn-outline-secondary" @click="submit">Enter</button>  <!--@click="loginButtonClicked" {{ buttonString }} type="submit" -->
 		  <p v-if="error">{{ error }}</p>
 		 <!--  <a href="#" @click.prevent="toggleLogin">{{ textLoginString }}</a> 
