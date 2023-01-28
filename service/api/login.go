@@ -2,7 +2,7 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
+	// "fmt"
 	"log"
 	"net/http"
 
@@ -16,7 +16,7 @@ func (rt *_router) login(w http.ResponseWriter, r *http.Request, ps httprouter.P
 		Username string `json:"username"`
 	}
 
-	fmt.Println("please")
+	// fmt.Println("please")
 	var t loginData
 	err := json.NewDecoder(r.Body).Decode(&t)
 	if err != nil {
