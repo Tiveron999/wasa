@@ -28,7 +28,7 @@ export default {
         },
         async checkLoginStatus() {
             try {
-                const response = await this.$axios.post("/api/session", {
+                const response = await this.$axios.post("/session", {
                     username: this.username,
                 });
                 if (response.data.userID) {

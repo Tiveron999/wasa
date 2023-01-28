@@ -50,9 +50,12 @@ export default {
       this.login(this.username);
     },*/
 	submit() {
+	console.log(JSON.stringify({username: this.username}))
+
 	// Send the username to the Go function
-	axios.post('/session', JSON.stringify({username: this.username}), {headers: { 'Content-Type': 'application/json',  'Accept': 'application/json'}})
+	this.$axios.post('/session', JSON.stringify({username: this.username}), {headers: { 'Content-Type': 'application/json',  'Accept': 'application/json'}})
     .then(response => {
+		console.log(response.status);
         // Dispatch the action to update the store
         this.$store.dispatch('login', response.data.userID)
         // Redirect to the home page

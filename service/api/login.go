@@ -2,7 +2,8 @@ package api
 
 import (
 	"encoding/json"
-	// "fmt"
+	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
@@ -15,14 +16,15 @@ func (rt *_router) login(w http.ResponseWriter, r *http.Request, ps httprouter.P
 		Username string `json:"username"`
 	}
 
+	fmt.Println("please")
 	var t loginData
 	err := json.NewDecoder(r.Body).Decode(&t)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		log.Println(err)
 		return
 	}
 
-	// fmt.Println("please")
 	// Get or create the user in the database
 	userID, err := rt.db.CheckUserExists(t.Username)
 	if err != nil {

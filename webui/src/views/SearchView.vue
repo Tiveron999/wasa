@@ -21,7 +21,7 @@ export default {
 		},
 		async getProfile() {
       try {
-        const res = await axios.get('/users', {params: {username: this.username}});
+        const res = await this.$axios.get('/users', {params: {username: this.username}});
         console.log(res.data); // Log the response data
       } catch (err) {
         console.log(err);
