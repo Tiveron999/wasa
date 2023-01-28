@@ -8,7 +8,7 @@ export default {
 			loading: false,
 			users: null,
 			isLoggedIn: false,
-        	Username: '',
+        	username: '',
 			error: null,
 		}
 	},
@@ -28,7 +28,7 @@ export default {
         try {
           // Make an HTTP request to the backend to check if the user is logged in
           const response = await this.$axios.post('/session', {
-            Username: this.Username,
+            username: this.username,
           })
           const userID = response.data.userID
           if (userID) {
@@ -42,7 +42,7 @@ export default {
 	},*/
 		/*login () {
 		store.commit('setIsLoggedIn', true)
-		store.commit('setUsername', this.username)
+		store.commit('setusername', this.username)
 		this.$router.push('/')
     },*/
 	/*submit() {
@@ -51,9 +51,9 @@ export default {
     },*/
 	submit() {
 	// Send the username to the Go function
-    this.$axios.post('/session', {Username:this.Username})
+	axios.post('/session', JSON.stringify({username: this.username}), {headers: { 'Content-Type': 'application/json',  'Accept': 'application/json'}})
     .then(response => {
-        // Dispatch the Vuex action to update the store
+        // Dispatch the action to update the store
         this.$store.dispatch('login', response.data.userID)
         // Redirect to the home page
         this.$router.push('/')
@@ -113,16 +113,16 @@ export default {
         </h6>
 		<!-- <base-card> 
 		<form @submit.prevent="submit"> -->
-		  <!-- <label for="Username">Username</label> -->
-		  <input id="Username" type="text" v-model="Username" placeholder="Username"/>
-		  <button class="btn btn-sm btn-outline-secondary" @click="submit">Enter</button>  <!--@click="loginButtonClicked" {{ buttonString }} type="submit" -->
+		  <!-- <label for="username">username</label> -->
+		  <input id="username" type="text" v-model="username" placeholder="Username"/>
+		  <button class="btn btn-sm btn-outline-secondary" @click="submit()">Enter</button>  <!--@click="loginButtonClicked" {{ buttonString }} type="submit" -->
 		  <p v-if="error">{{ error }}</p>
 		 <!--  <a href="#" @click.prevent="toggleLogin">{{ textLoginString }}</a> 
 		</form> -->
 	 <!-- </base-card> -->
 	
         <!--  <form @submit.prevent="checkLoginStatus">
-          <input v-model="username" type="text" placeholder="Username" />
+          <input v-model="username" type="text" placeholder="username" />
           <button type="submit">Log In</button>
         </form> -->
      <!-- </template>   -->
@@ -134,7 +134,7 @@ export default {
         </h6>
 		<base-card>
 		<form @submit.prevent>
-		  <label for="username">Username</label>
+		  <label for="username">username</label>
 		  <input id="username" type="text" v-model="username" />
 		  <button class="btn btn-sm btn-outline-secondary" @click="loginButtonClicked">{{ buttonString }}Enter</button>
 		  <p v-if="error">{{ error }}</p>
