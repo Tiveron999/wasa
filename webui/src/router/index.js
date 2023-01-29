@@ -34,7 +34,7 @@ import SearchView from '../views/SearchView.vue'
   const store = {
     state: {
       isLoggedIn: localStorage.getItem('isLoggedIn') === 'true' || false,
-      username: parseInt(localStorage.getItem('userId')) || ''
+      username: localStorage.getItem('username') || ''
     },
     actions: {
         login(userId) {
