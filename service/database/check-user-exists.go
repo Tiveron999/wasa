@@ -2,7 +2,7 @@ package database
 
 import (
 	"errors"
-	"fmt"
+	// "fmt"
 )
 
 func (db *appdbimpl) CheckUserExists(u string) (uint64, error) {
@@ -11,7 +11,7 @@ func (db *appdbimpl) CheckUserExists(u string) (uint64, error) {
 
 	userID, err := db.GetUserID(u)
 	if errors.Is(err, ErrUserDoesNotExist) {
-		fmt.Print("hii")
+		// fmt.Print("hii")
 		// User does not exist, register the user and return the new user ID
 		userID, err := db.CreateUser(u)
 		// fmt.Print(err)
