@@ -22,7 +22,7 @@ const router = createRouter({
 			}
 		  }
 		},
-		  {path: '/profile', component: ProfileView, 
+		  {path: '/users/:id/profile', component: ProfileView, 
 		  beforeEnter: (to, from, next) => {
 			if (localStorage.getItem('isLoggedIn') === 'true') {
 				next()
@@ -40,7 +40,7 @@ const router = createRouter({
 			}
 		  }},
 		{path: '/session', component: LoginView},
-		{path: '/users/:id/profile', component: HomeView, beforeEnter: (to, from, next) => {
+		{path: '/something', component: HomeView, beforeEnter: (to, from, next) => {
 			if ((localStorage.getItem('isLoggedIn') === 'true')) {
 				next()
 			} else {

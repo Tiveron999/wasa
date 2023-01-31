@@ -62,9 +62,9 @@ export default {
 	</div>
 </template>
 
-<style>
+<style scoped>
 button {
-  width: 4rem;
+  width: 5rem;
   height: 2rem;
   border-radius: 8px;
   background-color: rgb(255, 255, 75);
@@ -72,7 +72,7 @@ button {
 }
 label {
   display: block;
-  text-align: left;
+  text-align: center;
 }
 input {
   box-sizing: border-box;
@@ -85,4 +85,5 @@ input:focus {
   outline: 0;
   background-color: rgb(255, 175, 26);
 }
+
 </style>
