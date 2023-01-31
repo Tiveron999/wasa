@@ -31,7 +31,7 @@ import SearchView from '../views/SearchView.vue'
 	}
   })*/
 
-  const store = {
+  /*const store = {
     state: {
       isLoggedIn: localStorage.getItem('isLoggedIn') === 'true' || false,
       username: localStorage.getItem('username') || ''
@@ -53,14 +53,20 @@ import SearchView from '../views/SearchView.vue'
             localStorage.setItem('userId', userId)
         }
     }
-  }
+  }*/
+
+ const state = {
+  isLoggedIn: localStorage.getItem('isLoggedIn') === 'true' || false,
+  username: localStorage.getItem('username') || ''
+};
+  
 
 
 const router = createRouter({
 	history: createWebHashHistory(import.meta.env.BASE_URL),
 	routes: [
 		{ path: '/', component: HomeView, beforeEnter: (to, from, next) => {
-			if (store.state.isLoggedIn) {
+			if (localStorage.getItem('isLoggedIn') === 'true') {
 			  next()
 			} else {
 			  next('/session')
@@ -69,10 +75,10 @@ const router = createRouter({
 		},
 		  {path: '/profile', component: ProfileView, 
 		  beforeEnter: (to, from, next) => {
-			if (!isLoggedIn()) {
-				next('/session')
-			  } else {
+			if (localStorage.getItem('isLoggedIn') === 'true') {
 				next()
+			  } else {
+				next('/session')
 			  }
 			}},
 		{path: '/link1', component: HomeView},
@@ -86,28 +92,22 @@ const router = createRouter({
 		  },*/
 		},
 		{path: '/some/:id/link', component: HomeView, beforeEnter: (to, from, next) => {
-			if (store.state.isLoggedIn) {
+			if ((localStorage.getItem('isLoggedIn') === 'true')) {
 				next()
 			} else {
-				next('/')
+				next('/session')
 			}
 		  }},
-		{path: '/session', component: LoginView, beforeEnter: (to, from, next) => {
-			if (store.state.isLoggedIn) {
-				next('/')
-			} else {
-				next()
-			}
-		}},
+		{path: '/session', component: LoginView},
 		{path: '/users/:id/profile', component: HomeView, beforeEnter: (to, from, next) => {
-			if (store.state.isLoggedIn) {
+			if ((localStorage.getItem('isLoggedIn') === 'true')) {
 				next()
 			} else {
-				next('/')
+				next('/session')
 			}
 		  }},
 		{ path: '/search', component: SearchView, beforeEnter: (to, from, next) => {
-		if (store.state.isLoggedIn) {
+		if (localStorage.getItem('isLoggedIn') === 'true') {
 			next()
 		} else {
 			next('/session')

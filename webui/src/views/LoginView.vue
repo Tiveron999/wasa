@@ -56,8 +56,11 @@ export default {
 	this.$axios.post('/session', JSON.stringify({username: this.username}), {headers: { 'Content-Type': 'application/json',  'Accept': 'application/json'}})
     .then(response => {
 		console.log(response.status);
-        // Dispatch the action to update the store
-        this.$store.dispatch('login', response.data.userID)
+		// Update the local storage
+		localStorage.setItem('isLoggedIn', true);
+		localStorage.setItem('username', this.username);
+		state.isLoggedIn = true;
+		state.username = this.username;
         // Redirect to the home page
         this.$router.push('/')
     })
