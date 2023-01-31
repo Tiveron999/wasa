@@ -50,6 +50,11 @@ export default {
 		</div>
 
 		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
+		<h6>
+			<span id = "type" class = "special">
+            Search
+			</span>
+        </h6>
 		<form action="/users/search/:username" method="get">
             <label for="username">Username:</label><br>
             <input type="text" id="username" name="username"><br>

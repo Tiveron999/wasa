@@ -42,6 +42,11 @@ export default {
 		</div>
 
 		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
+		<h6>
+			<span id = "type" class = "special">
+            Profile
+			</span>
+        </h6>
 		<ul>
 			<li> profile </li>
 		</ul>
