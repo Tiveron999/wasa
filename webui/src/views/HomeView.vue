@@ -49,7 +49,7 @@ export default {
         /*this.checkLoginStatus();*/
     },
     created() {
-        this.checkLoginStatus();
+        /*this.checkLoginStatus();*/
     },
 }
 </script>

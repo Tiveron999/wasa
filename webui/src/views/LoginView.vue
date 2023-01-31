@@ -59,8 +59,6 @@ export default {
 		// Update the local storage
 		localStorage.setItem('isLoggedIn', true);
 		localStorage.setItem('username', this.username);
-		state.isLoggedIn = true;
-		state.username = this.username;
         // Redirect to the home page
         this.$router.push('/')
     })

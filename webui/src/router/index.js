@@ -55,11 +55,10 @@ import SearchView from '../views/SearchView.vue'
     }
   }*/
 
- const state = {
-  isLoggedIn: localStorage.getItem('isLoggedIn') === 'true' || false,
-  username: localStorage.getItem('username') || ''
-};
-  
+
+localStorage.getItem('isLoggedIn') === 'true' || false,
+localStorage.getItem('username') || ''
+
 
 
 const router = createRouter({
