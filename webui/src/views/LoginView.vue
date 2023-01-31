@@ -85,9 +85,10 @@ export default {
 			<h1 class="h2">WasaPhoto</h1>
 			<div class="btn-toolbar mb-2 mb-md-0">
 				<div class="btn-group me-2">
-					<button type="button" class="btn btn-sm btn-outline-secondary" @click="refresh">
+					<button type="button" class="btn btn-sm btn-outline-primary" style="float: right;" @click="refresh">
 						Refresh
 					</button>
+					</div>
 					 <!-- 
 					<button type="button" class="btn btn-sm btn-outline-secondary" @click="exportList">
 						Export
@@ -99,10 +100,10 @@ export default {
 					</button>-->
 				</div>
 			</div>
-			<div class="content">
+			
 	  
 	</div>
-		</div>
+		
 
 		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
 		
@@ -146,13 +147,13 @@ export default {
 		  <a href="#" @click.prevent="toggleLogin">{{ textLoginString }}</a>
 		</form>
 	  </base-card>-->
-	</div> 
+	
 </template>
 
 
 <style scoped>
 button {
-  width: 4rem;
+  width: 5rem;
   height: 2rem;
   border-radius: 8px;
   background-color: rgb(255, 255, 75);
@@ -160,7 +161,7 @@ button {
 }
 label {
   display: block;
-  text-align: left;
+  text-align: center;
 }
 input {
   box-sizing: border-box;
@@ -173,5 +174,6 @@ input:focus {
   outline: 0;
   background-color: rgb(255, 175, 26);
 }
+
 </style>
 

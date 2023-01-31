@@ -62,7 +62,7 @@ export default {
 			<h1 class="h2">WasaPhoto</h1>
 			<div class="btn-toolbar mb-2 mb-md-0">
 				<div class="btn-group me-2">
-					<button type="button" class="btn btn-sm btn-outline-secondary" @click="refresh">
+					<button type="button" class="btn btn-sm btn-outline-primary" @click="refresh">
 						Refresh
 					</button>
 				</div>
@@ -83,5 +83,12 @@ export default {
 	</div>
 </template>
 
-<style>
+<style scoped>
+button {
+  width: 5rem;
+  height: 2rem;
+  border-radius: 8px;
+  background-color: rgb(255, 255, 75);
+  text-align: center;
+}
 </style>
