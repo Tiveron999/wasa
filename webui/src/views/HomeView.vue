@@ -65,19 +65,18 @@ export default {
 					<button type="button" class="btn btn-sm btn-outline-secondary" @click="refresh">
 						Refresh
 					</button>
-					<button type="button" class="btn btn-sm btn-outline-secondary" @click="exportList">
-						Export
-					</button>
-				</div>
-				<div class="btn-group me-2">
-					<button type="button" class="btn btn-sm btn-outline-primary" @click="newItem">
-						New
-					</button>
 				</div>
 			</div>
 		</div>
 
 		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
+
+        <h6>
+			<span id = "type" class = "special">
+            Home
+			</span>
+        </h6>
+        
 		<ul>
 			<li> hi </li>
 		</ul>

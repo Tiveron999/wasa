@@ -88,6 +88,7 @@ export default {
 					<button type="button" class="btn btn-sm btn-outline-secondary" @click="refresh">
 						Refresh
 					</button>
+					 <!-- 
 					<button type="button" class="btn btn-sm btn-outline-secondary" @click="exportList">
 						Export
 					</button>
@@ -95,7 +96,7 @@ export default {
 				<div class="btn-group me-2">
 					<button type="button" class="btn btn-sm btn-outline-primary" @click="newItem">
 						New
-					</button>
+					</button>-->
 				</div>
 			</div>
 			<div class="content">

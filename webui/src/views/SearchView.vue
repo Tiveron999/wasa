@@ -44,14 +44,7 @@ export default {
 					<button type="button" class="btn btn-sm btn-outline-secondary" @click="refresh">
 						Refresh
 					</button>
-					<button type="button" class="btn btn-sm btn-outline-secondary" @click="exportList">
-						Export
-					</button>
-				</div>
-				<div class="btn-group me-2">
-					<button type="button" class="btn btn-sm btn-outline-primary" @click="newItem">
-						New
-					</button>
+					
 				</div>
 			</div>
 		</div>
@@ -70,4 +63,26 @@ export default {
 </template>
 
 <style>
+button {
+  width: 4rem;
+  height: 2rem;
+  border-radius: 8px;
+  background-color: rgb(255, 255, 75);
+  text-align: center;
+}
+label {
+  display: block;
+  text-align: left;
+}
+input {
+  box-sizing: border-box;
+  border-radius: 8px;
+  width: 20%;
+  padding: 8px 20px;
+  margin-right: 5%;
+}
+input:focus {
+  outline: 0;
+  background-color: rgb(255, 175, 26);
+}
 </style>
