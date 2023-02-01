@@ -1,57 +1,32 @@
 <script>
-import { mapActions } from "vuex";
-import BaseCard from "../components/UI/BaseCard.vue";
-export default {
-  components: { BaseCard },
-  data() {
-	return {
-	  loginSelected: true,
-	  username: "",
-	  password: "",
-	  error: ""
-	};
-  },
-  methods: {
-	...mapActions({ login: "auth/session", signup: "auth/signup" }),
-	loginButtonClicked() {
-	  if (this.loginSelected) {
-		this.login({ username: this.username, password: this.password })
-		  .then(() => {
-			this.$router.push({ name: "Posts" });
-		  })
-		  .catch(error => {
-			this.error = error;
-		  });
-	  } else {
-		this.signup({ username: this.username, password: this.password })
-		  .then(() => {
-			this.$router.push({ name: "Posts" });
-		  })
-		  .catch(error => {
-			this.error = error;
-		  });
-	  }
-	},
-	toggleLogin() {
-	  this.loginSelected = !this.loginSelected;
-	}
-  },
-  computed: {
-	buttonString() {
-	  if (this.loginSelected) {
-		return "LOGIN";
-	  } else {
-		return "SIGNUP";
-	  }
-	},
-	textLoginString() {
-	  if (this.loginSelected) {
-		return "Signup instead";
-	  } else {
-		return "Login instead";
+  import axios from 'axios';
+  
+  export default {
+	methods: {
+	  async uploadImage(event) {
+		const file = event.target.files[0];
+		const formData = new FormData();
+		formData.append('image', file);
+  
+		try {
+		  const response = await this.$axios.post("/users/:user_id/photos/:photo_id", formData);
+		  console.log(response.data);
+		} catch (error) {
+		  console.error(error);
+		}
 	  }
 	}
-  }
-};
-</script>
+  };
+  </script>
 
+
+<template>
+	<div>
+	  <form>
+		<input type="file" @change="uploadImage"/>
+	  </form>
+	</div>
+  </template>
+  
+  
+  
