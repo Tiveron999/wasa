@@ -19,6 +19,18 @@ export default {
 			}
 			this.loading = false;
 		},
+		async uploadImage(event) {
+		const file = event.target.files[0];
+		const formData = new FormData();
+		formData.append('image', file);
+  
+		try {
+		  const response = await this.$axios.post("/users/:user_id/photos/:photo_id", formData);
+		  console.log(response.data);
+		} catch (error) {
+		  console.error(error);
+		}
+	  }
 	},
 	mounted() {
 		this.refresh()
@@ -50,6 +62,11 @@ export default {
 		<ul>
 			<li> profile </li>
 		</ul>
+	</div>
+	<div>
+	  <form>
+		<input type="file" @change="uploadImage"/>
+	  </form>
 	</div>
 </template>
 
