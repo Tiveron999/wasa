@@ -6,9 +6,9 @@ export default {
 		return {
 			errormsg: null,
 			loading: false,
-			users: null,
 			isLoggedIn: false,
         	username: '',
+			userId: '',
 			error: null,
 		}
 	},
@@ -18,37 +18,13 @@ export default {
 			this.errormsg = null;
 			try {
 				let response = await this.$axios.get("/context");
-				this.users = response.data;
+				// this.users = response.data;
 			} catch (e) {
 				this.errormsg = e.toString();
 			}
 			this.loading = false;
 		},
-		/*async checkLoginStatus() {
-        try {
-          // Make an HTTP request to the backend to check if the user is logged in
-          const response = await this.$axios.post('/session', {
-            username: this.username,
-          })
-          const userID = response.data.userID
-          if (userID) {
-            this.isLoggedIn = true
-          } else {
-            this.isLoggedIn = false
-		}
-		} catch (error) {
-		console.error(error)
-		}
-	},*/
-		/*login () {
-		store.commit('setIsLoggedIn', true)
-		store.commit('setusername', this.username)
-		this.$router.push('/')
-    },*/
-	/*submit() {
-      // Send the username to the Go function
-      this.login(this.username);
-    },*/
+		
 		submit() {
 		console.log(JSON.stringify({username: this.username}))
 
@@ -66,7 +42,7 @@ export default {
 			console.error('userID is not defined in the response');
 			}
 
-			console.log(localStorage.getItem('userId'))
+			console.log(rJSON.stringify(response));
 			// Redirect to the home page
 			this.$router.push('/')
 		})
