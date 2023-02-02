@@ -4,13 +4,13 @@ export default {
 		return {
 			errormsg: null,
 			loading: false,
-			users: null,
 		}
 	},
 	methods: {
 		async refresh() {
 			this.loading = true;
 			this.errormsg = null;
+			console.log(localStorage.getItem('userId'))
 			try {
 				let response = await this.$axios.get("/context");
 				this.users = response.data;

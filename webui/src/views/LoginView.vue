@@ -35,14 +35,14 @@ export default {
 			// Update the local storage
 			localStorage.setItem('isLoggedIn', true);
 			localStorage.setItem('username', this.username);
-			if (response.userID !== undefined) {
-			var userIDString = response.userID.toString();
-			localStorage.setItem('userID', userIDString);
+			if (response.data.userID !== undefined) {
+			const userId = response.data.userID;
+			localStorage.setItem('userId', userId);
+			console.log(userId)
 			} else {
 			console.error('userID is not defined in the response');
 			}
 
-			console.log(rJSON.stringify(response));
 			// Redirect to the home page
 			this.$router.push('/')
 		})

@@ -9,7 +9,6 @@ export default {
         return {
             errormsg: null,
             loading: false,
-            users: null,
             isLoggedIn: false,
         };
     },

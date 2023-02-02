@@ -27,6 +27,10 @@ const router = createRouter({
 		  {path: '/users/:id/profile', component: ProfileView, 
 		  beforeEnter: (to, from, next) => {
 			if (localStorage.getItem('isLoggedIn') === 'true') {
+				const userId = localStorage.getItem('userId');
+				if (userId) {
+				  to.params.id = userId;
+				}
 				next()
 			  } else {
 				next('/session')
