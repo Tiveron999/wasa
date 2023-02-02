@@ -61,10 +61,7 @@ export default {
 	},
 	mounted() {
 		this.refresh()
-	},/*
-	created() {
-		this.checkLoginStatus()
-	}*/
+	},
 }
 </script>
 
@@ -116,11 +113,7 @@ export default {
 		</form> -->
 	 <!-- </base-card> -->
 	
-        <!--  <form @submit.prevent="checkLoginStatus">
-          <input v-model="username" type="text" placeholder="username" />
-          <button type="submit">Log In</button>
-        </form> -->
-     <!-- </template>   -->
+
     </div>
 		<!--<h6>
 			<span id = "type" class = "special">

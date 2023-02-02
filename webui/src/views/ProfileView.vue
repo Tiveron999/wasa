@@ -22,9 +22,17 @@ export default {
 			this.loading = false;
 		},
 		async uploadImage(event) {
-		const file = event.target.files[0];
-		const formData = new FormData();
-		formData.append('image', file);
+			const file = event.target.files[0];
+			const formData = new FormData();
+			formData.append('image', file);
+
+			const reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = function(event) {
+			const img = document.createElement("img");
+			img.src = event.target.result;
+			document.body.appendChild(img);
+	};
   
 		try {
 		  const response = await this.$axios.post("/users/:user_id/photos/:photo_id", formData);
@@ -73,4 +81,10 @@ export default {
 </template>
 
 <style>
+img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
 </style>

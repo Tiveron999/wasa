@@ -18,11 +18,11 @@ type httpRouterHandler func(http.ResponseWriter, *http.Request, httprouter.Param
 // wrap parses the request and adds a reqcontext.RequestContext instance related to the request.
 func (rt *_router) wrap(fn httpRouterHandler) func(http.ResponseWriter, *http.Request, httprouter.Params) {
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-		authHeader := r.Header.Get("Authorization")
+		/*authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
 			w.WriteHeader(http.StatusUnauthorized)
 			return
-		}
+		}*/
 
 		reqUUID, err := uuid.NewV4()
 		if err != nil {
