@@ -9,7 +9,7 @@ localStorage.clear();
 // Initialize the variables
 localStorage.getItem('isLoggedIn') === 'true' || false,
 localStorage.getItem('username') || '',
-localStorage.getItem('userId') || ''
+localStorage.getItem('userId') || ' '
 
 
 

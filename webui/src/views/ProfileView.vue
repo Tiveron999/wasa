@@ -7,6 +7,8 @@ export default {
 		}
 	},
 	methods: {
+		/* this.$axios.post('/session', JSON.stringify({username: this.username}), {headers: { 'Content-Type': 'application/json',  'Accept': 'application/json', 
+		'Authorization': `Bearer ${localStorage.getItem('userId')}`}}) */
 		async refresh() {
 			this.loading = true;
 			this.errormsg = null;
