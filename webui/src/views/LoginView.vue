@@ -49,23 +49,38 @@ export default {
       // Send the username to the Go function
       this.login(this.username);
     },*/
-	submit() {
-	console.log(JSON.stringify({username: this.username}))
+		submit() {
+		console.log(JSON.stringify({username: this.username}))
 
-	// Send the username to the Go function
-	this.$axios.post('/session', JSON.stringify({username: this.username}), {headers: { 'Content-Type': 'application/json',  'Accept': 'application/json'}})
-    .then(response => {
-		console.log(response.status);
-		// Update the local storage
-		localStorage.setItem('isLoggedIn', true);
-		localStorage.setItem('username', this.username);
-        // Redirect to the home page
-        this.$router.push('/')
-    })
-    .catch(error => {
-		this.errormsg = error.toString();
-    });
-}
+		// Send the username to the Go function
+		this.$axios.post('/session', JSON.stringify({username: this.username}), {headers: { 'Content-Type': 'application/json',  'Accept': 'application/json'}})
+		.then(response => {
+			console.log(response.status);
+			// Update the local storage
+			localStorage.setItem('isLoggedIn', true);
+			localStorage.setItem('username', this.username);
+			if (response.userID !== undefined) {
+			var userIDString = response.userID.toString();
+			localStorage.setItem('userID', userIDString);
+			} else {
+			console.error('userID is not defined in the response');
+			}
+
+			console.log(localStorage.getItem('userId'))
+			// Redirect to the home page
+			this.$router.push('/')
+		})
+		.catch(error => {
+			this.errormsg = error.toString();
+		});
+		},
+
+		logout() {
+			localStorage.setItem('isLoggedIn', false);
+			localStorage.setItem('username', '');
+			localStorage.setItem('userId', '');
+			alert('You have successfully logged out.')
+			}
 
 	},
 	mounted() {
@@ -88,18 +103,16 @@ export default {
 					<button type="button" class="btn btn-sm btn-outline-primary" style="float: right;" @click="refresh">
 						Refresh
 					</button>
-					</div>
-					 <!-- 
-					<button type="button" class="btn btn-sm btn-outline-secondary" @click="exportList">
-						Export
-					</button>
 				</div>
+					
+					
 				<div class="btn-group me-2">
-					<button type="button" class="btn btn-sm btn-outline-primary" @click="newItem">
-						New
-					</button>-->
-				</div>
+					
+				<button @click="logout">Logout</button>
+				</div>  <!--   -->
 			</div>
+		</div>
+			
 			
 	  
 	</div>

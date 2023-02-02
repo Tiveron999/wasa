@@ -8,7 +8,9 @@ import SearchView from '../views/SearchView.vue'
 
 // Initialize the variables
 localStorage.getItem('isLoggedIn') === 'true' || false,
-localStorage.getItem('username') || ''
+localStorage.getItem('username') || '',
+localStorage.getItem('userId') || ''
+
 
 
 const router = createRouter({
