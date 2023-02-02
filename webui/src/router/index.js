@@ -5,7 +5,7 @@ import ProfileView from '../views/ProfileView.vue'
 import SearchView from '../views/SearchView.vue'
 
 
-
+localStorage.clear();
 // Initialize the variables
 localStorage.getItem('isLoggedIn') === 'true' || false,
 localStorage.getItem('username') || '',
