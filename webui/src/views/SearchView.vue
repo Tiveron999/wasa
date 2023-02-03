@@ -20,14 +20,16 @@ export default {
 			this.loading = false;
 		},
 		async getProfile() {
-      try {
-        const res = await this.$axios.get('/users', {params: {username: this.username}});
-        console.log(res.data); // Log the response data
-      } catch (err) {
-        console.log(err);
+			try {
+				const res = await this.$axios.get('/users/search', {params: {username: this.username}});
+				console.log(res.data); // Log the response data
+			} catch (err) {
+				console.log(err);
+			}
+		}
+
       }
-	}
-	},
+	,
 	mounted() {
 		this.refresh()
 	}
@@ -62,8 +64,8 @@ export default {
         </form> 
 	</div>
 	<div>
-	  <input v-model="username" placeholder="Enter username">
-	  <button @click="getProfile">Get Profile</button>
+		<input v-model="username" placeholder="Enter username">
+		<button @click="getProfile">Get Profile</button>
 	</div>
 </template>
 
