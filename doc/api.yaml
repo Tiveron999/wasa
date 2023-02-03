@@ -882,16 +882,13 @@ paths:
         content:
           application/json:
             schema:
-              description: User details for the login
-              type: object
-              properties:
-                name:
-                  type: string
-                  example: Maria
-                  pattern: "^.*?$"
-                  description: User details for the login
-                  minLength: 3
-                  maxLength: 16
+              type: string
+              description: username chosen by user
+              example: "John5_doe7"
+              pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$" # all alphanumeric characters and the underscores are accepted, with length 6-15
+              # (range is 6-15 for the username length since I forced the first character to be [A-Za-z], meaning it has to be a letter)
+              minLength: 6
+              maxLength: 15
         required: true
       responses:
         '201':
