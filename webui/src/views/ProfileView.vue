@@ -87,4 +87,12 @@ img {
   height: 100%;
 }
 
+button {
+  width: 5rem;
+  height: 2rem;
+  border-radius: 8px;
+  background-color: rgb(255, 255, 75);
+  text-align: center;
+}
+
 </style>
