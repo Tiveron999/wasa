@@ -2,13 +2,22 @@ package api
 
 import (
 	"encoding/json"
+	"net/http"
+
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
 	"github.com/julienschmidt/httprouter"
-	"net/http"
 )
 
 func (rt *_router) uploadPhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	// Read the new content for the photo from the request body.
+	/*userId := r.Header.Get("userId")
+	imageType := r.Header.Get("imageType")
+	photoId := ps.ByName("photoId")
+
+	url := fmt.Sprintf("/images/users/%s/%s.%s", userId, photoId, imageType)
+	w.Header().Set("Content-Type", "image/"+imageType)
+	http.ServeFile(w, r, url)*/
+
 	var photo Photo
 	err := json.NewDecoder(r.Body).Decode(&photo)
 	if err != nil {

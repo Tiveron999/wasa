@@ -4,6 +4,7 @@ export default {
 		return {
 			errormsg: null,
 			loading: false,
+			profileLink: ''
 		}
 	},
 	methods: {
@@ -40,12 +41,23 @@ export default {
 		} catch (error) {
 		  console.error(error);
 		}
-	  }
+	  },
+	  profileLink() {
+      if (this.isLoggedIn) {
+        return `/users/${localStorage.getItem('userId')}/profile`
+      } else {
+        return '/users/:user_id/profile'
+      }
 	},
 	mounted() {
 		this.refresh()
-	}
-}
+	},
+	/*created () {
+    // Get the current login status from local storage
+    this.isLoggedIn = localStorage.getItem('isLoggedIn') || false
+  },*/
+}}
+
 </script>
 
 <template>
