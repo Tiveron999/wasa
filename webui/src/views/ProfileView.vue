@@ -12,7 +12,7 @@ export default {
 		async refresh() {
 			this.loading = true;
 			this.errormsg = null;
-			console.log(localStorage.getItem('userId'))
+			// console.log(localStorage.getItem('userId'))
 			try {
 				let response = await this.$axios.get("/context");
 				this.users = response.data;

@@ -3,22 +3,18 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 <script>
 export default {
-  computed: {
-    profileLink() {
-      if (this.isLoggedIn) {
-        return `/users/${localStorage.getItem('userId')}/profile`
-      } else {
-		console.log(localStorage.getItem('isLoggedIn'));
-        return '/users/:user_id/profile'
-      }
-    }
-  },
-  data() {
-    return {
-      isLoggedIn: localStorage.getItem('isLoggedIn') === 'true'
-    }
-  }
+	methods: {
+		updateProfileLink() {
+			if (localStorage.getItem('isLoggedIn')) {
+			this.profileLink = `/users/${localStorage.getItem('userId')}/profile`;
+			} else {
+			this.profileLink = '/users/:user_id/profile';
+			}
+		}
+},
+
 }
+
 </script>
 
 <template>
@@ -57,7 +53,7 @@ export default {
 							</RouterLink>
 						</li>
 						<li class="nav-item">
-							<RouterLink :to="profileLink" class="nav-link">
+							<RouterLink to="#" @click="updateProfileLink" class="nav-link">
 								<svg class="feather"><use href="/feather-sprite-v4.29.0.svg#instagram"/></svg>
 								Profile
 							</RouterLink>
