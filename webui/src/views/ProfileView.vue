@@ -113,6 +113,10 @@ export default {
 		this.selectedImage = index;
 		this.show = true;
 	},
+		hideModal(index) {
+		this.selectedImage = index;
+		this.show = false;
+	},
 	  /*profileLink() {
       if (this.isLoggedIn) {
         return `/users/${localStorage.getItem('userId')}/profile`
@@ -129,12 +133,6 @@ export default {
   },*/
 }
 } 
-
-document.addEventListener("contextmenu", (event) => {
-  this.show = false;
-  event.preventDefault();
-});
-
 
 </script>
 
@@ -183,7 +181,7 @@ document.addEventListener("contextmenu", (event) => {
 			</div> 
 		</div>
 		<div id="Modal" v-if="show">
-			<img :src="images[selectedImage]" />
+			<img :src="images[selectedImage]" @click="hideModal(index)" />
 		</div>     
 
 	
@@ -206,12 +204,6 @@ img {
 	float: left;
 	margin: 0.1% 0.1%;
 }
-
-/*#image-container:hover .img {
-	width: 100vw !important;
-	height: 100vh !important;
-	object-fit: contain !important;
-}*/
 
 .image-row {
 	display: flex;
