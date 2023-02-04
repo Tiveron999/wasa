@@ -44,13 +44,16 @@ window.onmousemove = e => handleOnMove(e);
 window.ontouchmove = e => handleOnMove(e.touches[0]);
 */
 
+
 export default {
 	data: function() {
 		return {
 			errormsg: null,
 			loading: false,
 			profileLink: '',
-			images: []
+			images: [],
+			show: false,
+    		selectedImage: null
 		}
 	},
 	methods: {
@@ -89,13 +92,15 @@ export default {
 		}
 	  },
 	  async uploadImage2(event) {
-      const files = event.target.files;
-      for (let i = 0; i < files.length; i++) {
-        const reader = new FileReader();
-        reader.readAsDataURL(files[i]);
-        reader.onload = () => {
-          this.images.push(reader.result);
-        };
+		const formData = new FormData();
+		const files = event.target.files;
+		for (let i = 0; i < files.length; i++) {
+			formData.append('image', files[i]);
+			const reader = new FileReader();
+			reader.readAsDataURL(files[i]);
+			reader.onload = () => {
+			this.images.push(reader.result);
+			};
 	  }
 	  try {
 		  const response = await this.$axios.post("/users/:user_id/photos/:photo_id", formData);
@@ -104,13 +109,17 @@ export default {
 		  console.error(error);
 		}
 	},
-	  profileLink() {
+		showModal(index) {
+		this.selectedImage = index;
+		this.show = true;
+	},
+	  /*profileLink() {
       if (this.isLoggedIn) {
         return `/users/${localStorage.getItem('userId')}/profile`
       } else {
         return '/users/:user_id/profile'
       }
-	},
+	},*/
 	mounted() {
 		this.refresh()
 	},
@@ -118,7 +127,14 @@ export default {
     // Get the current login status from local storage
     this.isLoggedIn = localStorage.getItem('isLoggedIn') || false
   },*/
-}}
+}
+} 
+
+document.addEventListener("contextmenu", (event) => {
+  this.show = false;
+  event.preventDefault();
+});
+
 
 </script>
 
@@ -153,16 +169,23 @@ export default {
   <img class="image" src="https://images.unsplash.com/photo-1495805442109-bf1cf975750b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
   <img class="image" src="https://images.unsplash.com/photo-1548021682-1720ed403a5b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
   <img class="image" src="https://images.unsplash.com/photo-1496753480864-3e588e0269b3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2134&q=80" draggable="false" />
-   -->
-   		
+   
+-->
+   	
 		<div id="image-container"> 
 			<form>
-			<input type="file" @change="uploadImage2"/>
-		</form>
+				<input type="file" @change="uploadImage2"/>
+			</form>
+			<br>Here are the uploaded images: <br>
+	
 			 <div class="image-row">
-		<img v-for="(image, index) in images" :key="index" :src="image" :draggable="false" style="margin-bottom: 5px"/>
+		<img v-for="(image, index) in images" :key="index" :src="image" :draggable="false" @click="showModal(index)"/>
 			</div> 
 		</div>
+		<div id="Modal" v-if="show">
+			<img :src="images[selectedImage]" />
+		</div>     
+
 	
 </template>
 
@@ -177,19 +200,25 @@ button {
 }
 
 img {
-  object-fit: cover;
-  width: 33%;
-  height: auto;
-  float: left;
-  margin: 0.1% 0.1%;
+	object-fit: cover;
+	width: 33%;
+	height: 300px;
+	float: left;
+	margin: 0.1% 0.1%;
 }
 
+/*#image-container:hover .img {
+	width: 100vw !important;
+	height: 100vh !important;
+	object-fit: contain !important;
+}*/
+
 .image-row {
-  display: flex;
-  flex-wrap: wrap;
-  float: left;
-  width: 100%;
-  overflow: auto;
+	display: flex;
+	flex-wrap: wrap;
+	float: left;
+	width: 100%;
+	overflow: auto;
 }
 
 #image-container {
@@ -200,6 +229,35 @@ img {
   margin: 0 auto;
   display: inline-block; 
   user-select: none;
+}
+
+#Modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+#Modal img {
+	object-fit: contain;
+	margin: auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 50%;
+	height: auto;
+	max-width: 80%;
+  	max-height: 80%;
 }
 
 /*

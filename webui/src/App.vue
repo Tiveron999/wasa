@@ -12,6 +12,22 @@ export default {
 			}
 		}
 },*/
+computed: {
+    profileUrl() {
+      // return the URL with the actual user id
+      return `/users/${this.userId}/profile`;
+    }
+  },
+  data() {
+    return {
+      userId: null
+    };
+  },
+  created() {
+    // get the user id from local storage
+    this.userId = localStorage.getItem("userId")
+	console.log(this.userId)
+  },
 
 }
 
@@ -53,7 +69,7 @@ export default {
 							</RouterLink>
 						</li>
 						<li class="nav-item">
-							<RouterLink to="/users/:user_id/profile" class="nav-link">
+							<RouterLink :to="profileUrl" class="nav-link">
 								<svg class="feather"><use href="/feather-sprite-v4.29.0.svg#instagram"/></svg>
 								Profile
 							</RouterLink>
