@@ -157,9 +157,7 @@ export default {
             Profile
 			</span>
         </h6>
-		<ul>
-			<li> profile </li>
-		</ul>
+		
 	</div>
 	<!-- <div id="image-track" data-mouse-down-at="0" data-prev-percentage="0">   -->
  <!--  <img class="image" src="https://images.unsplash.com/photo-1610194352361-4c81a6a8967e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1674&q=80" draggable="false" />
@@ -171,10 +169,19 @@ export default {
 -->
    	
 		<div id="image-container"> 
+			<h5>
+				<span id = "type" class = "normal">
+			Use the button below to add images to your profile.
+				</span>
+			</h5>
 			<form>
 				<input type="file" @change="uploadImage2"/>
 			</form>
-			<br>Here are the uploaded images: <br>
+			<h5>
+				<span id = "type" class = "normal">
+				<br><br>Here are the uploaded images: <br><br>
+				</span>
+			</h5>
 	
 			 <div class="image-row">
 		<img v-for="(image, index) in images" :key="index" :src="image" :draggable="false" @click="showModal(index)"/>

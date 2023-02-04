@@ -158,19 +158,20 @@ h5, .h5 {
   font-size: 1.25rem;
 }
 
-h6, .h6 {
-  font-size: 1rem;
-}
-/*
-h6 {
-  color: white;
-  font-family: "Rubik", sans-serif;
-  font-size: clamp(2em, 2vw, 4em);
-  font-weight: 400;
+h5 > .normal {
+ 
+  color: var(--bs-orange);
+  font-size: 12;
+  /*font-weight: 400;*/
   margin: 0px;
   padding: 20px;
   text-align: center;
-*/
+}
+
+h6, .h6 {
+  font-size: 1rem;
+}
+
 h6 > .special {
  
     font-weight: 600;
