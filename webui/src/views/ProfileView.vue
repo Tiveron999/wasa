@@ -171,7 +171,7 @@ export default {
 		<div id="image-container"> 
 			<h5>
 				<span id = "type" class = "normal">
-			Use the button below to add images to your profile.
+				<br>Use the button below to add images to your profile.<br>
 				</span>
 			</h5>
 			<form>
@@ -179,7 +179,8 @@ export default {
 			</form>
 			<h5>
 				<span id = "type" class = "normal">
-				<br><br>Here are the uploaded images: <br><br>
+					<br><br>Click on an image to view it in fullscreen mode, click on it again to return to the profile page.<br><br>
+					<br>Here are the uploaded images: <br>
 				</span>
 			</h5>
 	
