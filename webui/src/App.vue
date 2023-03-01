@@ -19,7 +19,9 @@ export default {
       // return the URL with the actual user id
       return `/users/${this.userId}/profile`;
     }
+<<<<<<< HEAD
   },*/
+
   data() {
     return {
       userId: null
@@ -74,6 +76,7 @@ export default {
 							<RouterLink to="/users/:user_id/profile" @click="updateProfileLink" class="nav-link"> 
 							<!-- <router-link class="nav-link" :to="{ name: 'Profile', params: { user_id: localStorage.getItem('userId')}}"> </router-link> 
 							<RouterLink :to="{ name: 'Profile', params: { user_id: localStorage.getItem('userId')}}" class="nav-link"> -->
+
 								<svg class="feather"><use href="/feather-sprite-v4.29.0.svg#instagram"/></svg>
 								Profile
 							</RouterLink>

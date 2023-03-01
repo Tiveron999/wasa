@@ -5,6 +5,8 @@ import ProfileView from '../views/ProfileView.vue'
 import SearchView from '../views/SearchView.vue'
 
 
+
+
 localStorage.clear();
 // Initialize the variables
 localStorage.getItem('isLoggedIn') === 'true' || false,
@@ -12,9 +14,6 @@ localStorage.getItem('username') || '',
 localStorage.getItem('userId') || ' '
 
 
-const User = {
-	props: ['user_id'],
-	template: '<div>{{ user_id }}</div>'}
 
 const router = createRouter({
 	history: createWebHashHistory(import.meta.env.BASE_URL),
