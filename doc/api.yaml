@@ -1,0 +1,1185 @@
+openapi: 3.0.0
+info:
+  title: WASAPhoto
+  description: |
+    This API allows you to keep in touch with your friends by sharing photos of special moments. 
+    You can upload your photos directly from your PC, and they will be visible to everyone following you.
+  version: 0.0.1
+tags:
+  - name: users
+    description: Everything regarding the specific users
+  - name: photos
+    description: Everything regarding the photos uploaded by the users
+  - name: profile
+    description: Everything regarding the profile of the users
+    
+paths:
+  /users/{user_id}:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
+    get:
+      operationId: getUserInfo
+      summary: obtain the user's information by using the ID
+      description: |
+        Return the user information for the token bearer which includes 
+        their username, ID and profile picture.
+      tags:
+        - users
+      responses:
+        "200":
+          description: user info shown
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user-info"
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError" }
+    put:
+      operationId: setMyUserName
+      summary: create or change the username of the token bearer
+      description: | 
+        Create the username indicated if not present in the database, otherwise change it to 
+        the one provided so that the token bearer will be recognized by the new username
+      tags:
+        - users
+      requestBody:
+        description: username to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              description: username chosen by user
+              example: "John5_doe7"
+              pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$" # all alphanumeric characters and the underscores are accepted, with length 6-15
+              # (range is 6-15 for the username length since I forced the first character to be [A-Za-z], meaning it has to be a letter)
+              minLength: 6
+              maxLength: 15
+      responses:
+        "200": 
+          description: An existing username is changed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user-info"
+          #links:
+           # GetUserByUserId:
+            #  $ref: '#/components/links/GetUserByUserId'
+        "201":
+          description: A new username is created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user-info"
+        #  links:
+         #   GetUserByUserId:
+          #    $ref: '#/components/links/GetUserByUserId'          
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+  
+  
+  /users:
+    parameters:
+    - name: username
+      in: query
+      required: true
+      description: search users by username
+      schema:
+        type: string
+        description: string that is searched in the database of usernames
+        example: "John5_doe7"  
+        pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$" # all alphanumeric characters and the underscores are accepted, with length 6-15
+        # (range is 6-15 for the username length since I forced the first character to be [A-Za-z], meaning it has to be a letter)
+        minLength: 6
+        maxLength: 15
+    get:
+      operationId: getSearchedUserInfo
+      summary: obtain the searched user's information 
+      description: |
+        Return the profile information for the searched user which includes 
+        their photos in reverse chronological order and the number of uploaded photos, their followers and following.
+      tags:
+        - users
+      responses:
+        "200":
+          description: Request accepted, user profile shown
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/profile-info"
+        #  links:
+         #   GetUserByUserId:
+          #    $ref: '#/components/links/GetUserByUserId'
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+
+
+  /users/{user_id}/feed:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
+    - name: laterthan
+      in: query
+      description: the user wants to see photos uploaded after this date
+      schema:
+        type: string
+        format: date-time
+        pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\+[0-9]{2}:[0-9]{2}"
+        description: date-time string that is passed as parameter to view certain pictures
+        minLength: 20
+        maxLength: 20
+    # - name: filtering
+    #  in: query
+    #  style: deepObject
+    #  allowReserved: true
+    #  description: this is how the images will be filtered according to whom the user follows
+    #  schema:
+    #    type: object
+    #    description: |
+    #      It's necessary to filter both for who uploaded the picture and the date of when it was posted since
+    #      it could be posted by someone the user follows but the image is not in the range of dates that are
+    #      being viewed by the current limited number of photos presented.
+    #    properties:
+    #      uploaders:
+    #        type: array
+    #        description: this is the list of following of the token bearer, the only people whose photos I show in the feed
+    #        minItems: 0
+    #        maxItems: 200
+    #        items:
+    #          type: string
+    #          pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$"
+    #          minLength: 1
+    #          maxLength: 50
+    #      date-times:
+    #        type: array
+    #        description: this is the list of dates accepted (range)
+    #        minItems: 1
+    #        maxItems: 2
+    #        items:
+    #          type: string
+    #          format: date-time
+    #         pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\+[0-9]{2}:[0-9]{2}"
+    #          minLength: 20
+    #          maxLength: 20
+    - name: limit
+      in: query
+      description: The numbers of images to show (the user can see more by scrolling)
+      schema:
+        type: integer
+    - name: offset
+      in: query
+      description: The number of images to skip before starting to see new ones (so that scrolling will produce new pictures)
+      schema:
+        type: integer
+      
+    get:
+      operationId: getMyStream
+      summary: show the stream of photos (feed)
+      description: |
+        Shows a stream of photos (images) in reverse chronological order, 
+        with information about when each photo was uploaded (date and time) and how many likes and comments it has.
+      tags:
+        - users
+      responses:
+        "200":
+          description: |
+            Request accepted, feed shown
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/feed-info"}
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+
+
+  /users/{user_id}/photos:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
+    - name: laterthan
+      in: query
+      description: the user wants to see photos uploaded after this date
+      schema:
+        type: string
+        format: date-time
+        pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\+[0-9]{2}:[0-9]{2}"
+        description: date-time string that is passed as parameter to view certain pictures
+        minLength: 20
+        maxLength: 20
+    - name: limit
+      in: query
+      description: The numbers of images to show (the user can see more by scrolling)
+      schema:
+        type: integer
+    - name: offset
+      in: query
+      description: The number of images to skip before starting to see new ones (so that scrolling will produce new pictures)
+      schema:
+        type: integer
+    get:
+      operationId: getUserPhotos
+      summary: show the user's uploaded photos
+      description: |
+        obtain the list of photos for the specified user
+      tags:
+        - photos
+      responses:
+        "200":
+          description: |
+            An array of objects, each one containing information about one uploaded photo.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/photos-list"}
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+
+
+  /users/{user_id}/photos/{photo_id}:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
+    - name: photo_id
+      in: path
+      required: true
+      description: this is the photo id
+      schema:
+        type: integer
+        description: e.g., /photos/1234
+    get:
+      operationId: getPhotoInfo
+      summary: obtain the photo's information
+      description: |
+        Return all the photo's information which includes when each photo was uploaded (date and time) and how many likes and comments it has.
+      tags:
+        - photos
+      responses:
+        "200":
+          description: Request accepted, information obtained
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/photo-info"
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+    post:
+      operationId: uploadPhoto
+      summary: post a new photo
+      description: |
+        New photo is now present on the user's profile (at the top).
+      tags:
+        - photos
+      requestBody:
+        description: Photo to be uploaded
+        required: true
+        content:
+          image/png:
+            schema:
+              type: string
+              format: binary
+              description: image to upload
+              minLength: 1
+              maxLength: 500
+      responses:
+        "201":
+          description: new photo uploaded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/photo-info"
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+    delete:
+      operationId: deletePhoto
+      summary: delete a photo 
+      description: Remove a photo from the list of uploaded photos of the token bearer
+      tags:
+        - photos
+      responses:
+        "204": { description: image deleted successfully }
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+
+
+  /users/{user_id}/photos/{photo_id}/likes:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
+    - name: photo_id
+      in: path
+      required: true
+      description: this is the photo id
+      schema:
+        type: integer
+        description: e.g., /photos/1234
+    get:
+      operationId: getLikesList
+      summary: obtain the list of likes
+      description: |
+        Return the list of all the users that liked this photo
+      tags:
+        - photos
+      responses:
+        "200":
+          description: Request accepted, likes listed in content
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/likes-list"}
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+  
+
+  /users/{user_id}/photos/{photo_id}/likes/{liker_id}:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
+    - name: photo_id
+      in: path
+      required: true
+      description: this is the photo id
+      schema:
+        type: integer
+        description: e.g., /photos/1234
+    - name: liker_id
+      in: path
+      required: true
+      description: this is the id of the user that put a like on the picture
+      schema:
+        type: integer
+        description: e.g., /likes/1234
+    put:
+      operationId: likePhoto
+      summary: place a like
+      description: |
+        place a like on the current photo by the token bearer
+      tags:
+        - photos
+      responses:
+        "201":
+          description: like placed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user-info"
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+    delete:
+      operationId: unlikePhoto
+      summary: remove the like 
+      description: remove the like from the current photo by the token bearer
+      tags:
+        - photos
+      responses:
+        "204": { description: like removed successfully }
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+
+
+  /users/{user_id}/photos/{photo_id}/comments:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
+    - name: photo_id
+      in: path
+      required: true
+      description: this is the photo id
+      schema:
+        type: integer
+        description: e.g., /photos/1234
+    get:
+      operationId: getCommentsList
+      summary: obtain list of comments 
+      description: |
+        Return all comments that are placed on this photo by all users
+      tags:
+        - photos
+      responses:
+        "200":
+          description: Request accepted, all comments listed in content
+          content:
+            application/json:
+              schema:
+                type: array
+                description: list of comments under this picture
+                maxItems: 20
+                minItems: 0
+                items:
+                  $ref: "#/components/schemas/comments-list"
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+    post:
+      operationId: commentPhoto
+      summary: post a new comment 
+      description: |
+        create a new comment for this photo from the token bearer
+      tags:
+        - photos
+      responses:
+        "201":
+          description: new comment created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/comments-info"
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+
+  
+  /users/{user_id}/photos/{photo_id}/comments/{comment_id}:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
+    - name: photo_id
+      in: path
+      required: true
+      description: this is the photo id
+      schema:
+        type: integer
+        description: e.g., /photos/1234
+    - name: comment_id
+      in: path
+      required: true
+      description: this is the comment id
+      schema:
+        type: integer
+        description: e.g., /comments/1234
+    get:
+      operationId: getCommentInfo
+      summary: obtain information about a comment
+      description: |
+        Return all the information about a comment posted
+      tags:
+        - photos
+      responses:
+        "200":
+          description: Request accepted, all comments info in content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/comments-info"
+
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+    delete:
+      operationId: uncommentPhoto
+      summary: delete a comment
+      description: Remove the comment placed by the token bearer on this photo
+      tags:
+        - photos
+      responses:
+        "204": { description: comment deleted successfully }
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+
+  
+  /users/{user_id}/profile:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
+    get:
+      operationId: getUserProfile
+      summary: obtain the profile information for specified user
+      description: |
+        Show the user's photos (in reverse chronological order), 
+        how many photos have been uploaded, and the user's followers and following.
+      tags:
+        - profile
+      responses:
+        "200":
+          description: |
+            An array of objects, each one containing information about this 
+            user's profile.  
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/profile-info"
+          #links:
+           # GetUserByUserId:
+            #  $ref: '#/components/links/GetUserByUserId'
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+
+
+# /users/{user_id}/profile/picture:
+#  parameters:
+#  - name: user_id
+#    in: path
+#    required: true
+#    description: this is the user id
+#    schema:
+#      type: integer
+#      description: e.g., /users/1234
+#  put:
+#    operationId: uploadProfilePic
+#    summary: Upload a profile picture
+#    requestBody:
+#      description: Photo to be uploaded as the profile picture (not mandatory)
+#      content:
+#        image/png:
+#          schema:
+#           type: string
+#            format: binary
+#            description: picture to be uploaded
+#            minLength: 1
+#            maxLength: 500
+#    description: |
+#      Image to be uploaded as the profile picture
+#    tags:
+#     - profile
+#    responses:
+#      "200":
+#        description: profile photo successfully updatedo updated
+#        content:
+#         application/json:
+#            schema:
+#              $ref: "#/components/schemas/photo-info"
+#      "201":
+#        description: profile photo successfully added
+#       content:
+#         application/json:
+#            schema:
+#              $ref: "#/components/schemas/photo-info"
+#      "400": { $ref: "#/components/responses/BadRequest"}
+#      "401": { $ref: "#/components/responses/Unauthorized"}
+#      "403": { $ref: "#/components/responses/Forbidden"}
+#      "404": { $ref: "#/components/responses/Not-Found"}
+#      "500": { $ref: "#/components/responses/InternalServerError"}
+
+  
+  /users/{user_id}/following/{following_id}:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
+    - name: following_id
+      in: path
+      required: true
+      description: this is the following user id
+      schema:
+        type: integer
+        description: e.g., /following/1234
+    put:
+      operationId: followUser
+      summary: follow a new user
+      description: |
+        the token bearer now follows the specified user 
+      tags:
+        - profile
+      responses:
+        "201":
+          description: new following user added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user-info"
+         # links:
+          #    GetUserByUserId:
+           #     $ref: '#/components/links/GetUserByUserId'
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+    get:
+      operationId: getFollowing
+      summary: list all followed users
+      description: |
+        Obtain the list of all followed users
+      tags:
+        - profile
+      responses:
+        "200":
+          description: |
+            list of followed users shown
+          content:
+            application/json:
+              schema:
+                type: array
+                description: list of users followed
+                maxItems: 500
+                minItems: 0
+                items:
+                  $ref: "#/components/schemas/following-list"
+          #links:
+           # GetUserByUserId:
+            #  $ref: '#/components/links/GetUserByUserId'
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+    delete:
+      operationId: unfollowUser
+      summary: unfollow a user
+      description: Remove the specified user from the following list of the token bearer
+      tags:
+        - profile
+      responses:
+        "204": { description: user removed from following list}
+        "404": { $ref: "#/components/responses/Not-Found"}
+         # links:
+          #  GetUserByUserId:
+           #   $ref: '#/components/links/GetUserByUserId'
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+
+  
+  /users/{user_id}/followers/{follower_id}:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
+    - name: follower_id
+      in: path
+      required: true
+      description: this is the follower id
+      schema:
+        type: integer
+        description: e.g., /followers/1234
+    get:
+      operationId: getFollowers
+      summary: list all followers for the specified user
+      description: |
+        Obtain the list of all users that follow the token bearer
+      tags:
+        - profile
+      responses:
+        "200":
+          description: |
+            A list of followers of the token bearer
+          content:
+            application/json:
+              schema:
+                type: array
+                description: list of users that follow the token bearer
+                maxItems: 500
+                minItems: 0
+                items:
+                  $ref: "#/components/schemas/followers-list"
+         # links:
+          #  GetUserByUserId:
+           #   $ref: '#/components/links/GetUserByUserId'
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+    delete:
+      operationId: removeFollower
+      summary: remove a user from followers list
+      description: |
+        Remove the specified user from the followers list of the token bearer, so that 
+        that user is not following the token bearer anymore
+      tags:
+        - profile
+      responses:
+        "204": { description: user removed from followers list}
+        "404": { $ref: "#/components/responses/Not-Found"}
+          #links:
+           # GetUserByUserId:
+            #  $ref: '#/components/links/GetUserByUserId'
+          
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+
+
+  /users/{user_id}/banned/{banned_id}:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
+    - name: banned_id
+      in: path
+      required: true
+      description: this is the banned user id
+      schema:
+        type: integer
+        description: e.g., /banned/1234
+    get:
+      operationId: getBannedList
+      summary: list all banned users
+      description: |
+        Obtain the list of all the users that were banned by the token bearer.
+      tags:
+        - users
+      responses:
+        "200":
+          description: |
+            An object containing all of the users banned by the token bearer
+          content:
+            application/json:
+              schema:
+                type: array
+                description: list of banned users
+                maxItems: 20
+                minItems: 0
+                items:
+                  $ref: "#/components/schemas/banned-users"
+          #links:
+           # GetUserByUserId:
+            #  $ref: '#/components/links/GetUserByUserId'
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+    put:
+      operationId: banUser
+      summary: ban a new user
+      description: |
+        Ban the indicated user, so that they are not able to see anything on
+        the token bearer's profile aside from the username.
+      tags:
+        - users
+      responses:
+        "201":
+          description: banned a user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user-info"
+         # links:
+          #  GetUserByUserId:
+           #   $ref: '#/components/links/GetUserByUserId'          
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+    delete:
+      operationId: unbanUser
+      summary: unban a user
+      description: unban a previously-and-until-now-currently banned user
+      tags:
+        - users
+      responses:
+        "204": { description: user unbanned successfully}
+        "404": { $ref: "#/components/responses/Not-Found"}
+         # links:
+          #  GetUserByUserId:
+           #   $ref: '#/components/links/GetUserByUserId'
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+
+                  
+  /session:
+    post:
+      tags: ["login"]
+      summary: Logs in the user
+      description: |-
+        If the user does not exist, it will be created,
+        and an identifier is returned.
+        If the user exists, the user identifier is returned.
+      operationId: doLogin
+      requestBody:
+        description: User details
+        content:
+          application/json:
+            schema:
+              type: string
+              description: username chosen by user
+              example: "John5_doe7"
+              pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$" # all alphanumeric characters and the underscores are accepted, with length 6-15
+              # (range is 6-15 for the username length since I forced the first character to be [A-Za-z], meaning it has to be a letter)
+              minLength: 6
+              maxLength: 15
+        required: true
+      responses:
+        '201':
+          description: User log-in action successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/login-info"
+      "security": [] # login is not needed to perform the login
+
+components:
+  schemas:
+    profile-info:
+      type: object
+      description: the information about the profile
+      properties:
+        username:
+          type: string
+          description: username of the user's profile
+          example: "John5_doe7"
+          pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$"
+          minLength: 6
+          maxLength: 15
+
+        user-id:
+          type: integer
+          description: user id
+
+        photos:
+          type: array
+          description: uploaded photos
+          maxItems: 200
+          minItems: 0
+          items:
+            $ref: "#/components/schemas/photo-info"
+
+        num-photos:
+          type: integer
+          description: number of uploaded photos
+        
+        followers: {$ref: "#/components/schemas/followers-list"}
+        
+        following: {$ref: "#/components/schemas/following-list"}
+
+    photo-info:
+      type: object
+      description: the information about the photo
+      properties:
+        photo-id:
+          type: integer
+          description: photo id
+        
+        photo-url:
+          type: string
+          description: URL of the picture
+          pattern: '(www|http:|https:)+[^\s"]+[\w]'
+          # first part checks that the URL starts with "http", "https" or "www"; the rest is just for allowing all characters in the 
+          # URL, except whitespaces and quotation marks.
+          minLength: 1
+          maxLength: 100
+
+        creator:
+          type: integer
+          description: user id of the poster of the photo
+
+        date-time: 
+          type: string
+          format: date-time
+          pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\+[0-9]{2}:[0-9]{2}"
+          description: upload date and time of the photo
+          # example: "2022-12-25T00:07:59+00:00"
+          minLength: 20
+          maxLength: 20
+
+        num-likes:
+          type: integer
+          description: number of likes on the photo
+        
+        num-comments:
+          type: integer
+          description: number of comments on the photo
+
+        # profile-pic:
+        #  type: string
+        #  description: URL of profile picture of this user
+        #  pattern: '(www|http:|https:)+[^\s"]+[\w]'
+        #  # first part checks that the URL starts with "http", "https" or "www"; the rest is just for allowing all characters in the 
+        #  # URL, except whitespaces and quotation marks.
+        #  minLength: 0
+        #  maxLength: 100
+
+    user-info:
+      type: object
+      description: the information about the user
+      properties:
+        user-id:
+          type: integer
+          description: user id
+
+        username:
+          type: string
+          description: username of the user's profile
+          example: "John5_doe7"
+          pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$"
+          minLength: 6
+          maxLength: 15
+
+    feed-info:
+      type: object
+      description: the feed object
+      properties:
+        photos:
+          type: array
+          description: photos from followed users
+          maxItems: 150
+          minItems: 0
+          items:
+            $ref: "#/components/schemas/photo-info"
+
+    photos-list:
+      type: object
+      description: the photos of a user
+      properties:
+        photos:
+          type: array
+          description: uploaded photos from the specified user
+          maxItems: 100
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/photo-info"
+
+    likes-list:
+      type: object
+      description: the likes list for a photo
+      properties:
+        photo-id:
+          type: integer
+          description: id of the photo that's being liked
+
+        likes:
+          type: array
+          description: users that liked this picture
+          maxItems: 200
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/likes-info"
+
+    likes-info:
+      type: object
+      description: the information of a like
+      properties:
+        like-id:
+          type: integer
+          description: id of the like
+
+        liker:
+          type: string
+          description: username of the person that liked this picture
+          pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$"
+          minLength: 6
+          maxLength: 15
+
+    comments-list:
+      type: object
+      description: the comments list for a photo
+      properties:
+        photo-id:
+          type: integer
+          description: id of the photo that's being commented on
+
+        comments:
+          type: array
+          description: comments posted on the picture and their info 
+          maxItems: 20
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/comments-info"
+    
+    comments-info:
+      type: object
+      description: the information of a comment
+      properties:
+        comment-id:
+          type: integer
+          description: id of the comment that's being commented
+
+        poster:
+          type: string
+          description: username of the person that commented this string on the picture
+          pattern: "^[A-Za-z][A-Za-z0-9_]{5,14}$"
+          minLength: 6
+          maxLength: 15
+
+        comment:
+          type: string
+          description: comment posted on the picture
+          pattern: "^[a-zA-Z0-9 \\.,:;\n]*$" # all "normal" characters allowed, including line-feed
+          minLength: 1
+          maxLength: 500
+        
+        date-time: 
+          type: string
+          format: date-time
+          pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\+[0-9]{2}:[0-9]{2}"
+          description: date and time of when the comment was posted
+          # example: "2022-12-25T00:07:59+00:00"
+          minLength: 20
+          maxLength: 20
+
+    following-list:
+      type: object
+      description: the list of followings of a user
+      properties:
+        users:
+          type: array
+          description: users that the token bearer is following
+          maxItems: 500
+          minItems: 0
+          items:
+            $ref: "#/components/schemas/user-info"
+
+    followers-list:
+      type: object
+      description: the list of followers of a user
+      properties:
+        users:
+          type: array
+          description: list of users that follow the token bearer
+          maxItems: 500
+          minItems: 0
+          items:
+            $ref: "#/components/schemas/user-info"
+         
+    banned-users:
+      type: object
+      description: the list of banned users of a user
+      properties:
+        users:
+          type: array
+          description: list of users the token bearer banned 
+          maxItems: 20
+          minItems: 0
+          items:
+            $ref: "#/components/schemas/user-info"
+    
+    login-info:
+      type: object
+      description: login successful
+      properties:
+        identifier:
+          # change here if you decide to use an integer
+          # or any other type of identifier
+          type: integer
+          # example: "abcdef012345"
+          # pattern: "^.*?$"
+          description: identifier
+          # minLength: 3
+          # maxLength: 16
+            
+
+  #links:
+   # GetUserByUserId:  
+    #  operationId: getUserInfo
+     # parameters:
+      #  user-id: '$response.body#/user-id'
+      #description: >
+        #The user-id value returned in the response can be used as
+        #the user-id parameter in `GET /users/{user_id}`
+
+
+  responses:
+    BadRequest:
+      description: The request was not compliant with the documentation (e.g. missing fields, etc).
+    
+    Unauthorized:
+      description: Authentication is required to complete this action. The access token is missing or invaliker_id. The user should log in.
+    
+    Forbidden:
+      description: This action is not allowed (e.g. the token bearer was banned by the user they were trying to follow, etc).
+
+    Not-Found:
+      description: The resource could not be found.
+
+    InternalServerError:
+      description: The server encountered an internal error. Further info in server logs.
+
+  securitySchemes:
+    BearerAuthorization:         
+      type: http
+      scheme: bearer
+      bearerFormat: JWT 
+    
+security: # Apply the security globally to all operations
+  - BearerAuthorization: []      
