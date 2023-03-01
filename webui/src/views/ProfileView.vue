@@ -124,12 +124,34 @@ export default {
         return '/users/:user_id/profile'
       }
 	},*/
+	/*fetchData () {
+      var vm = this;
+      vm.error = vm.post = null;
+      vm .loading = true;
+
+      localStorage.getItem('userId')
+	  .then(function(doc) {
+         if (doc.exists) {
+           vm.loading = false;
+         } else {
+           vm.error = "No such document!";
+         }
+       })
+       .catch(function(error) {
+           vm.error = "Error getting document:" + error;
+       });
+
+    },*/
+
 	mounted() {
 		this.refresh()
 	},
 	/*created () {
     // Get the current login status from local storage
-    this.isLoggedIn = localStorage.getItem('isLoggedIn') || false
+    // this.isLoggedIn = localStorage.getItem('isLoggedIn') || false
+	// fetch the data when the view is created and the data is
+    // already being observed
+    this.fetchData();
   },*/
 }
 } 
@@ -146,7 +168,7 @@ export default {
 					<button type="button" class="btn btn-sm btn-outline-primary" @click="refresh">
 						Refresh
 					</button>
-					
+				
 				</div>
 			</div>
 		</div>

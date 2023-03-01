@@ -3,15 +3,17 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 <script>
 export default {
-	/*methods: {
+	methods: {
 		updateProfileLink() {
+			console.log(localStorage.getItem('userId'))
 			if (localStorage.getItem('isLoggedIn')) {
-			this.profileLink = `/users/${localStorage.getItem('userId')}/profile`;
+			this.id = localStorage.getItem('userId');
+			this.$router.push({ name: 'Profile', params: { user_id: this.id } });
 			} else {
-			this.profileLink = '/users/:user_id/profile';
+			this.$router.push("/users/:user_id/profile");
 			}
 		}
-},*/
+},
 /*computed: {
     profileUrl() {
       // return the URL with the actual user id
@@ -69,8 +71,9 @@ export default {
 							</RouterLink>
 						</li>
 						<li class="nav-item">
-							<RouterLink to="/users/:user_id/profile" class="nav-link">
-							<!-- <RouterLink :to="{ name: 'Profile', params: { user_id: localStorage.getItem('userId')}}" class="nav-link"> -->
+							<RouterLink to="/users/:user_id/profile" @click="updateProfileLink" class="nav-link"> 
+							<!-- <router-link class="nav-link" :to="{ name: 'Profile', params: { user_id: localStorage.getItem('userId')}}"> </router-link> 
+							<RouterLink :to="{ name: 'Profile', params: { user_id: localStorage.getItem('userId')}}" class="nav-link"> -->
 								<svg class="feather"><use href="/feather-sprite-v4.29.0.svg#instagram"/></svg>
 								Profile
 							</RouterLink>
