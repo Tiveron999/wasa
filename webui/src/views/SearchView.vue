@@ -4,6 +4,7 @@ export default {
 		return {
 			errormsg: null,
 			loading: false,
+			username: "",
 			
 		}
 	},
@@ -65,7 +66,7 @@ export default {
 	</div>
 	<div>
 		<input v-model="username" placeholder="Enter username">
-		<button @click="getProfile">Get Profile</button>
+		<button @click="getProfile">Search</button>
 	</div>
 </template>
 

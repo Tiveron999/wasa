@@ -71,7 +71,7 @@ export default {
 			}
 			this.loading = false;
 		},
-		async uploadImage(event) {
+		/*async uploadImage(event) {
 			const file = event.target.files[0];
 			const formData = new FormData();
 			formData.append('image', file);
@@ -90,7 +90,7 @@ export default {
 		} catch (error) {
 		  console.error(error);
 		}
-	  },
+	  },*/
 	  async uploadImage2(event) {
 		const formData = new FormData();
 		const files = event.target.files;
