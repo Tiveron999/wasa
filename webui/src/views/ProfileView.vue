@@ -53,7 +53,9 @@ export default {
 			profileLink: '',
 			images: [],
 			show: false,
-    		selectedImage: null
+    		selectedImage: null,
+			followers: 0,
+      		following: 0
 		}
 	},
 	methods: {
@@ -125,7 +127,29 @@ export default {
       }
 	},*/
 	mounted() {
-		this.refresh()
+	this.refresh()
+	if (localStorage.getItem('isLoggedIn')) {
+		this.id = localStorage.getItem('userId');
+		this.$router.get("/users/:user_id/following/:following_id")
+      .then(response => {
+        this.following = response.data.following;
+		// console.log();
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+
+	  this.$router.get("/users/:user_id/followers/:follower_id")
+      .then(response => {
+        this.followers = response.data.followers;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+		}
+
 	},
 	/*created () {
     // Get the current login status from local storage
@@ -157,7 +181,7 @@ export default {
             Profile
 			</span>
         </h6>
-		
+	
 	</div>
 	<!-- <div id="image-track" data-mouse-down-at="0" data-prev-percentage="0">   -->
  <!--  <img class="image" src="https://images.unsplash.com/photo-1610194352361-4c81a6a8967e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1674&q=80" draggable="false" />
@@ -167,7 +191,12 @@ export default {
   <img class="image" src="https://images.unsplash.com/photo-1496753480864-3e588e0269b3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2134&q=80" draggable="false" />
    
 -->
-   	
+	<div>
+		<br>
+		<p>Followers: {{ followers }}</p>
+		<p>Following: {{ following }}</p>
+		<br>
+	</div>
 		<div id="image-container"> 
 			<h5>
 				<span id = "type" class = "normal">

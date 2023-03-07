@@ -58,11 +58,11 @@ export default {
             Search
 			</span>
         </h6>
-		<form action="/users/search/:username" method="get">
-            <label for="username">Username:</label><br>
-            <input type="text" id="username" name="username"><br>
+		<!-- <form action="/users/search/:username" method="get">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username">
             <input type="submit" value="Submit">
-        </form> 
+        </form> -->
 	</div>
 	<div>
 		<input v-model="username" placeholder="Enter username">
