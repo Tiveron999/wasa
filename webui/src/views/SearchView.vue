@@ -22,8 +22,14 @@ export default {
 		},
 		async getProfile() {
 			try {
-				const res = await this.$axios.get('/users', {params: {username: this.username}});
+				if (localStorage.getItem('isLoggedIn')) {
+					this.id = localStorage.getItem('userId');
+				}
+			
+				const res = await this.$axios.get('/users'); // {params: {username: this.username}}
 				console.log(res.data); // Log the response data
+				this.$router.push('/users/:user_id/profile')
+
 			} catch (err) {
 				console.log(err);
 			}
@@ -33,6 +39,7 @@ export default {
 	,
 	mounted() {
 		this.refresh()
+		
 	}
 }
 </script>

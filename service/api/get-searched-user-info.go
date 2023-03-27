@@ -16,12 +16,25 @@ func (rt *_router) getSearchedUserInfo(w http.ResponseWriter, r *http.Request, p
 	// the OpenAPI file).
 	// If one of latitude or longitude is not specified (or both), no filter will be applied.
 
-	query := r.URL.Query()
-	username := query.Get("username")
+	type searchedData struct {
+		Username string `json:"username"`
+	}
+
+	// query := r.URL.Query()
+	// username := query.Get("username")
 
 	// Request an unfiltered list of profile's info from the DB
-	profile, err := rt.db.GetSearchedUserInfo(username)
+	// profile, err := rt.db.GetSearchedUserInfo(username)
 
+	var t searchedData
+	err := json.NewDecoder(r.Body).Decode(&t)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// userID, err := rt.db.GetUserID(t.Username)
+	profile, err := rt.db.GetSearchedUserInfo(t.Username)
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the profile
 		// Note: we are using the "logger" inside the "ctx" (context) because the scope of this issue is the request.
@@ -31,10 +44,11 @@ func (rt *_router) getSearchedUserInfo(w http.ResponseWriter, r *http.Request, p
 	}
 
 	// Before sending the list to the client we need to convert it to the "frontend" type
-	var frontendProfilesInfo Profile
-	frontendProfilesInfo.ProfileFromDatabase(profile)
+	// var frontendProfilesInfo Profile
+	// frontendProfilesInfo.ProfileFromDatabase(profile)
 
-	// Send the list to the profile.
+	// Send the profile.
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(frontendProfilesInfo)
+	// w.Header().Set("Authorization:Basic", "{t}, ")
+	_ = json.NewEncoder(w).Encode(profile)
 }

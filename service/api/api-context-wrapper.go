@@ -45,7 +45,7 @@ func (rt *_router) wrap(fn httpRouterHandler) func(http.ResponseWriter, *http.Re
 	}
 }
 
-func (rt *_router) wrap2(fn httpRouterHandler) func(http.ResponseWriter, *http.Request, httprouter.Params) {
+/*func (rt *_router) wrap2(fn httpRouterHandler) func(http.ResponseWriter, *http.Request, httprouter.Params) {
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 		reqUUID, err := uuid.NewV4()
@@ -67,4 +67,4 @@ func (rt *_router) wrap2(fn httpRouterHandler) func(http.ResponseWriter, *http.R
 		// Call the next handler in chain (usually, the handler function for the path)
 		fn(w, r, ps, ctx)
 	}
-}
+}*/
