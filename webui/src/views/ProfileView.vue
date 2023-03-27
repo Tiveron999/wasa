@@ -105,7 +105,10 @@ export default {
 			};
 	  }
 	  try {
-		  const response = await this.$axios.post("/users/:user_id/photos/:photo_id", formData);
+		if (localStorage.getItem('isLoggedIn')) {
+		this.id = localStorage.getItem('userId');
+	}
+		  const response = await this.$axios.post(`/users/${this.id}/photos/:photo_id`, formData);
 		  console.log(response.data);
 		} catch (error) {
 		  console.error(error);
@@ -130,7 +133,7 @@ export default {
 	this.refresh()
 	if (localStorage.getItem('isLoggedIn')) {
 		this.id = localStorage.getItem('userId');
-		this.$router.get("/users/:user_id/following/:following_id")
+		this.$router.get(`/users/${this.id}/following/:following_id`)
       .then(response => {
         this.following = response.data.following;
 		// console.log();
@@ -140,7 +143,7 @@ export default {
       });
 
 
-	  this.$router.get("/users/:user_id/followers/:follower_id")
+	this.$router.get(`/users/${this.id}/followers/:follower_id`)
       .then(response => {
         this.followers = response.data.followers;
       })
