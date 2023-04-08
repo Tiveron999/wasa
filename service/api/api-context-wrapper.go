@@ -23,6 +23,8 @@ func (rt *_router) wrap(fn httpRouterHandler) func(http.ResponseWriter, *http.Re
 			w.WriteHeader(http.StatusUnauthorized)
 			return
 		}
+		// Add the authorization header to the request context
+		r.Header.Add("Authorization", "Bearer: "+authHeader)
 
 		reqUUID, err := uuid.NewV4()
 		if err != nil {
@@ -30,6 +32,7 @@ func (rt *_router) wrap(fn httpRouterHandler) func(http.ResponseWriter, *http.Re
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
+
 		var ctx = reqcontext.RequestContext{
 			ReqUUID: reqUUID,
 		}
@@ -45,7 +48,7 @@ func (rt *_router) wrap(fn httpRouterHandler) func(http.ResponseWriter, *http.Re
 	}
 }
 
-/*func (rt *_router) wrap2(fn httpRouterHandler) func(http.ResponseWriter, *http.Request, httprouter.Params) {
+func (rt *_router) wrap2(fn httpRouterHandler) func(http.ResponseWriter, *http.Request, httprouter.Params) {
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 		reqUUID, err := uuid.NewV4()
@@ -67,4 +70,4 @@ func (rt *_router) wrap(fn httpRouterHandler) func(http.ResponseWriter, *http.Re
 		// Call the next handler in chain (usually, the handler function for the path)
 		fn(w, r, ps, ctx)
 	}
-}*/
+}

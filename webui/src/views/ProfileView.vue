@@ -108,7 +108,8 @@ export default {
 		if (localStorage.getItem('isLoggedIn')) {
 		this.id = localStorage.getItem('userId');
 	}
-		  const response = await this.$axios.post(`/users/${this.id}/photos/:photo_id`, formData);
+		  const response = await this.$axios.post(`/users/${this.id}/photos/:photo_id`, formData, 
+		  {headers: { 'Content-Type': 'multipart/form-data', Authorization: 'Bearer ' + this.id}});
 		  console.log(response.data);
 		} catch (error) {
 		  console.error(error);

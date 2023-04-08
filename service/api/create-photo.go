@@ -42,3 +42,23 @@ func (rt *_router) uploadPhoto(w http.ResponseWriter, r *http.Request, ps httpro
 	w.Header().Set("Content-Type", "image/png")
 	http.ServeFile(w, r, dbphoto.URL)
 }
+
+/*
+	const fileInput = document.getElementById("photo");
+
+	if (fileInput.files.length > 0) {
+		const file = fileInput.files[0];
+		const reader = new FileReader();
+
+		reader.onloadend = function() {
+		// Make a request to the server to save the photo URL to the database
+		const photoUrl = reader.result;
+		const photoId = savePhotoToDatabase(photoUrl);
+
+		console.log("Photo ID: " + photoId);
+		}
+
+		reader.readAsDataURL(file);
+	}
+	}
+*/
