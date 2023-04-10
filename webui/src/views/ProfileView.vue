@@ -55,7 +55,8 @@ export default {
 			show: false,
     		selectedImage: null,
 			followers: 0,
-      		following: 0
+      		following: 0,
+			appearance: "default"
 		}
 	},
 	methods: {
@@ -94,6 +95,7 @@ export default {
 		}
 	  },*/
 	  async uploadImage2(event) {
+		this.appearance = "uploading"
 		const formData = new FormData();
 		const files = event.target.files;
 		for (let i = 0; i < files.length; i++) {
@@ -118,6 +120,7 @@ export default {
 		showModal(index) {
 		this.selectedImage = index;
 		this.show = true;
+
 	},
 		hideModal(index) {
 		this.selectedImage = index;
@@ -130,6 +133,18 @@ export default {
         return '/users/:user_id/profile'
       }
 	},*/
+	toggleLike(image) {
+      // Update the likes property of the selected image
+      image.likes = image.likes ? 0 : 1
+	  if (localStorage.getItem('isLoggedIn')) {
+		this.id = localStorage.getItem('userId');
+		this.$router.put(`/users/${this.id}/photos/{photo_id}/${this.id}/`)
+      .then(response => {})
+      .catch(error => {
+        console.log(error);
+      });
+    }
+	},
 	mounted() {
 	this.refresh()
 	if (localStorage.getItem('isLoggedIn')) {
@@ -223,20 +238,75 @@ export default {
 		</div>
 		<div id="Modal" v-if="show">
 			<img :src="images[selectedImage]" @click="hideModal(index)" />
+			<button id='heart' class='button'></button>
+	
 		</div>     
-
 	
 </template>
 
 <style scoped>
-
 button {
-	width: 5rem;
-	height: 2rem;
-	border-radius: 8px;
-	background-color: rgb(255, 255, 75);
-	text-align: center;
+  width: 5rem;
+  height: 2rem;
+  border-radius: 8px;
+  background-color: rgb(255, 255, 75);
+  text-align: center;
 }
+
+html{
+	padding:0;
+	margin: 0;
+  min-height:100%;
+}
+body{
+	background: #111;
+  position:relative;
+  min-height:100%;
+}
+.button{
+	width: 50px;
+	height: 50px;
+  top:50%;
+  position: fixed;
+	left: 50%;
+	margin-top: -45px;
+	margin-left: -50px;
+	border-radius: 5px;
+	background: none;
+	cursor: pointer;
+	transition: background 0.5s ease;
+}
+.button:hover{
+
+}
+.active#heart:before,.active#heart:after{
+	background: red !important;
+}
+#heart {
+    width: 100px;
+    height: 90px;
+    transition: background 0.5s ease;
+}
+#heart:before,
+#heart:after {
+	transition: background 0.5s ease;
+    position: absolute;
+    content: "";
+    left: 50px;
+    top: 0;
+    width: 50px;
+    height: 80px;
+    background: dimgrey;
+    border-radius: 50px 50px 0 0;
+    transform: rotate(-45deg);
+    transform-origin: 0 100%;
+}
+#heart:after {
+    left: 0;
+    transform: rotate(45deg);
+    transform-origin :100% 100%;
+}
+
 
 img {
 	object-fit: cover;
