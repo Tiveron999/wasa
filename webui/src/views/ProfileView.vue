@@ -1,4 +1,5 @@
 <script>
+
 /*const track = document.getElementById("image-track");
 
 const handleOnDown = e => track.dataset.mouseDownAt = e.clientX;
@@ -238,7 +239,7 @@ export default {
 		</div>
 		<div id="Modal" v-if="show">
 			<img :src="images[selectedImage]" @click="hideModal(index)" />
-			<button id='heart' class='button'></button>
+			<button class="heart"></button>
 	
 		</div>     
 	
@@ -253,58 +254,45 @@ button {
   text-align: center;
 }
 
-html{
-	padding:0;
-	margin: 0;
-  min-height:100%;
+.heart {
+  background-color: red;
+  display: inline-block;
+  height: 50px;
+  margin: 0;
+  position: relative;
+  top: 0;
+  transform: rotate(45deg);
+  width: 50px;
+  border: none;
+  outline: none;
 }
-body{
-	background: #111;
-  position:relative;
-  min-height:100%;
-}
-.button{
-	width: 50px;
-	height: 50px;
-  top:50%;
-  position: fixed;
-	left: 50%;
-	margin-top: -45px;
-	margin-left: -50px;
-	border-radius: 5px;
-	background: none;
-	cursor: pointer;
-	transition: background 0.5s ease;
-}
-.button:hover{
 
+.heart:before{
+	content: "";
+  background-color: red;
+  border-radius: 25px 25px 0 0;
+  position: absolute;
+  top: -25px;
+  left: 0px;
+  width: 50px;
+  height: 50px;
+  outline: none;
 }
-.active#heart:before,.active#heart:after{
-	background: red !important;
+.heart:after {
+  content: "";
+  background-color: red;
+  border-radius: 25px 25px 0 0;
+  position: absolute;
+  top: 0px;
+  left: -25px;
+  width: 50px;
+  height: 50px;
+  transform: rotate(-90deg);
+  outline: none;
 }
-#heart {
-    width: 100px;
-    height: 90px;
-    transition: background 0.5s ease;
-}
-#heart:before,
-#heart:after {
-	transition: background 0.5s ease;
-    position: absolute;
-    content: "";
-    left: 50px;
-    top: 0;
-    width: 50px;
-    height: 80px;
-    background: dimgrey;
-    border-radius: 50px 50px 0 0;
-    transform: rotate(-45deg);
-    transform-origin: 0 100%;
-}
-#heart:after {
-    left: 0;
-    transform: rotate(45deg);
-    transform-origin :100% 100%;
+
+.heart:active {
+  transform: rotate(45deg) scale(1.14);
 }
 
 
@@ -353,7 +341,7 @@ img {
 
 #Modal img {
 	object-fit: contain;
-	margin: auto;
+	margin: 11rem;
 	display: flex;
 	align-items: center;
 	justify-content: center;
