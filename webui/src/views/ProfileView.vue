@@ -96,7 +96,6 @@ export default {
 		}
 	  },*/
 	  async uploadImage2(event) {
-		this.appearance = "uploading"
 		const formData = new FormData();
 		const files = event.target.files;
 		for (let i = 0; i < files.length; i++) {

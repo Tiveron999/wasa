@@ -93,7 +93,7 @@ type AppDatabase interface {
 
 	GetPhotoInfo(Photo) (Photo, error)
 
-	UploadPhoto(Photo) (Photo, error)
+	UploadPhoto(Photo) (uint64, error)
 
 	DeletePhoto(uint64) error
 
