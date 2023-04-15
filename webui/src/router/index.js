@@ -38,23 +38,7 @@ const router = createRouter({
 				next('/session')
 			  }
 			}},
-		{path: '/link1', component: HomeView},
-		{path: '/link2', component: HomeView},
-		{path: '/some/:id/link', component: HomeView, beforeEnter: (to, from, next) => {
-			if ((localStorage.getItem('isLoggedIn') === 'true')) {
-				next()
-			} else {
-				next('/session')
-			}
-		  }},
 		{path: '/session', component: LoginView},
-		{path: '/something', component: HomeView, beforeEnter: (to, from, next) => {
-			if ((localStorage.getItem('isLoggedIn') === 'true')) {
-				next()
-			} else {
-				next('/session')
-			}
-		  }},
 		{ path: '/search', component: SearchView, beforeEnter: (to, from, next) => {
 		if (localStorage.getItem('isLoggedIn') === 'true') {
 			next()
