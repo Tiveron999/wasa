@@ -1,0 +1,134 @@
+@charset "UTF-8";
+
+
+/* Fonts */
+h2, .h2 {
+    font-size: calc(1.325rem + 0.9vw);
+  }
+  @media (min-width: 1200px) {
+    h2, .h2 {
+      font-size: 5rem;
+      color: var(--bs-purple);
+      font-style:italic;
+      font-weight:bold;
+      font-family: 'Billabong', sans-serif;
+    }
+  }
+
+  h5 > .normal {
+ 
+    color: var(--bs-orange);
+    font-size: 12;
+    /*font-weight: 400;*/
+    margin: 0px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  h6 > .special {
+ 
+    font-weight: 600;
+    font-size: 2.2rem;
+    line-height:65px;
+    letter-spacing: 2px;
+    text-align: center;
+    /*text-transform: uppercase;*/
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-size: 400%;
+    animation: move 5s ease infinite;
+    background-image: linear-gradient( 68.7deg,  rgb(127, 0, 201) 4%, rgb(212, 0, 255), rgb(255, 71, 227), rgb(255, 94, 0), rgb(255, 217, 0) 86%);
+}
+
+@keyframes move {
+    0%, 100%{
+        background-position: 100% 0%;
+    }
+
+    50%{
+        background-position: 0% 100%;
+    }
+    /*
+  color: purple;
+  font-size: 2rem;
+  background: linear-gradient(
+    
+    var(--purple),
+    var(--violet),
+    var(--pink),
+    var(--purple)
+    
+  );*/
+  /*
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  white-space: nowrap;
+*/
+}
+
+
+/*Buttons*/
+button {
+    width: 5rem;
+    height: 2rem;
+    border-radius: 8px;
+    background-color: rgb(255, 255, 75);
+    text-align: center;
+  }
+  label {
+    display: block;
+    text-align: center;
+  }
+  input {
+    box-sizing: border-box;
+    border-radius: 8px;
+    width: 20%;
+    padding: 8px 20px;
+    margin-right: 5%;
+  }
+  input:focus {
+    outline: 0;
+    background-color: rgb(255, 175, 26);
+  }
+
+  .btn {
+    width: 5rem;
+    height: 2rem;
+    border-radius: 8px;
+    background-color: rgb(255, 255, 75);
+    text-align: center;
+  }
+  
+  .btn-sm {
+    color: rgb(255, 129, 26);
+  }
+
+  .btn-sm-normal {
+    color: rgb(138, 3, 216);
+    font-size: 13px;
+    line-height: 1rem;
+    
+  }
+
+  .btn-outline-primary {
+    border-color: rgb(127, 0, 201);
+    border-style: outset;
+    border-width: 2px;
+  }
+
+  /*
+  .btn-outline-secondary {
+    /* styles for the btn-outline-secondary class 
+  }*/
+
+  #logout-button {
+    background-color: rgb(255, 129, 26);
+    color: rgb(83, 0, 131);
+  }
+
+  #refresh-button {
+    border-color: rgb(194, 194, 194);
+    border-width: 2px;
+    border-style: outset;
+  }

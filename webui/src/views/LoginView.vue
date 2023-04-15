@@ -73,7 +73,7 @@ export default {
 			<h1 class="h2">WasaPhoto</h1>
 			<div class="btn-toolbar mb-2 mb-md-0">
 				<div class="btn-group me-2">
-					<button type="button" class="btn btn-sm btn-outline-primary" style="float: right;" @click="refresh">
+					<button type="button" id="refresh-button" class="btn btn-sm btn-outline-primary" style="float: right;" @click="refresh">
 						Refresh
 					</button>
 				</div>
@@ -81,8 +81,8 @@ export default {
 					
 				<div class="btn-group me-2">
 					
-				<button @click="logout">Logout</button>
-				</div>  <!--   -->
+				<button id="logout-button" @click="logout">Logout</button>
+				</div>  
 			</div>
 		</div>
 			
@@ -107,7 +107,7 @@ export default {
 		<form @submit.prevent="submit"> -->
 		  <!-- <label for="username">username</label> -->
 		  <input id="username" type="text" v-model="username" placeholder="Username"/>
-		  <button class="btn btn-sm btn-outline-secondary" @click="submit()">Enter</button>  <!--@click="loginButtonClicked" {{ buttonString }} type="submit" -->
+		  <button class="btn btn-sm-normal btn-outline-primary" @click="submit()">Enter</button>  <!--@click="loginButtonClicked" {{ buttonString }} type="submit" -->
 		  <p v-if="error">{{ error }}</p>
 		 <!--  <a href="#" @click.prevent="toggleLogin">{{ textLoginString }}</a> 
 		</form> -->
@@ -133,29 +133,7 @@ export default {
 </template>
 
 
-<style scoped>
-button {
-  width: 5rem;
-  height: 2rem;
-  border-radius: 8px;
-  background-color: rgb(255, 255, 75);
-  text-align: center;
-}
-label {
-  display: block;
-  text-align: center;
-}
-input {
-  box-sizing: border-box;
-  border-radius: 8px;
-  width: 20%;
-  padding: 8px 20px;
-  margin-right: 5%;
-}
-input:focus {
-  outline: 0;
-  background-color: rgb(255, 175, 26);
-}
+<style>
 
 </style>
 
