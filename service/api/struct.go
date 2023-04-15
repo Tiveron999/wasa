@@ -212,25 +212,3 @@ func (f *Profile) ProfileToDatabase() database.Profile {
 func (f *Profile) ProfileIsValid() bool {
 	return true
 }
-
-/*
-package api
-
-import jwt "github.com/dgrijalva/jwt-go"
-
-// Create a new JWT with claims for the user's ID
-claims := jwt.MapClaims{
-	"user_id": userID,
-	"exp":     time.Now().Add(time.Hour * 24).Unix(),
-}
-
-// Sign the JWT with a secret key
-token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-signedToken, err := token.SignedString([]byte(secretKey))
-if err != nil {
-	// handle error
-}
-
-// Store the signed JWT in the database
-// ...
-*/

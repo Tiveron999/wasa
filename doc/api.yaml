@@ -258,6 +258,36 @@ paths:
         "403": { $ref: "#/components/responses/Forbidden"}
         "404": { $ref: "#/components/responses/Not-Found"}
         "500": { $ref: "#/components/responses/InternalServerError"}
+    post:
+      operationId: uploadPhoto
+      summary: post a new photo
+      description: |
+        New photo is now present on the user's profile (at the top).
+      tags:
+        - photos
+      requestBody:
+        description: Photo to be uploaded
+        required: true
+        content:
+          image/png:
+            schema:
+              type: string
+              format: binary
+              description: image to upload
+              minLength: 1
+              maxLength: 500
+      responses:
+        "201":
+          description: new photo uploaded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/photo-info"
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
 
 
   /users/{user_id}/photos/{photo_id}:
@@ -286,36 +316,6 @@ paths:
       responses:
         "200":
           description: Request accepted, information obtained
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/photo-info"
-        "400": { $ref: "#/components/responses/BadRequest"}
-        "401": { $ref: "#/components/responses/Unauthorized"}
-        "403": { $ref: "#/components/responses/Forbidden"}
-        "404": { $ref: "#/components/responses/Not-Found"}
-        "500": { $ref: "#/components/responses/InternalServerError"}
-    post:
-      operationId: uploadPhoto
-      summary: post a new photo
-      description: |
-        New photo is now present on the user's profile (at the top).
-      tags:
-        - photos
-      requestBody:
-        description: Photo to be uploaded
-        required: true
-        content:
-          image/png:
-            schema:
-              type: string
-              format: binary
-              description: image to upload
-              minLength: 1
-              maxLength: 500
-      responses:
-        "201":
-          description: new photo uploaded
           content:
             application/json:
               schema:

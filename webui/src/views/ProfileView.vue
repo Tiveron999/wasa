@@ -110,15 +110,12 @@ export default {
 		if (localStorage.getItem('isLoggedIn')) {
 		this.id = localStorage.getItem('userId');
 	}
-		const response = await this.$axios.post(`/users/${this.id}/photos`, formData, 
-	{headers: { 'Content-Type': 'multipart/form-data', Authorization: 'Bearer ' + this.id}});
-	console.log(response.data);
-	const photoId = response.data.photoId;
-	const uploadResponse = await this.$axios.post(`/users/${this.id}/photos/${photoId}`, formData, 
-	{headers: { 'Content-Type': 'multipart/form-data', Authorization: 'Bearer ' + this.id}});
-	} catch (error) {
-	console.error(error);
-}
+		  const response = await this.$axios.post(`/users/${this.id}/photos`, formData, 
+		  {headers: { 'Content-Type': 'multipart/form-data', Authorization: 'Bearer ' + this.id}});
+		  console.log(response.data.photoId);
+		} catch (error) {
+		  console.error(error);
+		}
 	},
 		showModal(index) {
 		this.selectedImage = index;
