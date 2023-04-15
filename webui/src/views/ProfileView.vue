@@ -186,7 +186,7 @@ export default {
 			<h1 class="h2">WasaPhoto</h1>
 			<div class="btn-toolbar mb-2 mb-md-0">
 				<div class="btn-group me-2">
-					<button type="button" class="btn btn-sm btn-outline-primary" @click="refresh">
+					<button type="button" id="refresh-button" class="btn btn-sm btn-outline-primary" @click="refresh">
 						Refresh
 					</button>
 				
@@ -244,129 +244,7 @@ export default {
 	
 </template>
 
-<style scoped>
-button {
-  width: 5rem;
-  height: 2rem;
-  border-radius: 8px;
-  background-color: rgb(255, 255, 75);
-  text-align: center;
-}
 
-.heart {
-  background-color: red;
-  display: inline-block;
-  height: 50px;
-  margin: 0;
-  position: relative;
-  top: 0;
-  transform: rotate(45deg);
-  width: 50px;
-  border: none;
-  outline: none;
-}
-
-.heart:before{
-	content: "";
-  background-color: red;
-  border-radius: 25px 25px 0 0;
-  position: absolute;
-  top: -25px;
-  left: 0px;
-  width: 50px;
-  height: 50px;
-  outline: none;
-}
-.heart:after {
-  content: "";
-  background-color: red;
-  border-radius: 25px 25px 0 0;
-  position: absolute;
-  top: 0px;
-  left: -25px;
-  width: 50px;
-  height: 50px;
-  transform: rotate(-90deg);
-  outline: none;
-}
-
-.heart:active {
-  transform: rotate(45deg) scale(1.14);
-}
-
-
-img {
-	object-fit: cover;
-	width: 33%;
-	height: 300px;
-	float: left;
-	margin: 0.1% 0.1%;
-}
-
-.image-row {
-	display: flex;
-	flex-wrap: wrap;
-	float: left;
-	width: 100%;
-	overflow: auto;
-}
-
-#image-container {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  margin: 0 auto;
-  display: inline-block; 
-  user-select: none;
-}
-
-#Modal {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1;
-  position: fixed;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-}
-
-#Modal img {
-	object-fit: contain;
-	margin: 11rem;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 50%;
-	height: auto;
-	max-width: 80%;
-  	max-height: 80%;
-}
-
-/*
-#image-track {
-  display: flex;
-  gap: 4vmin;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(0%, -50%); 
-  user-select: none; 
-}
-
-#image-track > .image {
-  width: 40vmin;
-  height: 56vmin;
-  object-fit: cover;
-  object-position: 100% center;
-}
-*/
+<style>
 
 </style>
