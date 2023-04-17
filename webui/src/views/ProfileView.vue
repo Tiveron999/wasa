@@ -1,5 +1,86 @@
-<script>
 
+
+<template>
+	<div>
+		<div
+			class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+			<h1 class="h2">WasaPhoto</h1>
+			<div class="btn-toolbar mb-2 mb-md-0">
+				<div class="btn-group me-2">
+					<button type="button" id="refresh-button" class="btn btn-sm btn-outline-primary" @click="refresh">
+						Refresh
+					</button>
+				
+				</div>
+			</div>
+		</div>
+
+		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
+		<h6>
+			<span id = "type" class = "special">
+            Profile
+			</span>
+        </h6>
+	
+	</div>
+	<!-- <div id="image-track" data-mouse-down-at="0" data-prev-percentage="0">   -->
+ <!--  <img class="image" src="https://images.unsplash.com/photo-1610194352361-4c81a6a8967e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1674&q=80" draggable="false" />
+  <img class="image" src="https://images.unsplash.com/photo-1618202133208-2907bebba9e1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
+  <img class="image" src="https://images.unsplash.com/photo-1495805442109-bf1cf975750b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
+  <img class="image" src="https://images.unsplash.com/photo-1548021682-1720ed403a5b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
+  <img class="image" src="https://images.unsplash.com/photo-1496753480864-3e588e0269b3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2134&q=80" draggable="false" />
+   
+-->
+	<div>
+		<br>
+		<p>Followers: {{ followers }}</p>
+		<p>Following: {{ following }}</p>
+		<br>
+	</div>
+		<div id="image-container"> 
+			<h5>
+				<span id = "type" class = "normal">
+				<br>Use the button below to add images to your profile.<br>
+				</span>
+			</h5>
+			<form>
+				<input type="file" @change="uploadImage2"/>
+			</form>
+			<h5>
+				<span id = "type" class = "normal">
+					<br><br>Click on an image to view it in fullscreen mode, click on it again to return to the profile page.<br><br>
+					<br>Here are the uploaded images: <br>
+				</span>
+			</h5>
+	
+			 <div class="image-row">
+		<img v-for="(image, index) in images" :key="index" :src="image" :draggable="false" @click="showModal(index)"/>
+			</div> 
+		</div>
+		<div id="Modal" v-if="show">
+			<img :src="images[selectedImage]" @click="hideModal(index)" />
+			<button class="heart"></button>
+			<div class="like-counter">0 Likes</div>
+		</div>     
+	
+</template>
+
+
+<style>
+
+</style>
+
+
+<script>
+window.onload = function() {
+    let likeCounter = document.querySelector('.like-counter');
+    let heartButton = document.querySelector('.heart');
+
+    heartButton.addEventListener('click', function() {
+        let currentLikes = parseInt(likeCounter.textContent);
+        likeCounter.textContent = currentLikes + 1 + ' likes';
+    });
+}
 /*const track = document.getElementById("image-track");
 
 const handleOnDown = e => track.dataset.mouseDownAt = e.clientX;
@@ -51,7 +132,9 @@ export default {
 		return {
 			errormsg: null,
 			loading: false,
-			profileLink: '',
+			isLoggedIn: false,
+			userId: '',
+			error: null,
 			images: [],
 			show: false,
     		selectedImage: null,
@@ -145,9 +228,23 @@ export default {
       });
     }
 	},
+	getImages() {
+	if (localStorage.getItem('isLoggedIn')) {
+		this.id = localStorage.getItem('userId');
+	}
+      axios.get(`/users/${this.id}/photos`)
+        .then(response => {
+          // Update images data with retrieved images
+          this.images = response.data;
+        })
+		.catch(error => {
+        console.log(error);
+      });
+    }
+},
 	mounted() {
 	this.refresh()
-	if (localStorage.getItem('isLoggedIn')) {
+	/*if (localStorage.getItem('isLoggedIn')) {
 		this.id = localStorage.getItem('userId');
 		this.$router.get(`/users/${this.id}/following/:following_id`)
       .then(response => {
@@ -167,84 +264,12 @@ export default {
         console.log(error);
       });
 
-		}
-
+		}*/
+	// this.getImages();
 	},
 	/*created () {
-    // Get the current login status from local storage
-    this.isLoggedIn = localStorage.getItem('isLoggedIn') || false
   },*/
 }
-} 
+
 
 </script>
-
-<template>
-	<div>
-		<div
-			class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-			<h1 class="h2">WasaPhoto</h1>
-			<div class="btn-toolbar mb-2 mb-md-0">
-				<div class="btn-group me-2">
-					<button type="button" id="refresh-button" class="btn btn-sm btn-outline-primary" @click="refresh">
-						Refresh
-					</button>
-				
-				</div>
-			</div>
-		</div>
-
-		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
-		<h6>
-			<span id = "type" class = "special">
-            Profile
-			</span>
-        </h6>
-	
-	</div>
-	<!-- <div id="image-track" data-mouse-down-at="0" data-prev-percentage="0">   -->
- <!--  <img class="image" src="https://images.unsplash.com/photo-1610194352361-4c81a6a8967e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1674&q=80" draggable="false" />
-  <img class="image" src="https://images.unsplash.com/photo-1618202133208-2907bebba9e1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
-  <img class="image" src="https://images.unsplash.com/photo-1495805442109-bf1cf975750b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
-  <img class="image" src="https://images.unsplash.com/photo-1548021682-1720ed403a5b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
-  <img class="image" src="https://images.unsplash.com/photo-1496753480864-3e588e0269b3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2134&q=80" draggable="false" />
-   
--->
-	<div>
-		<br>
-		<p>Followers: {{ followers }}</p>
-		<p>Following: {{ following }}</p>
-		<br>
-	</div>
-		<div id="image-container"> 
-			<h5>
-				<span id = "type" class = "normal">
-				<br>Use the button below to add images to your profile.<br>
-				</span>
-			</h5>
-			<form>
-				<input type="file" @change="uploadImage2"/>
-			</form>
-			<h5>
-				<span id = "type" class = "normal">
-					<br><br>Click on an image to view it in fullscreen mode, click on it again to return to the profile page.<br><br>
-					<br>Here are the uploaded images: <br>
-				</span>
-			</h5>
-	
-			 <div class="image-row">
-		<img v-for="(image, index) in images" :key="index" :src="image" :draggable="false" @click="showModal(index)"/>
-			</div> 
-		</div>
-		<div id="Modal" v-if="show">
-			<img :src="images[selectedImage]" @click="hideModal(index)" />
-			<button class="heart"></button>
-	
-		</div>     
-	
-</template>
-
-
-<style>
-
-</style>

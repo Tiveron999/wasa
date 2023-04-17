@@ -34,6 +34,16 @@ func (rt *_router) getUserPhotos(w http.ResponseWriter, r *http.Request, ps http
 	limit := queryValues.Get("limit")
 	offset := queryValues.Get("offset")
 
+	if laterThan == "" {
+		laterThan = "0" // Set a default value for laterThan
+	}
+	if limit == "" {
+		limit = "0" // Set a default value for limit
+	}
+	if offset == "" {
+		offset = "0" // Set a default value for offset
+	}
+
 	// Convert limit and offset to uints
 	limitUint, err := strconv.ParseUint(limit, 10, 64)
 	if err != nil {
