@@ -249,7 +249,7 @@ paths:
       responses:
         "200":
           description: |
-            An array of objects, each one containing information about one uploaded photo.
+            An array of urls, one for each uploaded photo.
           content:
             application/json:
               schema: {$ref: "#/components/schemas/photos-list"}

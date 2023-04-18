@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
-	"github.com/Tiveron999/Wasa/service/database"
+	// "github.com/Tiveron999/Wasa/service/database"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -19,7 +19,7 @@ func (rt *_router) getUserPhotos(w http.ResponseWriter, r *http.Request, ps http
 	// If one of latitude or longitude is not specified (or both), no filter will be applied.
 
 	var err error
-	var photos []database.Photo
+	var photoURLs []string
 
 	// page limit sort, has
 	userID, err := strconv.ParseUint(ps.ByName("user_id"), 10, 64)
@@ -35,10 +35,10 @@ func (rt *_router) getUserPhotos(w http.ResponseWriter, r *http.Request, ps http
 	offset := queryValues.Get("offset")
 
 	if laterThan == "" {
-		laterThan = "0" // Set a default value for laterThan
+		laterThan = "2006-01-02 15:04:05" // Set a default value for laterThan
 	}
 	if limit == "" {
-		limit = "0" // Set a default value for limit
+		limit = "10" // Set a default value for limit
 	}
 	if offset == "" {
 		offset = "0" // Set a default value for offset
@@ -58,8 +58,8 @@ func (rt *_router) getUserPhotos(w http.ResponseWriter, r *http.Request, ps http
 		return
 	}
 
-	// Request an unfiltered list of photos from the DB
-	photos, err = rt.db.GetUserPhotos(userID, laterThan, limitUint, offsetUint)
+	// Request an unfiltered list of photo URLs from the DB
+	photoURLs, err = rt.db.GetUserPhotos(userID, laterThan, limitUint, offsetUint)
 
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the photo
@@ -69,13 +69,7 @@ func (rt *_router) getUserPhotos(w http.ResponseWriter, r *http.Request, ps http
 		return
 	}
 
-	// Before sending the list to the client we need to convert it to the "frontend" type
-	var frontendPhotos = make([]Photo, len(photos))
-	for idx := range photos {
-		frontendPhotos[idx].PhotoFromDatabase(photos[idx])
-	}
-
-	// Send the list to the user.
+	// Send the list of photo URLs to the user.
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(frontendPhotos)
+	_ = json.NewEncoder(w).Encode(photoURLs)
 }

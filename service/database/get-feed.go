@@ -5,7 +5,7 @@ func (db *appdbimpl) GetMyStream(userid uint64, datet string, limit uint64, offs
 
 	// Plain simple SELECT query
 	rows, err := db.c.Query(`SELECT * FROM photos WHERE posterid IN 
-	(SELECT userid FROM followers WHERE followerid = ?) AND datetime >= ? SORT BY datetime DESC LIMIT ? OFFSET ?`,
+	(SELECT userid FROM followers WHERE followerid = ?) AND datetime >= ? ORDER BY datetime DESC LIMIT ? OFFSET ?`,
 		userid, datet, limit, offset)
 
 	if err != nil {

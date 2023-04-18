@@ -54,7 +54,8 @@
 			</h5>
 	
 			 <div class="image-row">
-		<img v-for="(image, index) in images" :key="index" :src="image" :draggable="false" @click="showModal(index)"/>
+	
+		<img v-for="(image, index) in images" :key="index" :src="image" :draggable="false" v-if="images.length > 0" @click="showModal(index)"/>
 			</div> 
 		</div>
 		<div id="Modal" v-if="show">
@@ -72,7 +73,10 @@
 
 
 <script>
-window.onload = function() {
+import axios from 'axios'
+
+import { toRaw } from 'vue';
+/*window.onload = function() {
     let likeCounter = document.querySelector('.like-counter');
     let heartButton = document.querySelector('.heart');
 
@@ -80,7 +84,10 @@ window.onload = function() {
         let currentLikes = parseInt(likeCounter.textContent);
         likeCounter.textContent = currentLikes + 1 + ' likes';
     });
-}
+}*/
+
+
+
 /*const track = document.getElementById("image-track");
 
 const handleOnDown = e => track.dataset.mouseDownAt = e.clientX;
@@ -136,6 +143,7 @@ export default {
 			userId: '',
 			error: null,
 			images: [],
+			// images: [],
 			show: false,
     		selectedImage: null,
 			followers: 0,
@@ -196,6 +204,7 @@ export default {
 		  const response = await this.$axios.post(`/users/${this.id}/photos`, formData, 
 		  {headers: { 'Content-Type': 'multipart/form-data', Authorization: 'Bearer ' + this.id}});
 		  console.log(response.data.photoId);
+		  console.log(toRaw(this.images));
 		} catch (error) {
 		  console.error(error);
 		}
@@ -221,7 +230,7 @@ export default {
       image.likes = image.likes ? 0 : 1
 	  if (localStorage.getItem('isLoggedIn')) {
 		this.id = localStorage.getItem('userId');
-		this.$router.put(`/users/${this.id}/photos/{photo_id}/${this.id}/`)
+		this.$axios.put(`/users/${this.id}/photos/{photo_id}/${this.id}`)
       .then(response => {})
       .catch(error => {
         console.log(error);
@@ -232,21 +241,22 @@ export default {
 	if (localStorage.getItem('isLoggedIn')) {
 		this.id = localStorage.getItem('userId');
 	}
-      axios.get(`/users/${this.id}/photos`)
-        .then(response => {
-          // Update images data with retrieved images
-          this.images = response.data;
-        })
+	this.$axios.get(`/users/${this.id}/photos`, {headers: {'Accept': 'application/json', Authorization: 'Bearer ' + this.id}})
+		.then(response => {
+		console.log(response.data);
+		// Update images data with retrieved image URLs
+		this.images = response.data.map(url => ({ src: url }));
+		})
 		.catch(error => {
-        console.log(error);
-      });
-    }
+		console.log(error.response);
+		});
+	}
 },
 	mounted() {
 	this.refresh()
 	/*if (localStorage.getItem('isLoggedIn')) {
 		this.id = localStorage.getItem('userId');
-		this.$router.get(`/users/${this.id}/following/:following_id`)
+		this.$axios.get(`/users/${this.id}/following/:following_id`, {headers: {Authorization: 'Bearer ' + this.id}})
       .then(response => {
         this.following = response.data.following;
 		// console.log();
@@ -256,7 +266,7 @@ export default {
       });
 
 
-	this.$router.get(`/users/${this.id}/followers/:follower_id`)
+	this.$axios.get(`/users/${this.id}/followers/:follower_id`, {headers: {Authorization: 'Bearer ' + this.id}})
       .then(response => {
         this.followers = response.data.followers;
       })
@@ -265,7 +275,7 @@ export default {
       });
 
 		}*/
-	// this.getImages();
+	this.getImages();
 	},
 	/*created () {
   },*/
