@@ -27,6 +27,16 @@ export default {
 		
 		submit() {
 		console.log(JSON.stringify({username: this.username}))
+		
+		let re = new RegExp('^[A-Za-z][A-Za-z0-9_]{5,14}$')
+		if(re.test(this.username)) {
+			console.log('ok');
+		} else {
+			console.log('not ok');
+			alert('Invalid username. The username can only contain the characters A-Z, a-z, 0-9 and _ and has to be of length 6 - 15.')
+			this.username = ''
+			return
+		}
 
 		// Send the username to the Go function
 		this.$axios.post('/session', JSON.stringify({username: this.username}), {headers: { 'Content-Type': 'application/json',  'Accept': 'application/json'}})
