@@ -134,6 +134,7 @@ button {
     border-style: outset;
   }
 
+  /* like button */
   .heart {
     background-color: red;
     display: inline-block;
@@ -177,7 +178,7 @@ button {
     transform: rotate(45deg) scale(1.14);
   }
   
-  
+  /* images */ 
   img {
     object-fit: cover;
     width: 33%;
@@ -252,6 +253,7 @@ button {
   }
   */
 
+  /* like counter */
   .like-counter {
     position: relative;
     left: -3rem;
