@@ -39,7 +39,7 @@ const router = createRouter({
 			  }
 			}},
 		{path: '/session', component: LoginView},
-		{ path: '/search', component: SearchView, beforeEnter: (to, from, next) => {
+		{ path: '/users', component: SearchView, beforeEnter: (to, from, next) => {
 		if (localStorage.getItem('isLoggedIn') === 'true') {
 			next()
 		} else {
