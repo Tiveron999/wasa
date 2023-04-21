@@ -28,8 +28,8 @@ export default {
 		submit() {
 		console.log(JSON.stringify({username: this.username}))
 		
-		let re = new RegExp('^[A-Za-z][A-Za-z0-9_]{5,14}$')
-		if(re.test(this.username)) {
+		let r = new RegExp('^[A-Za-z][A-Za-z0-9_]{5,14}$')
+		if(r.test(this.username)) {
 			console.log('ok');
 		} else {
 			console.log('not ok');
