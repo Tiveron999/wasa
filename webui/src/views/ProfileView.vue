@@ -195,6 +195,7 @@ export default {
 			reader.readAsDataURL(files[i]);
 			reader.onload = () => {
 			this.images.push(reader.result);
+			console.log(this.images[i]);
 			};
 	  }
 	  try {
@@ -203,8 +204,9 @@ export default {
 	}
 		  const response = await this.$axios.post(`/users/${this.id}/photos`, formData, 
 		  {headers: { 'Content-Type': 'multipart/form-data', Authorization: 'Bearer ' + this.id}});
-		  console.log(response.data.photoId);
-		  console.log(toRaw(this.images));
+		  // console.log(response.data.photoId);
+		  // console.log(toRaw(this.images));
+		  
 		} catch (error) {
 		  console.error(error);
 		}
@@ -212,7 +214,7 @@ export default {
 		showModal(index) {
 		this.selectedImage = index;
 		this.show = true;
-
+		
 	},
 		hideModal(index) {
 		this.selectedImage = index;
@@ -245,12 +247,30 @@ export default {
 		.then(response => {
 		console.log(response.data);
 		// Update images data with retrieved image URLs
-		this.images = response.data.map(url => ({ src: url }));
+		getDataURLFromImageURL(response.data).then((dataURL) => {
+		
+		this.images = response.data.map(url => ({ src: dataURL }));
+
+		});
 		})
 		.catch(error => {
 		console.log(error.response);
 		});
-	}
+	},
+	async getDataURLFromImageURL(imageURL) {
+		const response = await fetch(imageURL);
+		const blob = await response.blob();
+		const reader = new FileReader();
+		return new Promise((resolve) => {
+			reader.readAsDataURL(blob);
+			reader.onload = () => {
+				const dataURL = reader.result;
+				resolve(dataURL);
+		
+			};
+		});
+	},
+
 },
 	mounted() {
 	this.refresh()
