@@ -34,5 +34,6 @@ func (rt *_router) login(w http.ResponseWriter, r *http.Request, ps httprouter.P
 	// _, _ = w.Write([]byte("Success!"))
 	// Return the user ID to the user.
 	w.Header().Set("Content-Type", "application/json")
+	// w.writeHeader
 	_ = json.NewEncoder(w).Encode(map[string]int{"userID": int(userID)})
 }
