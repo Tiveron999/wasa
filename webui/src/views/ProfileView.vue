@@ -244,21 +244,19 @@ export default {
 		this.id = localStorage.getItem('userId');
 	}
 	this.$axios.get(`/users/${this.id}/photos`, {headers: {'Accept': 'application/json', Authorization: 'Bearer ' + this.id}})
-		.then(response => {
-		console.log(response.data);
-		// Update images data with retrieved image URLs
-		getDataURLFromImageURL(response.data).then((dataURL) => {
-		
-		this.images = response.data.map(url => ({ src: dataURL }));
-
-		});
-		})
-		.catch(error => {
-		console.log(error.response);
-		});
+	.then(async response => {
+        console.log(response.data);
+        // Update images data with retrieved image URLs
+        const dataURLs = await Promise.all(response.data.map(url => this.getDataURLFromImageURL(url)));
+        this.images = dataURLs.map(dataURL => ({ src: dataURL }));
+    })
+    .catch(error => {
+        console.log(error.response);
+    });
 	},
 	async getDataURLFromImageURL(imageURL) {
 		const response = await fetch(imageURL);
+		console.log(response)
 		const blob = await response.blob();
 		const reader = new FileReader();
 		return new Promise((resolve) => {
@@ -266,7 +264,7 @@ export default {
 			reader.onload = () => {
 				const dataURL = reader.result;
 				resolve(dataURL);
-		
+				console.log(dataURL)
 			};
 		});
 	},
