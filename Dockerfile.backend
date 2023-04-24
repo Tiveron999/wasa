@@ -1,4 +1,6 @@
-FROM golang:1.19.1 AS builder
+FROM golang:1.19.1 
+
+# AS builder
 
 ### Copy Go code
 WORKDIR /src/
@@ -16,7 +18,9 @@ EXPOSE 3000 4000
 
 ### Copy the build executable from the builder image
 WORKDIR /app/
-COPY --from=builder /app/webapi ./
+COPY /app/webapi ./
+
+# --from=builder
 
 ### Executable command
 CMD ["/app/webapi"]
