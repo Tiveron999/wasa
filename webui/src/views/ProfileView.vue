@@ -44,7 +44,8 @@
 				</span>
 			</h5>
 			<form>
-				<input type="file" @change="uploadImage2"/>
+				<input style = "display:none" type="file" @change="uploadImage2" ref = "pickImage"/>
+				<button class='btn btn-sm-normal btn-outline-primary' type="button" @click="$refs.pickImage.click()">Choose</button>
 			</form>
 			<h5>
 				<span id = "type" class = "normal">
@@ -54,7 +55,6 @@
 			</h5>
 	
 			 <div class="image-row">
-	
 		<img v-for="(image, index) in images" :key="index" :src="image" :draggable="false" v-if="images.length > 0" @click="showModal(index)"/>
 			</div> 
 		</div>
@@ -63,7 +63,8 @@
 			<button class="heart"></button>
 			<div class="like-counter">0 Likes</div>
 		</div>     
-	
+		
+
 </template>
 
 
@@ -195,7 +196,7 @@ export default {
 			reader.readAsDataURL(files[i]);
 			reader.onload = () => {
 			this.images.push(reader.result);
-			console.log(this.images[i]);
+			console.log(files[i]);
 			};
 	  }
 	  try {

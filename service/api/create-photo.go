@@ -36,10 +36,10 @@ func (rt *_router) uploadPhoto(w http.ResponseWriter, r *http.Request, ps httpro
 	}
 	defer file.Close()
 
-	// Check if the "images" directory exists
-	if _, err := os.Stat("./images"); os.IsNotExist(err) {
-		// The "images" directory does not exist, create it
-		err := os.MkdirAll("./images", os.ModePerm)
+	// Check if the "webui/public/images" directory exists
+	if _, err := os.Stat("./webui/public/images"); os.IsNotExist(err) {
+		// The "webui/public/images" directory does not exist, create it
+		err := os.MkdirAll("./webui/public/images", os.ModePerm)
 		if err != nil {
 			// Handle error when creating the directory
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -47,8 +47,8 @@ func (rt *_router) uploadPhoto(w http.ResponseWriter, r *http.Request, ps httpro
 		}
 	}
 
-	// Create a new file in the "images" directory with the same name as the uploaded file
-	out, err := os.Create("./images/" + header.Filename)
+	// Create a new file in the "webui/public/images" directory with the same name as the uploaded file
+	out, err := os.Create("./webui/public/images/" + header.Filename)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -64,7 +64,7 @@ func (rt *_router) uploadPhoto(w http.ResponseWriter, r *http.Request, ps httpro
 
 	// Create the photo object to pass to the db
 	photo := Photo{
-		URL:         "/images/" + header.Filename,
+		URL:         "/webui/public/images/" + header.Filename,
 		Posterid:    uploader_id,
 		Datetime:    time.Now().Format("2006-01-02 15:04:05"),
 		Numlikes:    0,

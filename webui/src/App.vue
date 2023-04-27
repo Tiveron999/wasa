@@ -14,13 +14,18 @@ export default {
 			}
 		}
 },
-/*computed: {
-    profileUrl() {
-      // return the URL with the actual user id
-      return `/users/${this.userId}/profile`;
+computed: {
+    LoggedIn() {
+		console.log(localStorage.getItem('isLoggedIn'))
+        return !!localStorage.getItem('isLoggedIn');
     }
-<<<<<<< HEAD
-  },*/
+  },
+
+  watch: {
+    LoggedIn() {
+        this.$forceUpdate();
+    }
+  },
 
   data() {
     return {
@@ -60,19 +65,19 @@ export default {
 								Login
 							</RouterLink>
 						</li>
-						<li class="nav-item">
+						<li class="nav-item" v-if="LoggedIn">
 							<RouterLink to="/" class="nav-link">
 								<svg class="feather"><use href="/feather-sprite-v4.29.0.svg#home"/></svg>
 								Home
 							</RouterLink>
 						</li>
-						<li class="nav-item">
+						<li class="nav-item" v-if="LoggedIn">
 							<RouterLink to="/users" class="nav-link">
 								<svg class="feather"><use href="/feather-sprite-v4.29.0.svg#search"/></svg>
 								Search
 							</RouterLink>
 						</li>
-						<li class="nav-item">
+						<li class="nav-item" v-if="LoggedIn">
 							<RouterLink to="/users/:user_id/profile" @click="updateProfileLink" class="nav-link"> 
 							<!-- <router-link class="nav-link" :to="{ name: 'Profile', params: { user_id: localStorage.getItem('userId')}}"> </router-link> 
 							<RouterLink :to="{ name: 'Profile', params: { user_id: localStorage.getItem('userId')}}" class="nav-link"> -->

@@ -76,9 +76,12 @@ export default {
 			</span>
         </h6>
         
-		<ul>
-			<li> hi </li>
-		</ul>
+		<h5>
+            <span id = "type" class = "normal">
+                <br>Click on an image to view it in fullscreen mode, click on it again to return to the profile page.<br>
+                <br>Here are your followers' uploaded images: <br>
+            </span>
+		</h5>
 	</div>
 </template>
 
