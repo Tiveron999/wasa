@@ -11,6 +11,9 @@
 						Refresh
 					</button>
 				
+					<button type="button" class="btn btn-sm btn-outline-primary" @click="updateUsername">
+						Edit
+					</button>
 				</div>
 			</div>
 		</div>
@@ -60,8 +63,8 @@
 		</div>
 		<div id="Modal" v-if="show">
 			<img :src="images[selectedImage]" @click="hideModal(index)" />
-			<button class="heart"></button>
-			<div class="like-counter">0 Likes</div>
+			<button class="heart" @click="toggleLike" ></button>
+			<div class="like-counter">{{ image.likes }} Likes</div>
 		</div>     
 		
 
@@ -149,7 +152,10 @@ export default {
     		selectedImage: null,
 			followers: 0,
       		following: 0,
-			appearance: "default"
+			appearance: "default",
+			liked: false,
+			submitted: false,
+			text: 'Like',
 		}
 	},
 	methods: {
@@ -196,7 +202,7 @@ export default {
 			reader.readAsDataURL(files[i]);
 			reader.onload = () => {
 			this.images.push(reader.result);
-			console.log(files[i]);
+			console.log(reader.result);
 			};
 	  }
 	  try {
@@ -233,7 +239,7 @@ export default {
       image.likes = image.likes ? 0 : 1
 	  if (localStorage.getItem('isLoggedIn')) {
 		this.id = localStorage.getItem('userId');
-		this.$axios.put(`/users/${this.id}/photos/{photo_id}/${this.id}`)
+		this.$axios.put(`/users/${this.id}/photos/{photo_id}/likes/${this.id}`)
       .then(response => {})
       .catch(error => {
         console.log(error);
@@ -246,31 +252,63 @@ export default {
 	}
 	this.$axios.get(`/users/${this.id}/photos`, {headers: {'Accept': 'application/json', Authorization: 'Bearer ' + this.id}})
 	.then(async response => {
-        console.log(response.data);
-        // Update images data with retrieved image URLs
-        const dataURLs = await Promise.all(response.data.map(url => this.getDataURLFromImageURL(url)));
-        this.images = dataURLs.map(dataURL => ({ src: dataURL }));
-    })
-    .catch(error => {
-        console.log(error.response);
-    });
+		console.log(response.data);
+		// Update images data with retrieved image URLs
+		const dataURLs = await Promise.all(response.data.map(url => this.getDataURLFromImageURL(url)));
+		console.log(this.images)
+		console.log(dataURLs)
+		this.images = dataURLs;
+	})
+	.catch(error => {
+		console.log(error.response);
+	});
 	},
 	async getDataURLFromImageURL(imageURL) {
-		const response = await fetch(imageURL);
-		console.log(response)
-		const blob = await response.blob();
-		const reader = new FileReader();
-		return new Promise((resolve) => {
-			reader.readAsDataURL(blob);
-			reader.onload = () => {
-				const dataURL = reader.result;
-				resolve(dataURL);
-				console.log(dataURL)
-			};
+	const response = await fetch(imageURL);
+	let blob = await response.blob();
+	if (blob.type !== 'image/jpeg') {
+		blob = new Blob([blob], { type: 'image/jpeg' });
+	}
+	console.log(blob.type, response)
+	const reader = new FileReader();
+	return new Promise((resolve) => {
+		reader.readAsDataURL(blob);
+		reader.onload = () => {
+		const dataURL = reader.result;
+		console.log(dataURL)
+		resolve(dataURL);
+		};
+	});
+	},
+	toggleLike: function()
+	{
+		if(this.liked) {
+			this.unlikePhoto()
+		} else {
+			this.likePhoto()
+		}
+	},
+
+	likePhoto: function() {
+		this.submitted = true;
+
+		this.$axios.put(this.$axios.put(`/users/${this.id}/photos/{photo_id}/likes/${this.id}`), function(resp) {
+			this.liked = true;
+			this.submitted = false;
+			this.text = 'Unlike';
 		});
 	},
 
-},
+	unlikePhoto: function() {
+		this.submitted = true;
+
+		this.$axios.delete(`/users/${this.id}/photos/{photo_id}/likes/${this.id}`, function(resp) {
+			this.liked = false;
+			this.submitted = false;
+			this.text = 'Like';
+		});
+	}
+	},
 	mounted() {
 	this.refresh()
 	/*if (localStorage.getItem('isLoggedIn')) {

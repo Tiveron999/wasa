@@ -76,7 +76,12 @@ export default {
 </script>
 
 <template>
-	
+
+<body class="login-page">
+  
+
+
+	<div id="login-container">
 	<div>
 		<div
 			class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -139,7 +144,10 @@ export default {
 		  <a href="#" @click.prevent="toggleLogin">{{ textLoginString }}</a>
 		</form>
 	  </base-card>-->
+
+	</div>
 	
+</body>	
 </template>
 
 

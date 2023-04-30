@@ -65,20 +65,20 @@ computed: {
 								Login
 							</RouterLink>
 						</li>
-						<li class="nav-item" v-if="LoggedIn">
+						<li class="nav-item" >
 							<RouterLink to="/" class="nav-link">
 								<svg class="feather"><use href="/feather-sprite-v4.29.0.svg#home"/></svg>
 								Home
 							</RouterLink>
 						</li>
-						<li class="nav-item" v-if="LoggedIn">
+						<li class="nav-item" >
 							<RouterLink to="/users" class="nav-link">
 								<svg class="feather"><use href="/feather-sprite-v4.29.0.svg#search"/></svg>
 								Search
 							</RouterLink>
 						</li>
-						<li class="nav-item" v-if="LoggedIn">
-							<RouterLink to="/users/:user_id/profile" @click="updateProfileLink" class="nav-link"> 
+						<li class="nav-item" >
+							<RouterLink to="/users/:user_id/profile" @click="updateProfileLink" class="nav-link" > 
 							<!-- <router-link class="nav-link" :to="{ name: 'Profile', params: { user_id: localStorage.getItem('userId')}}"> </router-link> 
 							<RouterLink :to="{ name: 'Profile', params: { user_id: localStorage.getItem('userId')}}" class="nav-link"> -->
 
