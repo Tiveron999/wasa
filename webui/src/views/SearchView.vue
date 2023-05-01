@@ -5,6 +5,7 @@ export default {
 			errormsg: null,
 			loading: false,
 			username: "",
+      		user: null,
 			
 		}
 	},
@@ -26,14 +27,26 @@ export default {
 					this.id = localStorage.getItem('userId');
 				}
 			
-				const res = await this.$axios.get('/users'); // {params: {username: this.username}}
+				const res = await this.$axios.get('/users', {headers: {Authorization: 'Bearer ' + this.id}}); // {params: {username: this.username}}
 				console.log(res.data); // Log the response data
 				this.$router.push('/users/:user_id/profile')
 
 			} catch (err) {
 				console.log(err);
 			}
-		}
+		},
+		searchUsers() {
+			if (localStorage.getItem('isLoggedIn')) {
+					this.id = localStorage.getItem('userId');
+				}
+			this.$axios.get(`/users?username=${this.username}`, {headers: {Authorization: 'Bearer ' + this.id}})
+				.then(response => {
+				this.user = response.data;
+				})
+				.catch(error => {
+				console.error(error);
+				});
+    	},
 
       }
 	,
@@ -75,6 +88,16 @@ export default {
 		<input v-model="username" placeholder="Enter username">
 		<button class="btn btn-sm-normal btn-outline-primary" @click="getProfile">Search</button>
 	</div>
+	<div>
+    <input type="text" v-model="username" placeholder="Enter username" pattern="[A-Za-z0-9]{6,15}" required>
+    <button @click="searchUsers">Search</button>
+    <div v-if="user">
+      <h1>{{ user.username }}</h1>
+      <p>Number of uploaded photos: {{ user.num_photos }}</p>
+      <p>Followers: {{ user.followers }}</p>
+      <p>Following: {{ user.following }}</p>
+    </div>
+  </div>
 </template>
 
 
