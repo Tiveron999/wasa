@@ -68,6 +68,37 @@
 		</div>     
 		
 
+	<div class="input-group-append">
+		<button class="btn btn-sm btn-outline-primary" @click="showMUsernameModal()">Edit</button>
+	</div>
+	<p v-if="error">{{ error }}</p>
+
+	<!-- Modal -->
+	<div class="modal fade" id="editUsernameModal" tabindex="-1" role="dialog" aria-labelledby="editUsernameModalLabel" aria-hidden="true" v-show="modalVisible">
+		<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="editUsernameModalLabel">Edit Username</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="hideUsernameModal()"></button>
+			</div>
+			<div class="modal-body">
+			<form>
+				<div class="mb-3">
+				<label for="modal-input" class="form-label">New Username</label>
+				<input type="text" class="form-control" id="modal-input" v-model="newUsername">
+				</div>
+			</form>
+			</div>
+			<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="hideUsernameModal()">Cancel</button>
+			<button type="button" class="btn btn-primary" @click="updateUsername()">Confirm</button>
+			</div>
+		</div>
+		</div>
+	</div>
+
+
+
 </template>
 
 
@@ -80,6 +111,10 @@
 import axios from 'axios'
 
 import { toRaw } from 'vue';
+
+
+
+
 /*window.onload = function() {
     let likeCounter = document.querySelector('.like-counter');
     let heartButton = document.querySelector('.heart');
@@ -156,6 +191,9 @@ export default {
 			liked: false,
 			submitted: false,
 			text: 'Like',
+			username: '',
+			modalVisible: false,
+			newUsername: ''
 		}
 	},
 	methods: {
@@ -307,7 +345,26 @@ export default {
 			this.submitted = false;
 			this.text = 'Like';
 		});
-	}
+	},
+	showMUsernameModal() {
+      this.modalVisible = true;
+    },
+    hideUsernameModal() {
+      this.modalVisible = false;
+    },
+    updateUsername() {
+    // Make PUT request to update username
+    this.$axios.put(`/users/${this.id}`, { username: this.username }, {headers: {Authorization: 'Bearer ' + this.id}})
+      .then(response => {
+        // Update the username in the component's data
+        this.username = response.data.username;
+		this.modalVisible = false;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  },
+
 	},
 	mounted() {
 	this.refresh()
