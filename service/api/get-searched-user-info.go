@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	// "fmt"
 	"net/http"
 
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
@@ -9,18 +10,14 @@ import (
 )
 
 func (rt *_router) getSearchedUserInfo(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	type searchedData struct {
-		Username string `json:"username"`
-	}
+	// Get the value of the "username" query parameter
+	username := r.URL.Query().Get("username")
 
-	var t searchedData
-	err := json.NewDecoder(r.Body).Decode(&t)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+	// fmt.Fprintf(w, "Hello, %s!", username)
 
-	profile, err := rt.db.GetSearchedUserInfo(t.Username)
+	// fmt.Printf("please")
+
+	profile, err := rt.db.GetSearchedUserInfo(username)
 	if err != nil {
 		ctx.Logger.WithError(err).Error("can't list profile")
 		w.WriteHeader(http.StatusInternalServerError)
