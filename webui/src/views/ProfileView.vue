@@ -63,13 +63,13 @@
 		</div>
 		<div id="Modal" v-if="show">
 			<img :src="images[selectedImage]" @click="hideModal(index)" />
-			<button class="heart" @click="toggleLike" ></button>
+			<button class="heart" @click="toggleLike2" ></button>
 			<div class="like-counter">{{ image.likes }} Likes</div>
 		</div>     
 		
 
 	<div class="input-group-append">
-		<button class="btn btn-sm btn-outline-primary" @click="showMUsernameModal()">Edit</button>
+		<button class="btn btn-sm btn-outline-primary" @click="showUsernameModal()">Edit</button>
 	</div>
 	<p v-if="error">{{ error }}</p>
 
@@ -318,7 +318,7 @@ export default {
 		};
 	});
 	},
-	toggleLike: function()
+	toggleLike2: function()
 	{
 		if(this.liked) {
 			this.unlikePhoto()
@@ -346,7 +346,7 @@ export default {
 			this.text = 'Like';
 		});
 	},
-	showMUsernameModal() {
+	showUsernameModal() {
       this.modalVisible = true;
     },
     hideUsernameModal() {
