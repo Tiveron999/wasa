@@ -50,7 +50,7 @@ func (rt *_router) Handler() http.Handler {
 	rt.router.GET("/users/:user_id/feed", rt.wrap(rt.getMyStream))
 
 	// profile
-	rt.router.GET("/users/:user_id/profile", rt.wrap(rt.createUserProfile))
+	rt.router.GET("/users/:user_id/profile", rt.wrap(rt.getUserProfile))
 
 	// search
 	rt.router.GET("/users", rt.wrap(rt.getSearchedUserInfo))

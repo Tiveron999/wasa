@@ -58,14 +58,14 @@ type Banned struct {
 	BannedID uint64
 }
 
-type Profile struct {
+/* type Profile struct {
 	PRID      uint64
 	Username  string
 	Photos    []string
 	NumPhotos uint64
 	Followers []string
 	Following []string
-}
+}*/
 
 // AppDatabase is the high level interface for the DB
 type AppDatabase interface {
@@ -123,9 +123,9 @@ type AppDatabase interface {
 
 	UnfollowUser(uint64, uint64) error
 
-	CreateUserProfile(Profile) (Profile, error)
+	// GetUserProfile(uint64) (Profile, error)
 
-	GetSearchedUserInfo(username string) (Profile, error)
+	// GetSearchedUserInfo(username string) (Profile, error)
 
 	// GetToken(uint64) (Token, error)
 
@@ -256,25 +256,25 @@ func New(db *sql.DB) (AppDatabase, error) {
 		}
 	}
 
-	var profiles string
-	_, _ = db.Exec("PRAGMA foreign_keys = ON;")
+	/* var profiles string
+		_, _ = db.Exec("PRAGMA foreign_keys = ON;")
 
-	err6 := db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='profiles';`).Scan(&profiles)
-	if errors.Is(err6, sql.ErrNoRows) {
-		sqlStmt := `CREATE TABLE profiles (
-	prid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-	username TEXT NOT NULL,
-	photos TEXT NOT NULL,
-	numphotos INTEGER NOT NULL,
-	followers TEXT NOT NULL,
-	following TEXT NOT NULL,
-	FOREIGN KEY(prid) REFERENCES users(usid) ON UPDATE CASCADE ON DELETE CASCADE
-);`
-		_, err6 = db.Exec(sqlStmt)
-		if err6 != nil {
-			return nil, fmt.Errorf("error creating database structure: %w", err6)
-		}
-	}
+		err6 := db.QueryRow(`SELECT name FROM sqlite_master WHERE type='table' AND name='profiles';`).Scan(&profiles)
+		if errors.Is(err6, sql.ErrNoRows) {
+			sqlStmt := `CREATE TABLE profiles (
+		prid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+		username TEXT NOT NULL,
+		photos TEXT NOT NULL,
+		numphotos INTEGER NOT NULL,
+		followers TEXT NOT NULL,
+		following TEXT NOT NULL,
+		FOREIGN KEY(prid) REFERENCES users(usid) ON UPDATE CASCADE ON DELETE CASCADE
+	);`
+			_, err6 = db.Exec(sqlStmt)
+			if err6 != nil {
+				return nil, fmt.Errorf("error creating database structure: %w", err6)
+			}
+		} */
 
 	return &appdbimpl{
 		c: db,

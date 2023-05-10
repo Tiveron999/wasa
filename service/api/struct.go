@@ -48,12 +48,10 @@ type Banned struct {
 }
 
 type Profile struct {
-	PRID      uint64
-	Username  string
-	Photos    []string
-	NumPhotos uint64
-	Followers []string
-	Following []string
+	Photos    []string `json:"photos"`
+	NumPhotos uint64   `json:"numphotos"`
+	Followers uint64   `json:"followers"`
+	Following uint64   `json:"following"`
 }
 
 // FromDatabase populates the struct with data from the database, overwriting all values.
@@ -194,7 +192,7 @@ func (f *Banned) BannedIsValid() bool {
 	return true
 }
 
-func (f *Profile) ProfileFromDatabase(profile database.Profile) {
+/* func (f *Profile) ProfileFromDatabase(profile database.Profile) {
 	f.PRID = profile.PRID
 	f.Username = profile.Username
 	f.NumPhotos = profile.NumPhotos
@@ -207,7 +205,7 @@ func (f *Profile) ProfileToDatabase() database.Profile {
 		Username:  f.Username,
 		NumPhotos: f.NumPhotos,
 	}
-}
+} */
 
 func (f *Profile) ProfileIsValid() bool {
 	return true

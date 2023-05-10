@@ -2,11 +2,12 @@ package api
 
 import (
 	"encoding/json"
+	"net/http"
+	"strconv"
+
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
 	"github.com/Tiveron999/Wasa/service/database"
 	"github.com/julienschmidt/httprouter"
-	"net/http"
-	"strconv"
 )
 
 func (rt *_router) getFollowing(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
@@ -32,12 +33,18 @@ func (rt *_router) getFollowing(w http.ResponseWriter, r *http.Request, ps httpr
 	limit := queryValues.Get("limit")
 	offset := queryValues.Get("offset")
 
+	if limit == "" {
+		limit = "10" // Set a default value for limit
+	}
+	if offset == "" {
+		offset = "0" // Set a default value for offset
+	}
+
 	// Convert limit and offset to uints
 	limitUint, err := strconv.ParseUint(limit, 10, 64)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
-
 	}
 
 	offsetUint, err := strconv.ParseUint(offset, 10, 64)
@@ -48,7 +55,6 @@ func (rt *_router) getFollowing(w http.ResponseWriter, r *http.Request, ps httpr
 
 	// Request an unfiltered list of following from the DB
 	following, err = rt.db.GetFollowing(userID, limitUint, offsetUint)
-
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the photo
 		// Note: we are using the "logger" inside the "ctx" (context) because the scope of this issue is the request.

@@ -49,7 +49,6 @@ func (rt *_router) getUserPhotos(w http.ResponseWriter, r *http.Request, ps http
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
-
 	}
 
 	offsetUint, err := strconv.ParseUint(offset, 10, 64)

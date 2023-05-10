@@ -929,9 +929,15 @@ components:
           type: integer
           description: number of uploaded photos
         
-        followers: {$ref: "#/components/schemas/followers-list"}
+        followers: 
+          type: integer
+          description: number of followers
+        # {$ref: "#/components/schemas/followers-list"}
         
-        following: {$ref: "#/components/schemas/following-list"}
+        following: 
+          type: integer
+          description: number of followed users
+        # {$ref: "#/components/schemas/following-list"}
 
     photo-info:
       type: object
