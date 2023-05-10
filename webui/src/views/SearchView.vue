@@ -42,7 +42,7 @@ export default {
 			this.$axios.get(`/users?username=${this.username}`, {headers: {Authorization: 'Bearer ' + this.id}})
 				.then(response => {
 				this.user = response.data;
-				console.log(this.user.prid);
+				console.log(this.user);
 				})
 				.catch(error => {
 				console.error(error);
