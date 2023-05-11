@@ -4,7 +4,8 @@ func (db *appdbimpl) GetFollowing(id uint64, limit uint64, offset uint64) ([]Fol
 	var ret []Follower
 
 	// Plain simple SELECT query
-	rows, err := db.c.Query(`SELECT userid FROM followers WHERE followerid=? LIMIT ? OFFSET ?`)
+	rows, err := db.c.Query(`SELECT userid FROM followers WHERE followerid=? LIMIT ? OFFSET ?`,
+		id, limit, offset)
 	if err != nil {
 		return nil, err
 	}
@@ -13,7 +14,7 @@ func (db *appdbimpl) GetFollowing(id uint64, limit uint64, offset uint64) ([]Fol
 	// Here we read the resultset and we build the list to be returned
 	for rows.Next() {
 		var f Follower
-		err = rows.Scan(&f.UserID, &f.FollowerID)
+		err = rows.Scan(&f.UserID)
 		if err != nil {
 			return nil, err
 		}

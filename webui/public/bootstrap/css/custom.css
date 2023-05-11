@@ -269,10 +269,11 @@ button {
   background-size: cover;
   background-position: center;
 }
-/*
+
 #login-container {
-  
-}*/
+  height: 50rem;
+  width: 100%;
+}
 
 /* The Modal (background) */
 .modal {
@@ -311,5 +312,8 @@ button {
   cursor: pointer;
 }
 
+.row{
+	height: 500px;
+}
 
   

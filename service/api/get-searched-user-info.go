@@ -2,7 +2,7 @@ package api
 
 import (
 	"encoding/json"
-	// "fmt"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -80,7 +80,7 @@ func (rt *_router) getSearchedUserInfo(w http.ResponseWriter, r *http.Request, p
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
+	fmt.Println(userID, limitfUint, offsetfUint)
 	// Request an unfiltered list of following from the DB
 	following, err = rt.db.GetFollowing(userID, limitfUint, offsetfUint)
 	if err != nil {
