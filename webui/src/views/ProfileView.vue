@@ -359,7 +359,7 @@ export default {
 			</h5>
 	
 			 <div class="image-row">
-		<img v-for="(image, index) in images" :key="index" :src="image" :draggable="false" v-if="images.length > 0" @click="showModal(index)"/>
+		<img v-for="(image, index) in images" :key="index" :src="image" :draggable="false" @click="showModal(index)"/>
 			</div> 
 		</div>
 		<div id="Modal" v-if="show">
