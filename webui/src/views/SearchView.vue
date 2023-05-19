@@ -43,6 +43,7 @@ export default {
 				.then(response => {
 				this.user = response.data;
 				console.log(this.user);
+				
 				})
 				.catch(error => {
 				console.error(error);
@@ -92,12 +93,12 @@ export default {
 	<div>
     <input type="text" v-model="username" placeholder="Enter username" pattern="^[A-Za-z][A-Za-z0-9_]{5,14}$" required>
     <button class="btn btn-sm-normal btn-outline-primary" @click="searchUsers">Search</button>
-    <div v-if="user">
-      <h4>User: {{ user }}</h4>
-      <p>Number of uploaded photos: {{ user.num_photos }}</p>
-      <p>Followers: {{ user.followers }}</p>
-      <p>Following: {{ user.following }}</p>
-    </div>
+   
+      <h4 v-if = user>User: {{ user }}</h4>
+      <p v-if = user>Number of uploaded photos: {{ user.num_photos }}</p>
+      <p v-if = user>Followers: {{ user.followers }}</p>
+      <p v-if = user>Following: {{ user.following }}</p>
+
   </div>
 </template>
 

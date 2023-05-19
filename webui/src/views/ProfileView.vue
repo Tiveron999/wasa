@@ -1,112 +1,4 @@
 
-
-<template>
-	<div>
-		<div
-			class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-			<h1 class="h2">WasaPhoto</h1>
-			<div class="btn-toolbar mb-2 mb-md-0">
-				<div class="btn-group me-2">
-					<button type="button" id="refresh-button" class="btn btn-sm btn-outline-primary" @click="refresh">
-						Refresh
-					</button>
-				
-					<button type="button" class="btn btn-sm btn-outline-primary" @click="updateUsername">
-						Edit
-					</button>
-				</div>
-			</div>
-		</div>
-
-		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
-		<h6>
-			<span id = "type" class = "special">
-            Profile
-			</span>
-        </h6>
-	
-	</div>
-	<!-- <div id="image-track" data-mouse-down-at="0" data-prev-percentage="0">   -->
- <!--  <img class="image" src="https://images.unsplash.com/photo-1610194352361-4c81a6a8967e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1674&q=80" draggable="false" />
-  <img class="image" src="https://images.unsplash.com/photo-1618202133208-2907bebba9e1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
-  <img class="image" src="https://images.unsplash.com/photo-1495805442109-bf1cf975750b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
-  <img class="image" src="https://images.unsplash.com/photo-1548021682-1720ed403a5b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
-  <img class="image" src="https://images.unsplash.com/photo-1496753480864-3e588e0269b3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2134&q=80" draggable="false" />
-   
--->
-	<div>
-		<br>
-		<p>Followers: {{ followers }}</p>
-		<p>Following: {{ following }}</p>
-		<br>
-	</div>
-		<div id="image-container"> 
-			<h5>
-				<span id = "type" class = "normal">
-				<br>Use the button below to add images to your profile.<br>
-				</span>
-			</h5>
-			<form>
-				<input style = "display:none" type="file" @change="uploadImage2" ref = "pickImage"/>
-				<button class='btn btn-sm-normal btn-outline-primary' type="button" @click="$refs.pickImage.click()">Choose</button>
-			</form>
-			<h5>
-				<span id = "type" class = "normal">
-					<br><br>Click on an image to view it in fullscreen mode, click on it again to return to the profile page.<br><br>
-					<br>Here are the uploaded images: <br>
-				</span>
-			</h5>
-	
-			 <div class="image-row">
-		<img v-for="(image, index) in images" :key="index" :src="image" :draggable="false" v-if="images.length > 0" @click="showModal(index)"/>
-			</div> 
-		</div>
-		<div id="Modal" v-if="show">
-			<img :src="images[selectedImage]" @click="hideModal(index)" />
-			<button class="heart" @click="toggleLike2" ></button>
-			<div class="like-counter">{{ image.likes }} Likes</div>
-		</div>     
-		
-
-	<div class="input-group-append">
-		<button class="btn btn-sm btn-outline-primary" @click="showUsernameModal()">Edit</button>
-	</div>
-	<p v-if="error">{{ error }}</p>
-
-	<!-- Modal -->
-	<div class="modal fade" id="editUsernameModal" tabindex="-1" role="dialog" aria-labelledby="editUsernameModalLabel" aria-hidden="true" v-show="modalVisible">
-		<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-			<h5 class="modal-title" id="editUsernameModalLabel">Edit Username</h5>
-			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="hideUsernameModal()"></button>
-			</div>
-			<div class="modal-body">
-			<form>
-				<div class="mb-3">
-				<label for="modal-input" class="form-label">New Username</label>
-				<input type="text" class="form-control" id="modal-input" v-model="newUsername">
-				</div>
-			</form>
-			</div>
-			<div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="hideUsernameModal()">Cancel</button>
-			<button type="button" class="btn btn-primary" @click="updateUsername()">Confirm</button>
-			</div>
-		</div>
-		</div>
-	</div>
-
-
-
-</template>
-
-
-<style>
-
-</style>
-
-
 <script>
 import axios from 'axios'
 
@@ -193,9 +85,11 @@ export default {
 			text: 'Like',
 			username: '',
 			modalVisible: false,
-			newUsername: ''
+			newUsername: '',
+			posts: 0,
 		}
 	},
+	
 	methods: {
 		/* this.$axios.post('/session', JSON.stringify({username: this.username}), {headers: { 'Content-Type': 'application/json',  'Accept': 'application/json', 
 		'Authorization': `Bearer ${localStorage.getItem('userId')}`}}) */
@@ -391,9 +285,125 @@ export default {
 		}*/
 	this.getImages();
 	},
-	/*created () {
-  },*/
+	computed: {
+		idMatch() {
+			const userId = this.$route.params.user_id;
+			const storedUserId = localStorage.getItem('userId');
+			return userId === storedUserId;
+		}
+	},
+
 }
 
-
 </script>
+
+
+
+
+<template>
+	<div>
+		<div
+			class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+			<h1 class="h2">WasaPhoto</h1>
+			<div class="btn-toolbar mb-2 mb-md-0">
+				<div class="btn-group me-2">
+					<button type="button" id="refresh-button" class="btn btn-sm btn-outline-primary" @click="refresh">
+						Refresh
+					</button>
+				
+					<button type="button" class="btn btn-sm btn-outline-primary" @click="updateUsername">
+						Edit
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
+		<h6>
+			<span id = "type" class = "special">
+            Profile
+			</span>
+        </h6>
+	
+	</div>
+	<!-- <div id="image-track" data-mouse-down-at="0" data-prev-percentage="0">   -->
+ <!--  <img class="image" src="https://images.unsplash.com/photo-1610194352361-4c81a6a8967e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1674&q=80" draggable="false" />
+  <img class="image" src="https://images.unsplash.com/photo-1618202133208-2907bebba9e1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
+  <img class="image" src="https://images.unsplash.com/photo-1495805442109-bf1cf975750b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
+  <img class="image" src="https://images.unsplash.com/photo-1548021682-1720ed403a5b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
+  <img class="image" src="https://images.unsplash.com/photo-1496753480864-3e588e0269b3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2134&q=80" draggable="false" />
+   
+-->
+	<div>
+		<br>
+		<p>Posts: {{ posts }}</p>
+		<p>Followers: {{ followers }}</p>
+		<p>Following: {{ following }}</p>
+		<br>
+	</div>
+		<div id="image-container"> 
+			<h5>
+				<span id = "type" class = "normal">
+				<br>Use the button below to add images to your profile.<br>
+				</span>
+			</h5>
+			<form>
+				<input style = "display:none" type="file" @change="uploadImage2" ref = "pickImage"/>
+				<button class='btn btn-sm-normal btn-outline-primary' type="button" @click="$refs.pickImage.click()">Choose</button>
+			</form>
+			<h5>
+				<span id = "type" class = "normal">
+					<br><br>Click on an image to view it in fullscreen mode, click on it again to return to the profile page.<br><br>
+					<br>Here are the uploaded images: <br>
+				</span>
+			</h5>
+	
+			 <div class="image-row">
+		<img v-for="(image, index) in images" :key="index" :src="image" :draggable="false" v-if="images.length > 0" @click="showModal(index)"/>
+			</div> 
+		</div>
+		<div id="Modal" v-if="show">
+			<img :src="images[selectedImage]" @click="hideModal(index)" />
+			<button class="heart" @click="toggleLike2" ></button>
+			<div class="like-counter">{{ image.likes }} Likes</div>
+		</div>     
+		
+
+	<div class="input-group-append">
+		<button class="btn btn-sm btn-outline-primary" v-if="idMatch" @click="showUsernameModal()">Edit</button>
+	</div>
+	<p v-if="error">{{ error }}</p>
+
+	<!-- Modal -->
+	<div class="modal fade" id="editUsernameModal" tabindex="-1" role="dialog" aria-labelledby="editUsernameModalLabel" aria-hidden="true" v-show="modalVisible">
+		<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="editUsernameModalLabel">Edit Username</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="hideUsernameModal()"></button>
+			</div>
+			<div class="modal-body">
+			<form>
+				<div class="mb-3">
+				<label for="modal-input" class="form-label">New Username</label>
+				<input type="text" class="form-control" id="modal-input" v-model="newUsername">
+				</div>
+			</form>
+			</div>
+			<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="hideUsernameModal()">Cancel</button>
+			<button type="button" class="btn btn-primary" v-if="idMatch" @click="updateUsername()">Confirm</button>
+			</div>
+		</div>
+		</div>
+	</div>
+
+
+
+</template>
+
+
+<style>
+
+</style>
+

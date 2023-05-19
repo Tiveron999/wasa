@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strconv"
 	"time"
 
@@ -84,6 +85,15 @@ func (rt *_router) uploadPhoto(w http.ResponseWriter, r *http.Request, ps httpro
 	}
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(response)
+}
+
+// make path for user images
+func makePath(user_id string) (path string, err error) {
+
+	// Path of the photo dir "./media/user_id/photos/"
+	path := filepath.Join(photoFolder, user_id, "photos")
+
+	return path, nil
 }
 
 // Read the new content for the photo from the request body.
