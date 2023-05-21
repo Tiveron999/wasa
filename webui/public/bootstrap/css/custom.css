@@ -316,11 +316,10 @@ button {
 	height: 500px;
 }
 
-.main-container {
-	height: 100vh;
-	display: flex;
+body {
+  margin: 0;
+  padding: 0;
 }
-
 
 
   
