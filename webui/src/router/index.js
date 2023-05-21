@@ -3,7 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import SearchView from '../views/SearchView.vue'
-
+import NotFoundView from '../views/NotFoundView.vue'
 
 
 
@@ -47,6 +47,7 @@ const router = createRouter({
 		}
 		}
 	},
+	{path: '/:catchAll(.*)', component: NotFoundView}
 		
 	]
 })

@@ -316,4 +316,11 @@ button {
 	height: 500px;
 }
 
+.main-container {
+	height: 100vh;
+	display: flex;
+}
+
+
+
   
