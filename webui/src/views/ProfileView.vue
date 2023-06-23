@@ -365,7 +365,7 @@ export default {
 		<div id="Modal" v-if="show">
 			<img :src="images[selectedImage]" @click="hideModal(index)" />
 			<button class="heart" @click="toggleLike2" ></button>
-			<div class="like-counter">{{ image.likes }} Likes</div>
+			<div class="like-counter">{{ images.likes }} Likes</div>
 		</div>     
 		
 
