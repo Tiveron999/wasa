@@ -49,6 +49,9 @@ export default {
 				console.error(error);
 				});
     	},
+		goToProfile(profileId){
+			this.$router.replace({ name: 'Profile', params: { user_id: this.id } })
+		}
 
       }
 	,
@@ -59,16 +62,14 @@ export default {
 }
 </script>
 
-<template>
+
+<!-- <template>
 	<div>
 		<div
 			class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 			<h1 class="h2">WasaPhoto</h1>
 			<div class="btn-toolbar mb-2 mb-md-0">
 				<div class="btn-group me-2">
-					<button type="button" id="refresh-button" class="btn btn-sm btn-outline-primary" @click="refresh">
-						Refresh
-					</button>
 					
 				</div>
 			</div>
@@ -80,11 +81,11 @@ export default {
             Search
 			</span>
         </h6>
-		<!-- <form action="/users/search/:username" method="get">
+		 <form action="/users/search/:username" method="get">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username">
             <input type="submit" value="Submit">
-        </form> -->
+        </form> 
 	</div>
 	<div>
 		<input v-model="username" placeholder="Enter username">
@@ -99,8 +100,43 @@ export default {
       <p v-if = user>Followers: {{ user.followers }}</p>
       <p v-if = user>Following: {{ user.following }}</p>
 
-  </div>
-</template>
+  </div> 
+</template>  -->
+
+<template>
+	<div>
+	  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<h1 class="h2">WasaPhoto</h1>
+		<div class="btn-toolbar mb-2 mb-md-0">
+		  <div class="btn-group me-2"></div>
+		</div>
+	  </div>
+  
+	  <div class="card mb-3">
+		<div class="card-body">
+		  <h6 class="card-title">Search User</h6>
+		  <div class="input-group">
+			<input type="text" v-model="username" class="form-control" placeholder="Enter username" pattern="^[A-Za-z][A-Za-z0-9_]{5,14}$" required>
+			<button class="btn btn-sm btn-outline-primary" @click="searchUsers">Search</button>
+		  </div>
+		</div>
+	  </div>
+  
+	  <div v-if="user" class="card">
+		<div class="card-body">
+		  <h4 class="card-title">User: {{ user.nickname }}</h4>
+		  <p class="card-text">Number of uploaded photos: {{ user.num_photos }}</p>
+		  <p class="card-text">Followers: {{ user.followers }}</p>
+		  <p class="card-text">Following: {{ user.following }}</p>
+		  <button class="btn btn-sm btn-outline-primary" @click="goToProfile(user.user_id)">
+			Go to Profile
+		  </button>
+		</div>
+	  </div>
+  
+	  <p v-else class="text-muted">No user found.</p>
+	</div>
+  </template>
 
 
 <style>

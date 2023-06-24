@@ -74,7 +74,6 @@ export default {
 			userId: '',
 			error: null,
 			images: [],
-			// images: [],
 			show: false,
     		selectedImage: null,
 			followers: 0,
@@ -87,6 +86,10 @@ export default {
 			modalVisible: false,
 			newUsername: '',
 			posts: 0,
+			modalVisible: false,
+			username: '',
+			isUsernameModalOpen: false,
+   			newUsername: '',
 		}
 	},
 	
@@ -247,17 +250,26 @@ export default {
       this.modalVisible = false;
     },
     updateUsername() {
-    // Make PUT request to update username
-    this.$axios.put(`/users/${this.id}`, { username: this.username }, {headers: {Authorization: 'Bearer ' + this.id}})
-      .then(response => {
-        // Update the username in the component's data
-        this.username = response.data.username;
-		this.modalVisible = false;
-      })
+   
+  },
+
+  openUsernameModal() {
+    this.isUsernameModalOpen = true;
+  },
+  closeUsernameModal() {
+    this.isUsernameModalOpen = false;
+  },
+
+  changeUsername() {
+	 // Make PUT request to update username
+	 this.$axios.put(`/users/${this.id}`, { username: this.username }, {headers: {Authorization: 'Bearer ' + this.id}})
       .catch(error => {
         console.error(error);
       });
-  },
+	this.username = ""
+	this.isUsernameModalOpen = false;
+	
+},
 
 	},
 	mounted() {
@@ -290,8 +302,12 @@ export default {
 			const userId = this.$route.params.user_id;
 			const storedUserId = localStorage.getItem('userId');
 			return userId === storedUserId;
-		}
+		},
+		usernamePattern() {
+    return "^[A-Za-z][A-Za-z0-9_]{5,14}$";
+  },
 	},
+
 
 }
 
@@ -306,14 +322,60 @@ export default {
 			class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 			<h1 class="h2">WasaPhoto</h1>
 			<div class="btn-toolbar mb-2 mb-md-0">
-				<div class="btn-group me-2">
-					<button type="button" id="refresh-button" class="btn btn-sm btn-outline-primary" @click="refresh">
-						Refresh
-					</button>
-				
-					<button type="button" class="btn btn-sm btn-outline-primary" @click="updateUsername">
+				<div class="btn-group me-2">				
+					
+					<button type="button" class="btn btn-sm btn-outline-primary" @click="openUsernameModal">
 						Edit
 					</button>
+
+
+<!-- Modal -->
+<div class="modal" :class="{ 'show': isUsernameModalOpen }">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Change Username</h5>
+        <button type="button" class="close" @click="closeUsernameModal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="New Username"
+          v-model="newUsername"
+          :pattern="usernamePattern"
+          title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
+        />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" @click="changeUsername">Save</button>
+        <button type="button" class="btn btn-secondary" @click="closeUsernameModal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal component template -->
+<modal v-model="modalVisible" @modify="changeUsername">
+  <div class="input-group mb-3 w-25">
+    <input
+  type="text"
+  class="form-control w-25"
+  placeholder="Your new nickname..."
+  v-model="newUsername"
+  :pattern="usernamePattern"
+  title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
+/>
+
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" @click="changeUsername" :disabled="isInvalid">Modify</button>
+    </div>
+  </div>
+</modal>
+
 				</div>
 			</div>
 		</div>
