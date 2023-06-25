@@ -161,7 +161,7 @@ export default {
 		</div>
 	</div>
 
-	<p v-else-if="searched && !userExists" class="no-result-text d-flex justify-content-center">User does not exist.</p>
+	<p v-else-if="searched && !userExists" class="no-result-text text-muted d-flex justify-content-center">User does not exist.</p>
 
 	<!--<p v-else class="no-result-text d-flex justify-content-center">No users found.</p> -->
 
