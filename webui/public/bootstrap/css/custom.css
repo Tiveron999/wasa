@@ -34,6 +34,7 @@ h2, .h2 {
 
   h6 > .special {
  
+    margin-top: 5px;
     font-family: 'League Spartan';
     font-weight: 600;
     font-size: 2.7rem;
@@ -47,7 +48,6 @@ h2, .h2 {
     background-size: 400%;
     animation: move 5s ease infinite;
     background-image: linear-gradient( 68.7deg,  rgb(127, 0, 201) 4%, rgb(212, 0, 255), rgb(255, 71, 227), rgb(255, 94, 0), rgb(255, 217, 0) 86%);
-    z-index: 3;
 }
 
 @keyframes move {
@@ -419,6 +419,14 @@ body {
     color: var(--white-color);
   }
 
+  .active::before{
+    content: '';
+    position: absolute;
+    left: 0;width: 2px;
+    height: 32px;
+    background-color: var(--white-color)
+  }
+
   .height-100 {
     height: 100vh;
   }
@@ -448,3 +456,4 @@ body {
   .card {
     margin-bottom: 1rem;
     }
+

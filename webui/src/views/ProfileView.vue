@@ -329,51 +329,51 @@ export default {
 					</button>
 
 
-<div class="modal" :class="{ 'show': isUsernameModalOpen }">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Change Username</h5>
-        <button type="button" class="close" @click="closeUsernameModal">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="New Username"
-          v-model="newUsername"
-          :pattern="usernamePattern"
-          title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
-        />
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" @click="changeUsername">Save</button>
-        <button type="button" class="btn btn-secondary" @click="closeUsernameModal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+				<div class="modal" :class="{ 'show': isUsernameModalOpen }">
+				<div class="modal-dialog">
+					<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Change Username</h5>
+						<button type="button" class="close" @click="closeUsernameModal">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<input
+						type="text"
+						class="form-control"
+						placeholder="New Username"
+						v-model="newUsername"
+						:pattern="usernamePattern"
+						title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
+						/>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" @click="changeUsername">Save</button>
+						<button type="button" class="btn btn-secondary" @click="closeUsernameModal">Close</button>
+					</div>
+					</div>
+				</div>
+				</div>
 
 
 
-<modal v-model="modalVisible" @modify="changeUsername">
-  <div class="input-group mb-3 w-25">
-    <input
-  type="text"
-  class="form-control w-25"
-  placeholder="Your new nickname..."
-  v-model="newUsername"
-  :pattern="usernamePattern"
-  title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
-/>
+				<modal v-model="modalVisible" @modify="changeUsername">
+				<div class="input-group mb-3 w-25">
+					<input
+				type="text"
+				class="form-control w-25"
+				placeholder="Your new nickname..."
+				v-model="newUsername"
+				:pattern="usernamePattern"
+				title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
+				/>
 
-    <div class="input-group-append">
-      <button class="btn btn-outline-secondary" @click="changeUsername" :disabled="isInvalid">Modify</button>
-    </div>
-  </div>
-</modal>
+					<div class="input-group-append">
+					<button class="btn btn-outline-secondary" @click="changeUsername" :disabled="isInvalid">Modify</button>
+					</div>
+				</div>
+				</modal>
 
 				</div>
 			</div>

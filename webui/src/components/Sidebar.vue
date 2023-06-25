@@ -29,8 +29,6 @@
                     </RouterLink>
                 </li>       
             </div>
-
-              
           
           <a href="#" class="nav_link">
             <svg class="feather"><use href="/feather-sprite-v4.29.0.svg#log-out"/></svg>
@@ -50,15 +48,18 @@
   <script>
   document.addEventListener("DOMContentLoaded", function(event) {   
   
-   const linkColor = document.querySelectorAll('.nav_link')
-   
-   function colorLink(){
-   if(linkColor){
-   linkColor.forEach(l=> l.classList.remove('active'))
-   this.classList.add('active')
-   }
-   }
-   linkColor.forEach(l=> l.addEventListener('click', colorLink))
+    const linkColor = document.querySelectorAll('.nav_link')
+  
+    function colorLink(){
+      if(linkColor){
+        linkColor.forEach(l=> l.classList.remove('active'))
+        this.classList.add('active')
+
+        const whiteBar = document.getElementById('white-bar');
+        whiteBar.style.top = this.offsetTop + 'px';
+      }
+    }
+    linkColor.forEach(l=> l.addEventListener('click', colorLink))
    });
 
 
