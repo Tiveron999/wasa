@@ -2,6 +2,8 @@ package api
 
 import (
 	"encoding/json"
+	"errors"
+
 	// "fmt"
 	"net/http"
 	"strconv"
@@ -33,6 +35,10 @@ func (rt *_router) getSearchedUserInfo(w http.ResponseWriter, r *http.Request, p
 	var profile Profile
 
 	userID, err := rt.db.GetUserID(username)
+	if errors.Is(err, database.ErrUserDoesNotExist) {
+		_ = json.NewEncoder(w).Encode(Profile{})
+		return
+	}
 	if err != nil {
 		ctx.Logger.WithError(err).Error("an error occurred")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -119,6 +125,8 @@ func (rt *_router) getSearchedUserInfo(w http.ResponseWriter, r *http.Request, p
 
 	// Create the profile object
 	profile = Profile{
+		UserID:    userID,
+		Username:  username,
 		Photos:    photoURLs,
 		NumPhotos: uint64(len(photoURLs)),
 		Followers: uint64(len(followers)),

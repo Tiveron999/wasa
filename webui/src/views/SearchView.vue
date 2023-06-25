@@ -6,7 +6,8 @@ export default {
 			loading: false,
 			username: "",
       		user: null,
-			
+			userExists: false,
+			searched: false,
 		}
 	},
 	methods: {
@@ -15,7 +16,6 @@ export default {
 			this.errormsg = null;
 			try {
 				let response = await this.$axios.get("/context");
-				this.users = response.data;
 			} catch (e) {
 				this.errormsg = e.toString();
 			}
@@ -36,21 +36,40 @@ export default {
 			}
 		},
 		searchUsers() {
+			if (!this.username) {
+				this.user = null;
+				return;
+			}
+
 			if (localStorage.getItem('isLoggedIn')) {
-					this.id = localStorage.getItem('userId');
-				}
-			this.$axios.get(`/users?username=${this.username}`, {headers: {Authorization: 'Bearer ' + this.id}})
-				.then(response => {
+				this.id = localStorage.getItem('userId');
+			}
+
+			this.user = null; // Reset the user data
+			try {
+				this.$axios.get(`/users?username=${this.username}`, {headers: { Authorization: 'Bearer ' + this.id },})
+				.then((response) => {
 				this.user = response.data;
-				console.log(this.user);
-				
+				console.log(this.user)
+				if (this.user.userid) {
+					this.userExists = true;
+					} else {
+					this.user = null
+					this.userExists = false;
+					}
+				this.searched = true;
+
 				})
-				.catch(error => {
+				.catch((error) => {
 				console.error(error);
 				});
-    	},
+			} catch (e) {
+				this.errormsg = e.toString();
+			}
+		},
+
 		goToProfile(profileId){
-			this.$router.replace({ name: 'Profile', params: { user_id: this.id } })
+			this.$router.replace({ name: 'Profile', params: { user_id: this.id } }) // fix
 		}
 
       }
@@ -105,38 +124,55 @@ export default {
 
 <template>
 	<div>
-	  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-		<h1 class="h2">WasaPhoto</h1>
-		<div class="btn-toolbar mb-2 mb-md-0">
-		  <div class="btn-group me-2"></div>
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+			<h1 class="h2">WasaPhoto</h1>
+			<div class="btn-toolbar mb-2 mb-md-0">
+			<div class="btn-group me-2"></div>
+			</div>
 		</div>
-	  </div>
-  
-	  <div class="card mb-3">
+
+	<h6>
+		<span id = "type" class = "special">
+		Search
+		</span>
+    </h6>
+	
+	<br>
+	<div class="card mb-3">
 		<div class="card-body">
-		  <h6 class="card-title">Search User</h6>
-		  <div class="input-group">
+			<h6 class="card-title">Search User</h6>
+			<div class="input-group">
 			<input type="text" v-model="username" class="form-control" placeholder="Enter username" pattern="^[A-Za-z][A-Za-z0-9_]{5,14}$" required>
 			<button class="btn btn-sm btn-outline-primary" @click="searchUsers">Search</button>
-		  </div>
+			</div>
 		</div>
-	  </div>
-  
-	  <div v-if="user" class="card">
-		<div class="card-body">
-		  <h4 class="card-title">User: {{ user.nickname }}</h4>
-		  <p class="card-text">Number of uploaded photos: {{ user.num_photos }}</p>
-		  <p class="card-text">Followers: {{ user.followers }}</p>
-		  <p class="card-text">Following: {{ user.following }}</p>
-		  <button class="btn btn-sm btn-outline-primary" @click="goToProfile(user.user_id)">
-			Go to Profile
-		  </button>
-		</div>
-	  </div>
-  
-	  <p v-else class="text-muted">No user found.</p>
 	</div>
-  </template>
+
+	<div v-if="userExists" class="card">
+		<div class="card-body">
+			<h4 class="card-title">User: {{ user.username }}</h4>
+				<p class="card-text">Number of uploaded photos: {{ user.numphotos }}</p>
+				<p class="card-text">Followers: {{ user.followers }}</p>
+				<p class="card-text">Following: {{ user.following }}</p>
+				<button class="btn btn-sm btn-outline-primary" @click="goToProfile(user.userid)">
+				Go to
+				</button>
+		</div>
+	</div>
+
+	<p v-else-if="searched && !userExists" class="no-result-text d-flex justify-content-center">User does not exist.</p>
+
+	<!--<p v-else class="no-result-text d-flex justify-content-center">No users found.</p> -->
+
+
+
+  
+	<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
+
+	</div>
+
+
+</template>
 
 
 <style>

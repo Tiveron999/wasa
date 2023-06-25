@@ -16,7 +16,7 @@ var ErrCommentDoesNotExist = errors.New("comment does not exist")
 
 var ErrFollowerDoesNotExist = errors.New("follower does not exist")
 
-var ErrBannedDoesNotExist = errors.New("the banned user does not exist")
+var ErrBannedDoesNotExist = errors.New("banned user does not exist")
 
 // User struct represents a user in every API call between this package and the outside world.
 // Note that the internal representation of a user in the database might be different.

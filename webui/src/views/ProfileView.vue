@@ -329,7 +329,6 @@ export default {
 					</button>
 
 
-<!-- Modal -->
 <div class="modal" :class="{ 'show': isUsernameModalOpen }">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -358,7 +357,7 @@ export default {
 </div>
 
 
-<!-- Modal component template -->
+
 <modal v-model="modalVisible" @modify="changeUsername">
   <div class="input-group mb-3 w-25">
     <input

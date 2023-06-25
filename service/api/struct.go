@@ -48,6 +48,8 @@ type Banned struct {
 }
 
 type Profile struct {
+	UserID    uint64   `json:"userid"`
+	Username  string   `json:"username"`
 	Photos    []string `json:"photos"`
 	NumPhotos uint64   `json:"numphotos"`
 	Followers uint64   `json:"followers"`
