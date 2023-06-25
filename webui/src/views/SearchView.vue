@@ -68,9 +68,10 @@ export default {
 			}
 		},
 
-		goToProfile(profileId){
-			this.$router.replace({ name: 'Profile', params: { user_id: this.id } }) // fix
+		visitProfile(searchedID) {
+			this.$router.push({ name: 'Profile', params: { user_id: searchedID } });
 		}
+
 
       }
 	,
@@ -151,10 +152,10 @@ export default {
 	<div v-if="userExists" class="card">
 		<div class="card-body">
 			<h4 class="card-title">User: {{ user.username }}</h4>
-				<p class="card-text">Number of uploaded photos: {{ user.numphotos }}</p>
+				<p class="card-text">Posts: {{ user.numphotos }}</p>
 				<p class="card-text">Followers: {{ user.followers }}</p>
 				<p class="card-text">Following: {{ user.following }}</p>
-				<button class="btn btn-sm btn-outline-primary" @click="goToProfile(user.userid)">
+				<button class="btn btn-sm btn-outline-primary" @click="visitProfile(user.userid)">
 				Go to
 				</button>
 		</div>
