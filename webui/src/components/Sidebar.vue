@@ -29,7 +29,7 @@
                     </RouterLink>
                 </li>       
             </div>
-          
+
           <a href="#" class="nav_link">
             <svg class="feather"><use href="/feather-sprite-v4.29.0.svg#log-out"/></svg>
             <span class="nav_name">Log out</span>

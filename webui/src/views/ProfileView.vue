@@ -271,6 +271,12 @@ export default {
 	
 },
 
+	isSameUser() {
+			const userId = this.$route.params.user_id;
+			const storedUserId = localStorage.getItem('userId');
+			return userId === storedUserId;
+		},
+
 	},
 	mounted() {
 	this.refresh()
@@ -298,11 +304,6 @@ export default {
 	this.getImages();
 	},
 	computed: {
-		idMatch() {
-			const userId = this.$route.params.user_id;
-			const storedUserId = localStorage.getItem('userId');
-			return userId === storedUserId;
-		},
 		usernamePattern() {
     return "^[A-Za-z][A-Za-z0-9_]{5,14}$";
   },
@@ -324,12 +325,12 @@ export default {
 			<div class="btn-toolbar mb-2 mb-md-0">
 				<div class="btn-group me-2">				
 					
-					<button type="button" class="btn btn-sm btn-outline-primary" @click="openUsernameModal">
+					<button type="button" class="btn btn-sm btn-outline-primary" v-if="isSameUser()" @click="openUsernameModal">
 						Edit
 					</button>
 
 
-				<div class="modal" :class="{ 'show': isUsernameModalOpen }">
+				<div v-if="isSameUser()" class="modal" :class="{ 'show': isUsernameModalOpen }">
 				<div class="modal-dialog">
 					<div class="modal-content">
 					<div class="modal-header">
@@ -359,7 +360,7 @@ export default {
 
 
 				<modal v-model="modalVisible" @modify="changeUsername">
-				<div class="input-group mb-3 w-25">
+				<div class="input-group mb-3 w-25" v-if="isSameUser()">
 					<input
 				type="text"
 				class="form-control w-25"
@@ -369,7 +370,7 @@ export default {
 				title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
 				/>
 
-					<div class="input-group-append">
+					<div class="input-group-append" v-if="isSameUser()">
 					<button class="btn btn-outline-secondary" @click="changeUsername" :disabled="isInvalid">Modify</button>
 					</div>
 				</div>
@@ -403,15 +404,17 @@ export default {
 		<br>
 	</div>
 		<div id="image-container"> 
-			<h5>
-				<span id = "type" class = "normal">
-				<br>Use the button below to add images to your profile.<br>
-				</span>
-			</h5>
-			<form>
-				<input style = "display:none" type="file" @change="uploadImage2" ref = "pickImage"/>
-				<button class='btn btn-sm-normal btn-outline-primary' type="button" @click="$refs.pickImage.click()">Choose</button>
-			</form>
+			<div v-if="isSameUser()"> 
+				<h5>
+					<span id = "type" class = "normal">
+					<br>Use the button below to add images to your profile.<br>
+					</span>
+				</h5>
+				<form>
+					<input style = "display:none" type="file" @change="uploadImage2" ref = "pickImage"/>
+					<button class='btn btn-sm-normal btn-outline-primary' type="button" @click="$refs.pickImage.click()">Choose</button>
+				</form>
+			</div>
 			<h5>
 				<span id = "type" class = "normal">
 					<br><br>Click on an image to view it in fullscreen mode, click on it again to return to the profile page.<br><br>
@@ -431,7 +434,7 @@ export default {
 		
 
 	<div class="input-group-append">
-		<button class="btn btn-sm btn-outline-primary" v-if="idMatch" @click="showUsernameModal()">Edit</button>
+		<button class="btn btn-sm btn-outline-primary" v-if="isSameUser()" @click="showUsernameModal()">Edit</button>
 	</div>
 	<p v-if="error">{{ error }}</p>
 
@@ -453,7 +456,7 @@ export default {
 			</div>
 			<div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="hideUsernameModal()">Cancel</button>
-			<button type="button" class="btn btn-primary" v-if="idMatch" @click="updateUsername()">Confirm</button>
+			<button type="button" class="btn btn-primary" v-if="isSameUser()" @click="updateUsername()">Confirm</button>
 			</div>
 		</div>
 		</div>
