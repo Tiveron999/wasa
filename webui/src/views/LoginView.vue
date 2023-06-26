@@ -76,77 +76,26 @@ export default {
 </script>
 
 <template>
-
-<body class="login-page">
-  
-
-
-	<div id="login-container">
-	<div>
-		<div
-			class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-			<h1 class="h2">WasaPhoto</h1>
-			<div class="btn-toolbar mb-2 mb-md-0">
-				<div class="btn-group me-2">
-					
-				</div>
-					
-					
-				<div class="btn-group me-2">
-					
-				<button id="logout-button" @click="logout">Logout</button>
-				</div>  
-			</div>
-		</div>
-			
-			
-	  
-	</div>
-		
-
-		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
-		
-		<div>
-     <!-- <template v-if="isLoggedIn">
-         Show content for logged in users 
-      </template>
-      <template v-else>-->
+	<div class="login-page">
+	  <div class="login-card">
+		<h1 class="h2 login-title">WasaPhoto</h1>
+		<div class="login-form">
 		<h6>
 			<span id = "type" class = "special">
-            Login
+			Login
 			</span>
         </h6>
-		<!-- <base-card> 
-		<form @submit.prevent="submit"> -->
-		  <!-- <label for="username">username</label> -->
-		  <input id="username" type="text" v-model="username" placeholder="Username"/>
-		  <button class="btn btn-sm-normal btn-outline-primary" @click="submit()">Enter</button>  <!--@click="loginButtonClicked" {{ buttonString }} type="submit" -->
-		  <p v-if="error">{{ error }}</p>
-		 <!--  <a href="#" @click.prevent="toggleLogin">{{ textLoginString }}</a> 
-		</form> -->
-	 <!-- </base-card> -->
-	
-
-    </div>
-		<!--<h6>
-			<span id = "type" class = "special">
-            Login
-			</span>
-        </h6>
-		<base-card>
-		<form @submit.prevent>
-		  <label for="username">username</label>
-		  <input id="username" type="text" v-model="username" />
-		  <button class="btn btn-sm btn-outline-secondary" @click="loginButtonClicked">{{ buttonString }}Enter</button>
-		  <p v-if="error">{{ error }}</p>
-		  <a href="#" @click.prevent="toggleLogin">{{ textLoginString }}</a>
-		</form>
-	  </base-card>-->
-
+		<input id="username" type="text" v-model="username" placeholder="Username" />
+		<button class="btn btn-sm-normal btn-outline-primary" @click="submit()">Enter</button>
+		<p v-if="error">{{ error }}</p>
+		
+		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
+		</div>
+		<!--  <button id="logout-button" class="logout-button" @click="logout">Logout</button>  -->
+	  </div>
 	</div>
-	
-</body>	
 </template>
+  
 
 
 <style>

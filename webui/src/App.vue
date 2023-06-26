@@ -15,7 +15,10 @@ computed: {
     LoggedIn() {
 		console.log(localStorage.getItem('isLoggedIn'))
         return !!localStorage.getItem('isLoggedIn');
-    }
+  	},
+	isLoginPage() {
+    	return this.$route.name === 'Login';
+  	}
   },
 
   watch: {
@@ -49,12 +52,18 @@ computed: {
 	</header> -->
 
 	<div class="container-fluid">
-		<div class="row">
+		<div class="row" v-if="!isLoginPage">
 			<Sidebar>
-	
+
 			</Sidebar>
 
 			<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+				<RouterView />
+			</main>
+		</div>
+		<div class="row" v-if="isLoginPage">
+			
+			<main class="col-md p-0">
 				<RouterView />
 			</main>
 		</div>

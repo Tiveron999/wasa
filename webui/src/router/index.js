@@ -18,7 +18,7 @@ localStorage.getItem('userId') || ' '
 const router = createRouter({
 	history: createWebHashHistory(import.meta.env.BASE_URL),
 	routes: [
-		{ path: '/', component: HomeView, beforeEnter: (to, from, next) => {
+		{path: '/', component: HomeView, beforeEnter: (to, from, next) => {
 			if (localStorage.getItem('isLoggedIn') === 'true') {
 			  next()
 			} else {
@@ -38,8 +38,8 @@ const router = createRouter({
 				next('/session')
 			  }
 			}},
-		{path: '/session', component: LoginView},
-		{ path: '/users', component: SearchView, beforeEnter: (to, from, next) => {
+		{path: '/session', component: LoginView, name: 'Login'},
+		{path: '/users', component: SearchView, beforeEnter: (to, from, next) => {
 		if (localStorage.getItem('isLoggedIn') === 'true') {
 			next()
 		} else {

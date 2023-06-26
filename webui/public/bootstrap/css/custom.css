@@ -142,6 +142,7 @@ button {
     border-style: outset;
   }
 
+
   /* like button */
   .heart {
     background-color: red;
@@ -186,6 +187,7 @@ button {
     transform: rotate(45deg) scale(1.14);
   }
   
+
   /* images */ 
   img {
     object-fit: cover;
@@ -262,6 +264,7 @@ button {
   }
   */
 
+
   /* like counter */
   .like-counter {
     position: relative;
@@ -272,19 +275,51 @@ button {
     font-family: Impact;
 }
 
+
 /* styling of login page */
 .login-page {
-  background-image: url('http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg');
+  background-image: url('https://getwallpapers.com/wallpaper/full/3/f/e/106762.jpg');
   background-size: cover;
   background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
 }
 
-#login-container {
-  height: 50rem;
-  width: 100%;
+.login-card {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 600px; 
+  height: 350px; 
+  border: 2px solid var(--first-color);;
 }
 
-/* The Modal (background) */
+.login-title {
+  margin-bottom: 2rem;
+}
+
+.login-form {
+  margin-bottom: 1rem;
+}
+
+.logout-button {
+  margin-top: 1rem;
+}
+
+.login-card input#username {
+  width: 300px;
+}
+
+
+/* The Modal (background) */                            /* can be deleted */
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
@@ -297,7 +332,8 @@ button {
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-/* Modal Content/Box */
+
+/* Modal Content */                                     /* can be deleted */
 .modal-content {
   background-color: #fefefe;
   margin: 15% auto; /* 15% from the top and centered */
@@ -321,18 +357,18 @@ button {
   cursor: pointer;
 }
 
-.row{
-	height: 500px;
-}
 
-
+/* body */
 body {
   margin: 0;
   padding: 0;
   font-family: 'Montserrat', sans-serif;
   transition: .5s;
+  overflow-x: hidden;
 }
 
+
+/* side bar */
   :root {
     --header-height: 3rem;
     --nav-width: 68px;
@@ -453,6 +489,8 @@ body {
   
   }
 
+
+  /* search page */
   .card {
     margin-bottom: 1rem;
     }

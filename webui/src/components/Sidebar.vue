@@ -54,9 +54,6 @@
       if(linkColor){
         linkColor.forEach(l=> l.classList.remove('active'))
         this.classList.add('active')
-
-        const whiteBar = document.getElementById('white-bar');
-        whiteBar.style.top = this.offsetTop + 'px';
       }
     }
     linkColor.forEach(l=> l.addEventListener('click', colorLink))
