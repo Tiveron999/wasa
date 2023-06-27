@@ -84,10 +84,7 @@ export default {
 			text: 'Like',
 			username: '',
 			modalVisible: false,
-			newUsername: '',
 			posts: 0,
-			modalVisible: false,
-			username: '',
 			isUsernameModalOpen: false,
    			newUsername: '',
 		}
@@ -262,7 +259,7 @@ export default {
 
   changeUsername() {
 	 // Make PUT request to update username
-	 this.$axios.put(`/users/${this.id}`, { username: this.username }, {headers: {Authorization: 'Bearer ' + this.id}})
+	 this.$axios.put(`/users/${this.id}`, { username: this.newUsername }, {headers: {Authorization: 'Bearer ' + this.id}})
       .catch(error => {
         console.error(error);
       });
@@ -325,9 +322,9 @@ export default {
 			<div class="btn-toolbar mb-2 mb-md-0">
 				<div class="btn-group me-2">				
 					
-					<button type="button" class="btn btn-sm btn-outline-primary" v-if="isSameUser()" @click="openUsernameModal">
+					<!-- <button type="button" class="btn btn-sm btn-outline-primary" v-if="isSameUser()" @click="openUsernameModal">
 						Edit
-					</button>
+					</button> -->
 
 
 				<div v-if="isSameUser()" class="modal" :class="{ 'show': isUsernameModalOpen }">
@@ -358,7 +355,7 @@ export default {
 				</div>
 
 
-
+			<!-- fix modal appearing by clicking on a button instead of being static -->
 				<modal v-model="modalVisible" @modify="changeUsername">
 				<div class="input-group mb-3 w-25" v-if="isSameUser()">
 					<input
@@ -374,7 +371,7 @@ export default {
 					<button class="btn btn-outline-secondary" @click="changeUsername" :disabled="isInvalid">Modify</button>
 					</div>
 				</div>
-				</modal>
+				</modal>   
 
 				</div>
 			</div>
@@ -433,12 +430,12 @@ export default {
 		</div>     
 		
 
-	<div class="input-group-append">
+	<!-- <div class="input-group-append">
 		<button class="btn btn-sm btn-outline-primary" v-if="isSameUser()" @click="showUsernameModal()">Edit</button>
-	</div>
+	</div>  -->
 	<p v-if="error">{{ error }}</p>
 
-	<!-- Modal -->
+	<!-- 
 	<div class="modal fade" id="editUsernameModal" tabindex="-1" role="dialog" aria-labelledby="editUsernameModalLabel" aria-hidden="true" v-show="modalVisible">
 		<div class="modal-dialog">
 		<div class="modal-content">
@@ -460,7 +457,7 @@ export default {
 			</div>
 		</div>
 		</div>
-	</div>
+	</div>  -->
 
 
 
