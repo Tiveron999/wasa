@@ -87,6 +87,7 @@ export default {
 			posts: 0,
 			isUsernameModalOpen: false,
    			newUsername: '',
+			usernamePattern: "/^[A-Za-z][A-Za-z0-9_]{5,14}$/"
 		}
 	},
 	
@@ -246,9 +247,6 @@ export default {
     hideUsernameModal() {
       this.modalVisible = false;
     },
-    updateUsername() {
-   
-  },
 
   openUsernameModal() {
     this.isUsernameModalOpen = true;
@@ -258,6 +256,12 @@ export default {
   },
 
   changeUsername() {
+	// Username is not valid
+	const regex = /^[A-Za-z][A-Za-z0-9_]{5,14}$/;
+	if (!regex.test(this.newUsername)) {
+		alert('The username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed.');
+		return;
+	}
 	 // Make PUT request to update username
 	 this.$axios.put(`/users/${this.id}`, { username: this.newUsername }, {headers: {Authorization: 'Bearer ' + this.id}})
       .catch(error => {
@@ -265,7 +269,7 @@ export default {
       });
 	this.username = ""
 	this.isUsernameModalOpen = false;
-	
+	alert('You have successfully changed your username.')
 },
 
 	isSameUser() {
@@ -301,9 +305,12 @@ export default {
 	this.getImages();
 	},
 	computed: {
-		usernamePattern() {
+		/*usernamePattern() {
     return "^[A-Za-z][A-Za-z0-9_]{5,14}$";
-  },
+  }, */
+	isInvalid() {
+		return !this.newUsername.match(this.usernamePattern);
+	}
 	},
 
 
@@ -347,7 +354,7 @@ export default {
 						/>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" @click="changeUsername">Save</button>
+						<button type="button" class="btn btn-primary" :disabled="isInvalid" @click="changeUsername">Save</button>
 						<button type="button" class="btn btn-secondary" @click="closeUsernameModal">Close</button>
 					</div>
 					</div>
@@ -361,14 +368,14 @@ export default {
 					<input
 				type="text"
 				class="form-control w-25"
-				placeholder="Your new nickname..."
+				placeholder="Your new username..."
 				v-model="newUsername"
 				:pattern="usernamePattern"
 				title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
 				/>
 
 					<div class="input-group-append" v-if="isSameUser()">
-					<button class="btn btn-outline-secondary" @click="changeUsername" :disabled="isInvalid">Modify</button>
+					<button class="btn btn-outline-secondary" @click="changeUsername" >Modify</button>
 					</div>
 				</div>
 				</modal>   

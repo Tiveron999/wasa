@@ -30,7 +30,7 @@
                 </li>       
             </div>
 
-          <a href="#" class="nav_link">
+          <a href="#" class="nav_link" @click="logout">
             <svg class="feather"><use href="/feather-sprite-v4.29.0.svg#log-out"/></svg>
             <span class="nav_name">Log out</span>
           </a>
@@ -66,14 +66,21 @@
     },
     methods: {
       updateProfileLink() {
-			console.log(localStorage.getItem('userId'))
-			if (localStorage.getItem('isLoggedIn')) {
-			this.id = localStorage.getItem('userId');
-			this.$router.push({ name: 'Profile', params: { user_id: this.id } });
-			} else {
-			this.$router.push("/users/:user_id/profile");
-			}
-		}
+        console.log(localStorage.getItem('userId'))
+        if (localStorage.getItem('isLoggedIn')) {
+        this.id = localStorage.getItem('userId');
+        this.$router.push({ name: 'Profile', params: { user_id: this.id } });
+        } else {
+        this.$router.push("/users/:user_id/profile");
+        }
+		},
+      logout() {
+        localStorage.setItem('isLoggedIn', false);
+        localStorage.setItem('username', '');
+        localStorage.setItem('userId', '');
+        alert('You have successfully logged out.')
+        this.$router.push('/session')
+        }
     },
   };
   </script>
