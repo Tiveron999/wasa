@@ -264,12 +264,20 @@ export default {
 	}
 	 // Make PUT request to update username
 	 this.$axios.put(`/users/${this.id}`, { username: this.newUsername }, {headers: {Authorization: 'Bearer ' + this.id}})
+	 .then(() => {
+		this.username = ""
+		this.isUsernameModalOpen = false;
+		alert('You have successfully changed your username.')
+	 })
       .catch(error => {
-        console.error(error);
+		if (error.response.status === 500) {
+			// This username already exists error
+			alert('This username already exists.');
+		} else {
+			// Other errors
+			console.error(error);
+  }
       });
-	this.username = ""
-	this.isUsernameModalOpen = false;
-	alert('You have successfully changed your username.')
 },
 
 	isSameUser() {
