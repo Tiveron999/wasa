@@ -151,6 +151,7 @@ export default {
 		  console.error(error);
 		}
 	},
+
 		showModal(index) {
 		this.selectedImage = index;
 		this.show = true;
@@ -180,22 +181,25 @@ export default {
     }
 	},
 	getImages() {
-	if (localStorage.getItem('isLoggedIn')) {
-		this.id = localStorage.getItem('userId');
-	}
-	this.$axios.get(`/users/${this.id}/photos`, {headers: {'Accept': 'application/json', Authorization: 'Bearer ' + this.id}})
-	.then(async response => {
-		console.log(response.data);
-		// Update images data with retrieved image URLs
-		const dataURLs = await Promise.all(response.data.map(url => this.getDataURLFromImageURL(url)));
-		console.log(this.images)
-		console.log(dataURLs)
-		this.images = dataURLs;
-	})
-	.catch(error => {
-		console.log(error.response);
-	});
-	},
+		if (localStorage.getItem('isLoggedIn')) {
+			this.id = localStorage.getItem('userId');
+		}
+
+		this.$axios.get(`/users/${this.id}/photos`, {
+			headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + this.id }
+		})
+		.then(response => {
+			console.log('hi2', response.data);
+
+			// The response data now contains an array of relative paths
+			this.images = response.data;
+		})
+		.catch(error => {
+			console.log(error.response);
+		});
+		},
+
+
 	async getDataURLFromImageURL(imageURL) {
 	const response = await fetch(imageURL);
 	let blob = await response.blob();
@@ -270,7 +274,8 @@ export default {
 		alert('You have successfully changed your username.')
 	 })
       .catch(error => {
-		if (error.response.status === 500) {
+
+		if (error.response.status === 500) {                    // change error code
 			// This username already exists error
 			alert('This username already exists.');
 		} else {
@@ -433,8 +438,7 @@ export default {
 					<br>Here are the uploaded images: <br>
 				</span>
 			</h5>
-	
-			 <div class="image-row">
+				 <div class="image-row">
 		<img v-for="(image, index) in images" :key="index" :src="image" :draggable="false" @click="showModal(index)"/>
 			</div> 
 		</div>
