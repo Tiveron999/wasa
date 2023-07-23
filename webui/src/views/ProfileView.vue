@@ -367,13 +367,65 @@ export default {
 			<div class="btn-toolbar mb-2 mb-md-0">
 				<div class="btn-group me-2">				
 					
-					<!-- <button type="button" class="btn btn-sm btn-outline-primary" v-if="isSameUser()" @click="openUsernameModal">
-						Edit
-					</button> -->
+				</div>
+			</div>
 
-					
+		</div>
+		<h6>
+			<span id = "type" class = "special">
+            Profile
+			</span>
+        </h6>
+	
 
-				<div v-if="isSameUser()" class="modal" :class="{ 'show': isUsernameModalOpen }">
+		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
+
+
+		<div>
+    <!-- Your profile info and other content -->
+
+    
+   
+    <!-- Edit Button to open the modal -->
+    <button class="btn btn-primary" @click="openUsernameModal">Edit</button>
+
+    <!-- Bootstrap Modal -->
+    <div class="modal" :class="{ 'show': isUsernameModalOpen }">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Change Username</h5>
+            <button type="button" class="close" @click="closeUsernameModal">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Form to change the username -->
+            <form @submit.prevent="changeUsername">
+              <div class="form-group">
+                <label for="newUsername">New Username</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="newUsername"
+                  v-model="newUsername"
+                  :pattern="usernamePattern"
+                  title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
+                />
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-secondary" @click="closeUsernameModal">Close</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div> 
+ </div>
+
+		</div>
+			<div v-if="isSameUser()" class="modal" :class="{ 'show': isUsernameModalOpen }">
 				<div class="modal-dialog">
 					<div class="modal-content">
 					<div class="modal-header">
@@ -396,9 +448,9 @@ export default {
 						<button type="button" class="btn btn-primary" :disabled="isInvalid" @click="changeUsername">Save</button>
 						<button type="button" class="btn btn-secondary" @click="closeUsernameModal">Close</button>
 					</div>
-					</div>
 				</div>
-				</div>
+		</div>
+					
 
 
 			<!-- fix modal appearing by clicking on a button instead of being static -->
@@ -420,36 +472,24 @@ export default {
 				</modal>   
 
 				</div>
-			</div>
-		</div>
 
-		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
-		<h6>
-			<span id = "type" class = "special">
-            Profile
-			</span>
-        </h6>
-	
-	</div>
-	<!-- <div id="image-track" data-mouse-down-at="0" data-prev-percentage="0">   -->
- <!--  <img class="image" src="https://images.unsplash.com/photo-1610194352361-4c81a6a8967e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1674&q=80" draggable="false" />
-  <img class="image" src="https://images.unsplash.com/photo-1618202133208-2907bebba9e1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
-  <img class="image" src="https://images.unsplash.com/photo-1495805442109-bf1cf975750b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
-  <img class="image" src="https://images.unsplash.com/photo-1548021682-1720ed403a5b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" draggable="false" />
-  <img class="image" src="https://images.unsplash.com/photo-1496753480864-3e588e0269b3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2134&q=80" draggable="false" />
-   
--->
-	<div>
-		<button type="button" class="btn btn-secondary" v-if="!isSameUser()" @click="toggleFollow" :class="{ following: isFollowing }">
-			{{ isFollowing ? 'Following' : 'Follow' }}
-		</button>
-		<br>
-		<!--   <p>{{ username }}</p> -->
-		<p>Posts: {{ posts }}</p>
-		<p>Followers: {{ followers }}</p>
-		<p>Following: {{ following }}</p>
-		<br>
-	</div>
+
+		<div class="profile-container">
+			<br>
+			<div class="profile-info">
+				 <!-- <h2>{{ username }}</h2> -->
+				<div class="follow-info">
+				<p><strong>{{ posts }}</strong> posts</p>
+				<p><strong>{{ followers }}</strong> followers</p>
+				<p><strong>{{ following }}</strong> following</p>
+				</div>
+				<button type="button" class="btn btn-sm-normal btn-outline-primary follow-button" v-if="!isSameUser()" @click="toggleFollow" 
+				:class="{ following: isFollowing }">
+				{{ isFollowing ? 'Following' : 'Follow' }}
+				</button>
+			</div>
+			<br> <br> <br> <br>
+		</div>
 		<div id="image-container"> 
 			<div v-if="isSameUser()"> 
 				<h5>
@@ -470,7 +510,7 @@ export default {
 			</h5>
 			
 				 <div class="image-row">
-		<img v-for="(image, index) in images" :key="index" :src="image" :draggable="false" @click="showModal(index)"/>
+		<img v-for="(image, index) in images" :key="index" :src="`#/${image}`" :draggable="false" @click="showModal(index)"/>
 			</div> 
 		</div>
 		<div id="Modal" v-if="show">

@@ -495,3 +495,38 @@ body {
     margin-bottom: 1rem;
     }
 
+
+  /* profile info */
+.follow-button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  /* Add any other styling for the follow button wrapper, e.g., margin, padding, etc. */
+}
+
+.profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  margin-left: 20px;
+}
+
+/*.profile-details h2 {
+  margin: 0;
+}*/
+
+.follow-info {
+  display: flex;
+}
+
+.follow-info p {
+  margin-right: 20px;
+}
+
+.follow-button {
+  margin-top: 10px;
+}
