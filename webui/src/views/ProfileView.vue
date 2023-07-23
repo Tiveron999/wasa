@@ -87,7 +87,8 @@ export default {
 			posts: 0,
 			isUsernameModalOpen: false,
    			newUsername: '',
-			usernamePattern: "/^[A-Za-z][A-Za-z0-9_]{5,14}$/"
+			usernamePattern: "/^[A-Za-z][A-Za-z0-9_]{5,14}$/",
+			isFollowing: false,
 		}
 	},
 	
@@ -193,6 +194,7 @@ export default {
 
 			// The response data now contains an array of relative paths
 			this.images = response.data;
+			console.log('images:', this.images);
 		})
 		.catch(error => {
 			console.log(error.response);
@@ -281,9 +283,9 @@ export default {
 		} else {
 			// Other errors
 			console.error(error);
-  }
+  		}
       });
-},
+  	},
 
 	isSameUser() {
 			const userId = this.$route.params.user_id;
@@ -291,6 +293,29 @@ export default {
 			return userId === storedUserId;
 		},
 
+		toggleFollow() {
+		// If the user is following, unfollow on click
+		if (this.isFollowing) {
+			this.unfollowUser();
+		} else {
+			this.followUser(); // Follow the user on click
+		}
+
+		// Toggle the following state
+		this.isFollowing = !this.isFollowing;
+		},
+		followUser() {
+		// Add your logic here to handle the follow functionality
+		// This could be sending a request to your server to update the user's follow status
+		// For example: You can use axios or fetch to send a POST request to your API.
+		},
+		unfollowUser() {
+		// Add your logic here to handle the unfollow functionality
+		// This could be sending a request to your server to update the user's follow status
+		// For example: You can use axios or fetch to send a DELETE request to your API.
+		},
+
+	
 	},
 	mounted() {
 	this.refresh()
@@ -346,6 +371,7 @@ export default {
 						Edit
 					</button> -->
 
+					
 
 				<div v-if="isSameUser()" class="modal" :class="{ 'show': isUsernameModalOpen }">
 				<div class="modal-dialog">
@@ -414,7 +440,11 @@ export default {
    
 -->
 	<div>
+		<button type="button" class="btn btn-secondary" v-if="!isSameUser()" @click="toggleFollow" :class="{ following: isFollowing }">
+			{{ isFollowing ? 'Following' : 'Follow' }}
+		</button>
 		<br>
+		<!--   <p>{{ username }}</p> -->
 		<p>Posts: {{ posts }}</p>
 		<p>Followers: {{ followers }}</p>
 		<p>Following: {{ following }}</p>
@@ -438,6 +468,7 @@ export default {
 					<br>Here are the uploaded images: <br>
 				</span>
 			</h5>
+			
 				 <div class="image-row">
 		<img v-for="(image, index) in images" :key="index" :src="image" :draggable="false" @click="showModal(index)"/>
 			</div> 
