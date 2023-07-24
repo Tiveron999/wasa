@@ -4,66 +4,7 @@ import axios from 'axios'
 
 import { toRaw } from 'vue';
 
-
-
-
-/*window.onload = function() {
-    let likeCounter = document.querySelector('.like-counter');
-    let heartButton = document.querySelector('.heart');
-
-    heartButton.addEventListener('click', function() {
-        let currentLikes = parseInt(likeCounter.textContent);
-        likeCounter.textContent = currentLikes + 1 + ' likes';
-    });
-}*/
-
-
-
-/*const track = document.getElementById("image-track");
-
-const handleOnDown = e => track.dataset.mouseDownAt = e.clientX;
-
-const handleOnUp = () => {
-  track.dataset.mouseDownAt = "0";  
-  track.dataset.prevPercentage = track.dataset.percentage;
-}
-
-const handleOnMove = e => {
-  if(track.dataset.mouseDownAt === "0") return;
-  
-  const mouseDelta = parseFloat(track.dataset.mouseDownAt) - e.clientX,
-        maxDelta = window.innerWidth / 2;
-  
-  const percentage = (mouseDelta / maxDelta) * -100,
-        nextPercentageUnconstrained = parseFloat(track.dataset.prevPercentage) + percentage,
-        nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -100);
-  
-  track.dataset.percentage = nextPercentage;
-  
-  track.animate({
-    transform: `translate(${nextPercentage}%, -50%)`
-  }, { duration: 1200, fill: "forwards" });
-  
-  for(const image of track.getElementsByClassName("image")) {
-    image.animate({
-      objectPosition: `${100 + nextPercentage}% center`
-    }, { duration: 1200, fill: "forwards" });
-  }
-}
-
-window.onmousedown = e => handleOnDown(e);
-
-window.ontouchstart = e => handleOnDown(e.touches[0]);
-
-window.onmouseup = e => handleOnUp(e);
-
-window.ontouchend = e => handleOnUp(e.touches[0]);
-
-window.onmousemove = e => handleOnMove(e);
-
-window.ontouchmove = e => handleOnMove(e.touches[0]);
-*/
-
+import UsernameModal from '../components/UsernameModal.vue'; 
 
 export default {
 	data: function() {
@@ -90,6 +31,9 @@ export default {
 			usernamePattern: "/^[A-Za-z][A-Za-z0-9_]{5,14}$/",
 			isFollowing: false,
 		}
+	},
+	components: {
+		UsernameModal
 	},
 	
 	methods: {
@@ -254,38 +198,40 @@ export default {
       this.modalVisible = false;
     },
 
-  openUsernameModal() {
-    this.isUsernameModalOpen = true;
-  },
-  closeUsernameModal() {
-    this.isUsernameModalOpen = false;
-  },
-
-  changeUsername() {
-	// Username is not valid
-	const regex = /^[A-Za-z][A-Za-z0-9_]{5,14}$/;
-	if (!regex.test(this.newUsername)) {
-		alert('The username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed.');
-		return;
-	}
-	 // Make PUT request to update username
-	 this.$axios.put(`/users/${this.id}`, { username: this.newUsername }, {headers: {Authorization: 'Bearer ' + this.id}})
-	 .then(() => {
-		this.username = ""
+	openUsernameModal() {
+		console.log('here1: ' + this.isUsernameModalOpen);
+		this.isUsernameModalOpen = true;
+		console.log('here: ' + this.isUsernameModalOpen);
+	},
+	closeUsernameModal() {
 		this.isUsernameModalOpen = false;
-		alert('You have successfully changed your username.')
-	 })
-      .catch(error => {
+	},
 
-		if (error.response.status === 500) {                    // change error code
-			// This username already exists error
-			alert('This username already exists.');
-		} else {
-			// Other errors
-			console.error(error);
-  		}
-      });
-  	},
+	changeUsername() {
+		// Username is not valid
+		const regex = /^[A-Za-z][A-Za-z0-9_]{5,14}$/;
+		if (!regex.test(this.newUsername)) {
+			alert('The username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed.');
+			return;
+		}
+		// Make PUT request to update username
+		this.$axios.put(`/users/${this.id}`, { username: this.newUsername }, {headers: {Authorization: 'Bearer ' + this.id}})
+		.then(() => {
+			this.username = ""
+			this.isUsernameModalOpen = false;
+			alert('You have successfully changed your username.')
+		})
+		.catch(error => {
+
+			if (error.response.status === 500) {                    // change error code
+				// This username already exists error
+				alert('This username already exists.');
+			} else {
+				// Other errors
+				console.error(error);
+			}
+		});
+	},
 
 	isSameUser() {
 			const userId = this.$route.params.user_id;
@@ -381,15 +327,21 @@ export default {
 		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
 
 
-		<div>
-    <!-- Your profile info and other content -->
+		 <!-- Button to trigger the modal -->
+		 <button v-if="isSameUser()" @click="openUsernameModal">Edit</button>
 
+		<!-- The Modal component -->
+		<UsernameModal v-show="isUsernameModalOpen" @click="" @close-modal="closeUsernameModal" @change-username="changeUsername" />
+
+
+
+
+		<div>
     
-   
-    <!-- Edit Button to open the modal -->
+    <!-- 
     <button class="btn btn-primary" @click="openUsernameModal">Edit</button>
 
-    <!-- Bootstrap Modal -->
+
     <div class="modal" :class="{ 'show': isUsernameModalOpen }">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -400,7 +352,6 @@ export default {
             </button>
           </div>
           <div class="modal-body">
-            <!-- Form to change the username -->
             <form @submit.prevent="changeUsername">
               <div class="form-group">
                 <label for="newUsername">New Username</label>
@@ -421,8 +372,8 @@ export default {
           </div>
         </div>
       </div>
-    </div> 
- </div>
+    </div> -->
+ 	</div>
 
 		</div>
 			<div v-if="isSameUser()" class="modal" :class="{ 'show': isUsernameModalOpen }">
@@ -453,7 +404,7 @@ export default {
 					
 
 
-			<!-- fix modal appearing by clicking on a button instead of being static -->
+			<!-- fix modal appearing by clicking on a button instead of being static 
 				<modal v-model="modalVisible" @modify="changeUsername">
 				<div class="input-group mb-3 w-25" v-if="isSameUser()">
 					<input
@@ -469,9 +420,13 @@ export default {
 					<button class="btn btn-outline-secondary" @click="changeUsername" >Modify</button>
 					</div>
 				</div>
-				</modal>   
+				</modal>  --> 
 
-				</div>
+				</div> 
+
+
+
+
 
 
 		<div class="profile-container">
