@@ -4,7 +4,8 @@ import axios from 'axios'
 
 import { toRaw } from 'vue';
 
-import UsernameModal from '../components/UsernameModal.vue'; 
+import UsernameModal from '../components/UsernameModal.vue';
+
 
 export default {
 	data: function() {
@@ -35,7 +36,7 @@ export default {
 	components: {
 		UsernameModal
 	},
-	
+
 	methods: {
 		/* this.$axios.post('/session', JSON.stringify({username: this.username}), {headers: { 'Content-Type': 'application/json',  'Accept': 'application/json', 
 		'Authorization': `Bearer ${localStorage.getItem('userId')}`}}) */
@@ -327,15 +328,12 @@ export default {
 		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
 
 
+
+
 		 <!-- Button to trigger the modal -->
 		 <button v-if="isSameUser()" @click="openUsernameModal">Edit</button>
 
-		<!-- The Modal component -->
-		<UsernameModal v-show="isUsernameModalOpen" @click="" @close-modal="closeUsernameModal" @change-username="changeUsername" />
-
-
-
-
+		
 		<div>
     
     <!-- 
@@ -376,7 +374,7 @@ export default {
  	</div>
 
 		</div>
-			<div v-if="isSameUser()" class="modal" :class="{ 'show': isUsernameModalOpen }">
+		<div v-if="isSameUser()" class="modal-dialog modal-dialog-centered" position="fixed" :class="{ 'show': isUsernameModalOpen }">
 				<div class="modal-dialog">
 					<div class="modal-content">
 					<div class="modal-header">
@@ -396,11 +394,11 @@ export default {
 						/>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" :disabled="isInvalid" @click="changeUsername">Save</button>
+						<button type="button" class="btn btn-primary"  @click="changeUsername">Save</button>
 						<button type="button" class="btn btn-secondary" @click="closeUsernameModal">Close</button>
 					</div>
 				</div>
-		</div>
+			</div>
 					
 
 
