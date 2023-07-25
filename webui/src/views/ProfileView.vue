@@ -394,7 +394,7 @@ export default {
 						/>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary"  @click="changeUsername">Save</button>
+						<button type="button" class="btn btn-primary" :disabled="isInvalid" @click="changeUsername">Save</button>
 						<button type="button" class="btn btn-secondary" @click="closeUsernameModal">Close</button>
 					</div>
 				</div>
