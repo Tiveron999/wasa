@@ -223,7 +223,6 @@ button {
     left: 0;
     right: 0;
     z-index: 3;
-    position: fixed;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
@@ -278,7 +277,7 @@ button {
 
 /* styling of login page */
 .login-page {
-  background-image: url('https://getwallpapers.com/wallpaper/full/3/f/e/106762.jpg');
+  background-image: url('https://img.freepik.com/free-vector/abstract-background_53876-43362.jpg?w=996&t=st=1690308677~exp=1690309277~hmac=477d9b837ebe5ea002b1fa8675d95cc0d41c4ac1f4664265b7edad840968c0fb');
   background-size: cover;
   background-position: center;
   display: flex;
@@ -319,29 +318,6 @@ button {
 }
 
 
-/* The Modal (background) */                            /* can be deleted */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-
-/* Modal Content */                                     /* can be deleted */
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
-}
-
 /* The Close Button */
 .close {
   color: #aaaaaa;
@@ -377,7 +353,6 @@ body {
     --white-color: #F7F6FB;
     --body-font: 'Old Standard TT', sans-serif;
     --normal-font-size: 1rem;
-    --z-fixed: 1;
   }
   
   a {
@@ -531,3 +506,7 @@ body {
   margin-top: 10px;
 }
 
+
+.modal-backdrop {
+  z-index: -1;
+}

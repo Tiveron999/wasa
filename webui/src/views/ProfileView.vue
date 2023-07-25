@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import { toRaw } from 'vue';
 
-import UsernameModal from '../components/UsernameModal.vue';
+// import UsernameModal from '../components/UsernameModal.vue';
 
 
 export default {
@@ -33,9 +33,9 @@ export default {
 			isFollowing: false,
 		}
 	},
-	components: {
+/*	components: {
 		UsernameModal
-	},
+	}, */
 
 	methods: {
 		/* this.$axios.post('/session', JSON.stringify({username: this.username}), {headers: { 'Content-Type': 'application/json',  'Accept': 'application/json', 
@@ -331,10 +331,13 @@ export default {
 
 
 		 <!-- Button to trigger the modal -->
-		 <button v-if="isSameUser()" @click="openUsernameModal">Edit</button>
+		 <button v-if="isSameUser()" class="btn btn-sm-normal btn-outline-primary" @click="openUsernameModal" data-bs-toggle="modal" data-bs-target="#UsernameModal">Edit</button>
 
-		
+		 <div class="container-fluid mt-3 mb-5 ">
+			<UsernameModal v-if="isSameUser()"/>
+		</div> 
 		<div>
+
     
     <!-- 
     <button class="btn btn-primary" @click="openUsernameModal">Edit</button>
@@ -374,31 +377,7 @@ export default {
  	</div>
 
 		</div>
-		<div v-if="isSameUser()" class="modal-dialog modal-dialog-centered" position="fixed" :class="{ 'show': isUsernameModalOpen }">
-				<div class="modal-dialog">
-					<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Change Username</h5>
-						<button type="button" class="close" @click="closeUsernameModal">
-						<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<input
-						type="text"
-						class="form-control"
-						placeholder="New Username"
-						v-model="newUsername"
-						:pattern="usernamePattern"
-						title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
-						/>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" :disabled="isInvalid" @click="changeUsername">Save</button>
-						<button type="button" class="btn btn-secondary" @click="closeUsernameModal">Close</button>
-					</div>
-				</div>
-			</div>
+		
 					
 
 
@@ -420,7 +399,7 @@ export default {
 				</div>
 				</modal>  --> 
 
-				</div> 
+				
 
 
 
@@ -502,7 +481,7 @@ export default {
 		</div>
 	</div>  -->
 
-
+		
 
 </template>
 
