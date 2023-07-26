@@ -202,10 +202,12 @@ export default {
 	openUsernameModal() {
 		console.log('here1: ' + this.isUsernameModalOpen);
 		this.isUsernameModalOpen = true;
-		console.log('here: ' + this.isUsernameModalOpen);
+		console.log('here2: ' + this.isUsernameModalOpen);
 	},
 	closeUsernameModal() {
+		console.log('here1: ' + this.isUsernameModalOpen);
 		this.isUsernameModalOpen = false;
+		console.log('here2: ' + this.isUsernameModalOpen);
 	},
 
 	changeUsername() {
@@ -329,13 +331,6 @@ export default {
 
 
 
-
-		 <!-- Button to trigger the modal -->
-		 <button v-if="isSameUser()" class="btn btn-sm-normal btn-outline-primary" @click="openUsernameModal" data-bs-toggle="modal" data-bs-target="#UsernameModal">Edit</button>
-
-		 <div class="container-fluid mt-3 mb-5 ">
-			<UsernameModal v-if="isSameUser()"/>
-		</div> 
 		<div>
 
     
@@ -422,6 +417,44 @@ export default {
 			</div>
 			<br> <br> <br> <br>
 		</div>
+
+
+
+
+
+
+		<button v-if="isSameUser()" class="btn btn-sm-normal btn-outline-primary" @click="openUsernameModal" data-bs-toggle="modal" data-bs-target="#UsernameModal">Edit</button>
+
+		<div class="modal fade" id="UsernameModal" tabindex="-1" :class="{ 'show': isUsernameModalOpen }">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Change Username</h5>
+					</div>
+					<div class="modal-body">
+						<input
+						type="text"
+						class="form-control"
+						placeholder="New Username"
+						v-model="newUsername"
+						:pattern="usernamePattern"
+						title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
+						/>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-sm-normal btn-outline-primary green-bg"  @click="changeUsername">Save</button>
+						<button type="button" class="btn btn-sm-normal btn-outline-secondary red-bg" @click="closeUsernameModal">Close</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+
+
+		<br> <br><br>
 		<div id="image-container"> 
 			<div v-if="isSameUser()"> 
 				<h5>

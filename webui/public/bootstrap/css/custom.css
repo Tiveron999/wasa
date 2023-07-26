@@ -318,22 +318,6 @@ button {
 }
 
 
-/* The Close Button */
-.close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-
 /* body */
 body {
   margin: 0;
@@ -509,4 +493,14 @@ body {
 
 .modal-backdrop {
   z-index: -1;
+}
+
+
+/* modal buttons */
+.red-bg {
+  background-color: red;
+}
+
+.green-bg {
+  background-color: rgb(0, 255, 0);
 }
