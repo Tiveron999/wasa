@@ -667,6 +667,7 @@ paths:
          # links:
           #    GetUserByUserId:
            #     $ref: '#/components/links/GetUserByUserId'
+        "204": { description: user followed successfully }
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}

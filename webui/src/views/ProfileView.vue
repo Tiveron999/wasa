@@ -253,15 +253,18 @@ export default {
 		// Toggle the following state
 		this.isFollowing = !this.isFollowing;
 		},
-		followUser() {
-		// Add your logic here to handle the follow functionality
-		// This could be sending a request to your server to update the user's follow status
-		// For example: You can use axios or fetch to send a POST request to your API.
+		async followUser() {
+		try {
+			console.log(this.id, this.$route.params.user_id)
+			await this.$axios.put(`/users/${this.id}/following/${this.$route.params.user_id}`, {headers: {Authorization: 'Bearer ' + this.id}})
+			this.following += 1
+		} catch (e) {
+			console.error(e);
+			this.errormsg = e.toString();
+		}
 		},
 		unfollowUser() {
-		// Add your logic here to handle the unfollow functionality
-		// This could be sending a request to your server to update the user's follow status
-		// For example: You can use axios or fetch to send a DELETE request to your API.
+		// 
 		},
 
 	
@@ -442,8 +445,8 @@ export default {
 						/>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-sm-normal btn-outline-primary green-bg"  @click="changeUsername">Save</button>
-						<button type="button" class="btn btn-sm-normal btn-outline-secondary red-bg" @click="closeUsernameModal">Close</button>
+						<button type="button" class="btn btn-sm-normal btn-outline-secondary green-bg"  @click="changeUsername">Save</button>
+						<button type="button" class="btn btn-sm-normal btn-outline-primary red-bg" @click="closeUsernameModal">Close</button>
 
 					</div>
 				</div>

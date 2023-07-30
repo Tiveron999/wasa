@@ -117,7 +117,7 @@ type AppDatabase interface {
 
 	GetFollowing(uint64, uint64, uint64) ([]Follower, error)
 
-	FollowUser(Follower) (Follower, error)
+	FollowUser(Follower) error
 
 	GetMyStream(uint64, string, uint64, uint64) ([]Photo, error)
 

@@ -1,17 +1,17 @@
 package database
 
-func (db *appdbimpl) FollowUser(f Follower) (Follower, error) {
+func (db *appdbimpl) FollowUser(f Follower) error {
 	res, err := db.c.Exec(`INSERT INTO followers (userid, followerid) VALUES (NULL, ?)`,
 		f.UserID, f.FollowerID)
 	if err != nil {
-		return f, err
+		return err
 	}
 
 	lastInsertID, err := res.LastInsertId()
 	if err != nil {
-		return f, err
+		return err
 	}
 
 	f.UserID = uint64(lastInsertID)
-	return f, nil
+	return nil
 }

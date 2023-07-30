@@ -20,6 +20,7 @@ func (rt *_router) wrap(fn httpRouterHandler) func(http.ResponseWriter, *http.Re
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
+			// fmt.Println("bad")
 			w.WriteHeader(http.StatusUnauthorized)
 			return
 		}
