@@ -483,8 +483,14 @@ export default {
 		</div>
 		<div id="Modal" v-if="show">
 			<img :src="images[selectedImage]" @click="hideModal(index)" />
-			<button class="heart" @click="toggleLike2" ></button>
-			<div class="like-counter">{{ images.likes }} Likes</div>
+			<div class="button-container">
+				<button class="heart" @click="toggleLike2" ></button>
+				<div class="like-counter">{{ images.likes }} Likes</div>
+				<div class="button-space"></div>
+				<button class="comment-button"> <i class="fas fa-comment"></i> </button>
+				<div class="comment-counter">{{ images.comments }} Comments</div>
+				
+			</div>
 		</div>     
 		
 
