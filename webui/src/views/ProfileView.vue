@@ -487,7 +487,11 @@ export default {
 				<button class="heart" @click="toggleLike2" ></button>
 				<div class="like-counter">{{ images.likes }} Likes</div>
 				<div class="button-space"></div>
-				<button class="comment-button"> <i class="fas fa-comment"></i> </button>
+				<button class="comment-button"> 
+					<span class="circle circle1"></span>
+					<span class="circle circle2"></span>
+					<span class="circle circle3"></span>
+				</button>
 				<div class="comment-counter">{{ images.comments }} Comments</div>
 				
 			</div>
