@@ -259,55 +259,6 @@ button {
     font-family: Impact;
 }
 
-/* comment button */
-.comment-button {
-  background-color: #3498db;
-  color: #ffffff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-
-.comment-button {
-  background-color: #3498db;
-  position: relative;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  color: #ffffff;
-  border: none;
-  display: flex;
-  align-items: center;
-}
-
-.comment-button:before {
-  content: "";
-  position: absolute;
-  top: -10px;
-  left: -5px;
-  width: 100%;
-  height: 20px;
-  background-color: #3498db;
-  border-radius: 50%;
-}
-
-.comment-button:after {
-  content: "";
-  position: absolute;
-  top: -5px;
-  right: -10px;
-  width: 40px;
-  height: 25px;
-  background-color: #3498db;
-  border-radius: 50% 50% 50% 0;
-}
-
-
 .button-container {
   display: flex;
   align-items: center;
@@ -316,18 +267,6 @@ button {
 .button-space {
   width: 30px;
 }
-
-
-  /* comment counter */
-  .comment-counter {
-    position: relative;
-    left: -3rem;
-    top: 3rem;
-    color: white;
-    /*font-family: 'Shadows Into Light', cursive;*/
-    font-family: Impact;
-}
-
 
 
 /* styling of login page */
@@ -561,44 +500,7 @@ body {
 }
 
 
-
-.comment-button {
-  background-color: #3498db;
-  color: #ffffff;
-  border: none;
-  padding: 10px;
-  border-radius: 50px;
-  font-size: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  position: relative;
-}
-
-.circle {
-  position: absolute;
-  background-color: #3498db;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-}
-
-.circle1 {
-  top: -8px;
-  left: -15px;
-}
-
-.circle2 {
-  top: -12px;
-  left: 8px;
-}
-
-.circle3 {
-  top: -8px;
-  left: 30px;
-}
-
-
+/* comment button */
 .cloud {
   width: 116px;
   height: 40px;
@@ -606,6 +508,8 @@ body {
   border-radius: 100px;
   position: relative;
   margin: 50px 25px;
+  outline: none;
+  border: none;
 }
 
 .cloud:after,
@@ -630,4 +534,15 @@ body {
   top: -30px;
   right: 17px;
   border-radius: 100px;
+}
+
+
+  /* comment counter */
+  .comment-counter {
+    position: relative;
+    left: -7rem;
+    top: 3rem;
+    color: white;
+    /*font-family: 'Shadows Into Light', cursive;*/
+    font-family: Impact;
 }
