@@ -493,6 +493,7 @@ export default {
 					<span class="circle circle3"></span>
 				</button>
 				<div class="comment-counter">{{ images.comments }} Comments</div>
+				<div class="cloud"></div>
 				
 			</div>
 		</div>     
