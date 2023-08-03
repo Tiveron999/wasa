@@ -31,6 +31,7 @@ export default {
    			newUsername: '',
 			usernamePattern: "/^[A-Za-z][A-Za-z0-9_]{5,14}$/",
 			isFollowing: false,
+			isBanned: false,
 		}
 	},
 /*	components: {
@@ -416,6 +417,10 @@ export default {
 				<button type="button" class="btn btn-sm-normal btn-outline-primary follow-button" v-if="!isSameUser()" @click="toggleFollow" 
 				:class="{ following: isFollowing }">
 				{{ isFollowing ? 'Following' : 'Follow' }}
+				</button>
+				<button type="button" class="btn btn-sm-normal btn-outline-primary red-bg" v-if="!isSameUser()" @click="" 
+				:class="{ banned: isBanned }">
+				{{ isBanned ? 'Unban' : 'Ban' }}
 				</button>
 			</div>
 			<br> <br> <br> <br>

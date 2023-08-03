@@ -245,7 +245,8 @@ button {
   .button-container {
     display: flex;
     align-items: center;
-    margin-top: 2rem; /* Adjust the margin as needed */
+    margin-top: 2rem;
+    justify-content: center;
   }
 
 
@@ -453,7 +454,6 @@ body {
 .follow-button-wrapper {
   display: flex;
   justify-content: flex-end;
-  /* Add any other styling for the follow button wrapper, e.g., margin, padding, etc. */
 }
 
 .profile-container {
@@ -481,9 +481,11 @@ body {
 }
 
 .follow-button {
-  margin-top: 10px;
+  display: inline-flex;
+  align-items: center; /* Align items vertically in the center */
+  justify-content: center; /* Align items horizontally in the center */
+  padding: 0 15px; /* Add some padding to the button for spacing */
 }
-
 
 .modal-backdrop {
   z-index: -1;
