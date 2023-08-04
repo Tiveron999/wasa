@@ -257,10 +257,11 @@ export default {
 		async followUser() {
 		try {
 			console.log(this.id, this.$route.params.user_id)
-			await this.$axios.put(`/users/${this.id}/following/${this.$route.params.user_id}`, {headers: {Authorization: 'Bearer ' + this.id}})
+			const result = await this.$axios.put(`/users/${this.id}/following/${this.$route.params.user_id}`, {headers: {Authorization: 'Bearer ' + this.id}})
+			console.log(result)
 			this.following += 1
 		} catch (e) {
-			console.error(e);
+			console.error("error: ", e);
 			this.errormsg = e.toString();
 		}
 		},
@@ -418,6 +419,7 @@ export default {
 				:class="{ following: isFollowing }">
 				{{ isFollowing ? 'Following' : 'Follow' }}
 				</button>
+				<br>
 				<button type="button" class="btn btn-sm-normal btn-outline-primary red-bg" v-if="!isSameUser()" @click="" 
 				:class="{ banned: isBanned }">
 				{{ isBanned ? 'Unban' : 'Ban' }}
