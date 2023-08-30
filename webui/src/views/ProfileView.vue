@@ -257,7 +257,7 @@ export default {
 		async followUser() {
 		try {
 			console.log(this.id, this.$route.params.user_id)
-			const result = await this.$axios.put(`/users/${this.id}/following/${this.$route.params.user_id}`, {headers: {Authorization: 'Bearer ' + this.id}})
+			const result = await this.$axios.put(`/users/${this.id}/following/${this.$route.params.user_id}`, null, {headers: {Authorization: 'Bearer ' + this.id}})
 			console.log(result)
 			this.following += 1
 		} catch (e) {

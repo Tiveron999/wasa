@@ -1,14 +1,12 @@
 package api
 
 import (
-	"fmt"
+	// "fmt"
 	"strconv"
 	"strings"
 )
 
 func idFromAuthorizationHeader(header string) (uint64, bool) {
-	fmt.Println("Authorization header over here:", header)
-
 	// Check if the Authorization header is not empty and starts with "Bearer "
 	if header != "" && strings.HasPrefix(header, "Bearer ") {
 		// Extract the token (user ID) from the Authorization header
