@@ -259,7 +259,7 @@ export default {
 			console.log(this.id, this.$route.params.user_id)
 			const result = await this.$axios.put(`/users/${this.id}/following/${this.$route.params.user_id}`, null, {headers: {Authorization: 'Bearer ' + this.id}})
 			console.log(result)
-			this.following += 1
+			this.followers += 1
 		} catch (e) {
 			console.error("error: ", e);
 			this.errormsg = e.toString();
