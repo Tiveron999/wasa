@@ -265,9 +265,17 @@ export default {
 			this.errormsg = e.toString();
 		}
 		},
-		unfollowUser() {
-		// 
-		},
+		async unfollowUser() {
+			try {
+				const result = await this.$axios.delete(`/users/${this.id}/following/${this.$route.params.user_id}`, {headers: { Authorization: 'Bearer ' + this.id }});
+				console.log(result);
+				this.followers -= 1;
+			} catch (e) {
+				console.error("error: ", e);
+				this.errormsg = e.toString();
+			}
+		}
+
 
 	
 	},

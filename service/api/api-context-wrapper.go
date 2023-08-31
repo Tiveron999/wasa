@@ -19,10 +19,10 @@ type httpRouterHandler func(http.ResponseWriter, *http.Request, httprouter.Param
 func (rt *_router) wrap(fn httpRouterHandler) func(http.ResponseWriter, *http.Request, httprouter.Params) {
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		// Print or log the request headers
-		//fmt.Println("Request headers:")
-		//for key, values := range r.Header {
-		//fmt.Printf("%s: %s\n", key, values)
-		//}
+		// fmt.Println("Request headers:")
+		// for key, values := range r.Header {
+		// fmt.Printf("%s: %s\n", key, values)
+		// }
 
 		// Set CORS headers in the response
 		w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -38,11 +38,11 @@ func (rt *_router) wrap(fn httpRouterHandler) func(http.ResponseWriter, *http.Re
 		}
 
 		authHeader := r.Header.Get("Authorization")
-		//if authHeader == "" {
-		//fmt.Println("bad")
-		//w.WriteHeader(http.StatusUnauthorized)
-		//return
-		//}
+		// if authHeader == "" {
+		// fmt.Println("bad")
+		// w.WriteHeader(http.StatusUnauthorized)
+		// return
+		// }
 		// Add the authorization header to the request context
 		r.Header.Add("Authorization", "Bearer: "+authHeader)
 

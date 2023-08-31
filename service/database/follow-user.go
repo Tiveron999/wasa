@@ -10,9 +10,7 @@ func (db *appdbimpl) FollowUser(f Follower) error {
 	affected, err := res.RowsAffected()
 	if err != nil {
 		return err
-	}
-
-	if affected == 0 {
+	} else if affected == 0 {
 		return nil
 	}
 
