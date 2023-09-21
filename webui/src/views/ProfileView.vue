@@ -82,7 +82,7 @@ export default {
 			reader.readAsDataURL(files[i]);
 			reader.onload = () => {
 			this.images.push(reader.result);
-			console.log(reader.result);
+			// console.log(reader.result);
 			};
 	  }
 	  try {
@@ -136,11 +136,11 @@ export default {
 			headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + this.id }
 		})
 		.then(response => {
-			console.log('hi2', response.data);
+			// console.log('hi2', response.data);
 
 			// The response data now contains an array of relative paths
 			this.images = response.data;
-			console.log('images:', this.images);
+			// console.log('images:', this.images);
 		})
 		.catch(error => {
 			console.log(error.response);
