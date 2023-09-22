@@ -2,9 +2,8 @@ package api
 
 import (
 	"encoding/json"
-	"io"
+
 	"net/http"
-	"os"
 
 	// "path/filepath"
 	"strconv"
@@ -38,35 +37,9 @@ func (rt *_router) uploadPhoto(w http.ResponseWriter, r *http.Request, ps httpro
 	}
 	defer file.Close()
 
-	// Check if the "webui/public/images" directory exists
-	if _, err := os.Stat("./webui/src/assets/images"); os.IsNotExist(err) {
-		// The "webui/public/images" directory does not exist, create it
-		err := os.MkdirAll("./webui/src/assets/images", os.ModePerm)
-		if err != nil {
-			// Handle error when creating the directory
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-	}
-
-	// Create a new file in the "webui/public/images" directory with the same name as the uploaded file
-	out, err := os.Create("./webui/src/assets/images/" + header.Filename)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	defer out.Close()
-
-	// Copy the file data to the new file
-	_, err = io.Copy(out, file)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
 	// Create the photo object to pass to the db
 	photo := Photo{
-		URL:         "/webui/src/assets/images/" + header.Filename,
+		URL:         "/tmp/images/" + header.Filename,
 		Posterid:    uploader_id,
 		Datetime:    time.Now().Format("2006-01-02 15:04:05"),
 		Numlikes:    0,
