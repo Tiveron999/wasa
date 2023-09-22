@@ -57,7 +57,7 @@ func (rt *_router) getUserPhotos(w http.ResponseWriter, r *http.Request, ps http
 		return
 	}
 
-	// Request an unfiltered list of photo URLs from the DB
+	// Request an unfiltered list of photo Blobs from the DB
 	photoURLs, err = rt.db.GetUserPhotos(userID, laterThan, limitUint, offsetUint)
 
 	if err != nil {
@@ -68,7 +68,7 @@ func (rt *_router) getUserPhotos(w http.ResponseWriter, r *http.Request, ps http
 		return
 	}
 
-	// Send the list of photo URLs to the user.
+	// Send the list of photo Blobss to the user.
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(photoURLs)
 }
