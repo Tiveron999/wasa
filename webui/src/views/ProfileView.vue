@@ -31,6 +31,11 @@ export default {
 			usernamePattern: "/^[A-Za-z][A-Za-z0-9_]{5,14}$/",
 			isFollowing: false,
 			isBanned: false,
+			isFirst: true,
+      		isSaving: false,
+			status: STATUS_INITIAL, 
+			uploadedFiles: null, 
+			uploadError: null
 		}
 	},
 /*	components: {
@@ -99,35 +104,37 @@ export default {
 	},
 
 	async uploadImage3(event) {
+		let imageName = event.target.imageName
+		let images = event.target.files
 		const formData = new FormData();
 		const files = event.target.files;
-		
-		// Assuming you have an 'isLoggedIn' flag and 'userId' in localStorage
-		if (localStorage.getItem('isLoggedIn')) {
-			const id = localStorage.getItem('userId');
-			
-			for (let i = 0; i < files.length; i++) {
-				formData.append('image', files[i]);
-				
-				try {
-					const response = await this.$axios.post(`/users/${id}/photos`, formData, {
-						headers: {
-							'Content-Type': 'multipart/form-data',
-							'Authorization': 'Bearer ' + id
-						}
-					});
-					
-					// Handle the response as needed
-					console.log(response.data.photoId);
-					this.images.push(response.data.photoId); // Assuming you want to push the photo ID to this.images
-					
-				} catch (error) {
-					console.error(error);
-				}
-			}
-		} 
+		formData.append(imageName, images, images.name);
+
+		this.status === STATUS_SAVING;
+
+		this.$axios.post(`/users/${this.id}/photos`, formData, 
+		  {headers: { 'Content-Type': 'multipart/form-data', Authorization: 'Bearer ' + this.id}})
+		  .then(response => {
+			this.uploadedFiles = JSON.parse(JSON.stringify(response.data))
+			this.status = STATUS_SUCCESS
+			this.$emit("changesDropbox");
+		})
+		.catch(err => {
+			this.uploadError = err.response;
+			this.status = STATUS_FAILED;
+		})
+	},
+	
+	isFailed() {
+		return this.status === STATUS_FAILED;
 	},
 
+	reset() {
+		this.status = STATUS_INITIAL;
+		this.uploadedFiles = null;
+		this.uploadError = null;
+	},
+	
 
 		showModal(index) {
 		this.selectedImage = index;
