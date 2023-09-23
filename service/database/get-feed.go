@@ -16,7 +16,7 @@ func (db *appdbimpl) GetMyStream(userid uint64, datet string, limit uint64, offs
 	// Here we read the resultset and we build the list to be returned
 	for rows.Next() {
 		var f Photo
-		err = rows.Scan(&f.PID, &f.URL, &f.Posterid, &f.Datetime, &f.Numlikes, &f.Numcomments)
+		err = rows.Scan(&f.PID, &f.Image, &f.PosterID, &f.Datetime, &f.NumLikes, &f.NumComments)
 		if err != nil {
 			return nil, err
 		}

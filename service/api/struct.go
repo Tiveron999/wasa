@@ -16,11 +16,11 @@ type User struct {
 
 type Photo struct {
 	PID         uint64 `json:"pid"`
-	URL         string `json:"url"`
-	Posterid    uint64 `json:"posterid"`
+	Image       []byte `json:"image"`
+	PosterID    uint64 `json:"posterid"`
 	Datetime    string `json:"datetime"`
-	Numlikes    uint64 `json:"numlikes"`
-	Numcomments uint64 `json:"numcomments"`
+	NumLikes    uint64 `json:"numlikes"`
+	NumComments uint64 `json:"numcomments"`
 }
 
 type Likes struct {
@@ -90,35 +90,36 @@ func (f *User) UserIsValid() bool {
 
 func (f *Photo) PhotoFromDatabase(photo database.Photo) {
 	f.PID = photo.PID
-	f.URL = photo.URL
-	f.Posterid = photo.Posterid
+	f.Image = photo.Image
+	f.PosterID = photo.PosterID
 	f.Datetime = photo.Datetime
-	f.Numlikes = photo.Numlikes
-	f.Numcomments = photo.Numcomments
+	f.NumLikes = photo.NumLikes
+	f.NumComments = photo.NumComments
 }
 
 // ToDatabase returns the photo in a database-compatible representation
 func (f *Photo) PhotoToDatabase() database.Photo {
 	return database.Photo{
 		PID:         f.PID,
-		URL:         f.URL,
-		Posterid:    f.Posterid,
+		Image:       f.Image,
+		PosterID:    f.PosterID,
 		Datetime:    f.Datetime,
-		Numlikes:    f.Numlikes,
-		Numcomments: f.Numcomments,
+		NumLikes:    f.NumLikes,
+		NumComments: f.NumComments,
 	}
 }
 
 // IsValid checks the validity of the content. In particular, coordinates should be in their range of validity, and the
 // status should be either UserStatusGood or UserStatusFaulty. Note that the ID is not checked, as users
 // read from requests have zero IDs as the user won't send us the ID in that way.
-func (f *Photo) PhotoIsValid() bool {
-	if strings.TrimSpace(f.URL) != "" {
+
+/*func (f *Photo) PhotoIsValid() bool {
+	if strings.TrimSpace(f.Image) != "" {
 		return true
 	} else {
 		return false
 	}
-}
+}*/
 
 func (f *Likes) LikeFromDatabase(like database.Likes) {
 	f.LID = like.LID

@@ -99,6 +99,37 @@ export default {
 		}
 	},
 
+	async uploadImage3(event) {
+		const formData = new FormData();
+		const files = event.target.files;
+		
+		// Assuming you have an 'isLoggedIn' flag and 'userId' in localStorage
+		if (localStorage.getItem('isLoggedIn')) {
+			const id = localStorage.getItem('userId');
+			
+			for (let i = 0; i < files.length; i++) {
+				formData.append('image', files[i]);
+				
+				try {
+					const response = await this.$axios.post(`/users/${id}/photos`, formData, {
+						headers: {
+							'Content-Type': 'multipart/form-data',
+							'Authorization': 'Bearer ' + id
+						}
+					});
+					
+					// Handle the response as needed
+					console.log(response.data.photoId);
+					this.images.push(response.data.photoId); // Assuming you want to push the photo ID to this.images
+					
+				} catch (error) {
+					console.error(error);
+				}
+			}
+		} 
+	},
+
+
 		showModal(index) {
 		this.selectedImage = index;
 		this.show = true;

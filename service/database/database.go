@@ -27,11 +27,11 @@ type User struct {
 
 type Photo struct {
 	PID         uint64
-	URL         string
-	Posterid    uint64
+	Image       []byte
+	PosterID    uint64
 	Datetime    string
-	Numlikes    uint64
-	Numcomments uint64
+	NumLikes    uint64
+	NumComments uint64
 }
 
 type Likes struct {
@@ -168,7 +168,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 	if errors.Is(err1, sql.ErrNoRows) {
 		sqlStmt := `CREATE TABLE photos (
     pid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    url TEXT NOT NULL,
+    image BLOB NOT NULL,
 	posterid INTEGER NOT NULL,
 	datetime TEXT NOT NULL,
 	numlikes INTEGER NOT NULL,

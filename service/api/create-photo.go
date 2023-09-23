@@ -2,10 +2,8 @@ package api
 
 import (
 	"encoding/json"
-
+	"io"
 	"net/http"
-
-	// "path/filepath"
 	"strconv"
 	"time"
 
@@ -14,6 +12,61 @@ import (
 )
 
 func (rt *_router) uploadPhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+	// Get the user's ID from the URL
+	uploaderID, err := strconv.ParseUint(ps.ByName("user_id"), 10, 64)
+	if err != nil {
+		// The value was not uint64, reject the action indicating an error on the client side.
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Parse the multipart form data from the request
+	err = r.ParseMultipartForm(10 << 20) // max memory 10MB
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Get the uploaded file from the form data
+	file, _, err := r.FormFile("image") // The "_" denotes a blank identifier since we are not using it
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	defer file.Close()
+
+	// Read the image data into a []byte
+	imageData, err := io.ReadAll(file)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Create the photo object to pass to the db
+	photo := Photo{
+		PID:         0,
+		Image:       imageData,
+		PosterID:    uploaderID,
+		Datetime:    time.Now().Format("2006-01-02 15:04:05"),
+		NumLikes:    0,
+		NumComments: 0,
+	}
+
+	// Save the file data to the database and get the photo ID
+	photoID, err := rt.db.UploadPhoto(photo.PhotoToDatabase())
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Set the photo ID and return with a 201 status code
+	photo.PID = photoID
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	_ = json.NewEncoder(w).Encode(photo)
+}
+
+/*
 	// Get the user's ID from the URL
 	uploader_id, er := strconv.ParseUint(ps.ByName(("user_id")), 10, 64)
 	if er != nil {
@@ -59,7 +112,7 @@ func (rt *_router) uploadPhoto(w http.ResponseWriter, r *http.Request, ps httpro
 	}
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(response)
-}
+} */
 
 // make path for user images
 /*func makePath(user_id string) (path string, err error) {
