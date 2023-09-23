@@ -37,27 +37,40 @@ func (rt *_router) getUserProfile(w http.ResponseWriter, r *http.Request, ps htt
 		return
 	}
 
-	var photoURLs []string
-	const limit = "10"
+	// Parse query parameters
+	queryValues := r.URL.Query()
+	laterThan := queryValues.Get("laterthan")
+	limit := queryValues.Get("limit")
+	offset := queryValues.Get("offset")
+
+	if laterThan == "" {
+		laterThan = "2006-01-02 15:04:05" // Set a default value for laterThan
+	}
+	if limit == "" {
+		limit = "10" // Set a default value for limit
+	}
+	if offset == "" {
+		offset = "0" // Set a default value for offset
+	}
+
+	// Convert limit and offset to uints
 	limitUint, err := strconv.ParseUint(limit, 10, 64)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	const offset = "0"
 	offsetUint, err := strconv.ParseUint(offset, 10, 64)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Request an unfiltered list of photo URLs from the DB
-	photoURLs, err = rt.db.GetUserPhotos(userID, "2006-01-02 15:04:05", limitUint, offsetUint)
+	// Retrieve user photos from the database as BLOBs
+	photoBLOBs, err := rt.db.GetUserPhotos(userID, laterThan, limitUint, offsetUint)
 	if err != nil {
-		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the photo
-		// Note: we are using the "logger" inside the "ctx" (context) because the scope of this issue is the request.
-		ctx.Logger.WithError(err).Error("can't list photos")
+		// Handle the error and return an appropriate response
+		ctx.Logger.WithError(err).Error("can't retrieve photos")
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -117,8 +130,8 @@ func (rt *_router) getUserProfile(w http.ResponseWriter, r *http.Request, ps htt
 
 	// Create the profile object
 	profile = Profile{
-		Photos:    photoURLs,
-		NumPhotos: uint64(len(photoURLs)),
+		Photos:    photoBLOBs,
+		NumPhotos: uint64(len(photoBLOBs)),
 		Followers: uint64(len(followers)),
 		Following: uint64(len(following)),
 	}
