@@ -7,6 +7,11 @@ import { toRaw } from 'vue';
 // import UsernameModal from '../components/UsernameModal.vue';
 
 
+const STATUS_INITIAL = 0;
+const STATUS_SAVING = 1;
+const STATUS_SUCCESS = 5;
+const STATUS_FAILED = 10;
+
 export default {
 	data: function() {
 		return {
@@ -35,7 +40,6 @@ export default {
       		isSaving: false,
 			status: STATUS_INITIAL, 
 			uploadedFiles: null, 
-			uploadError: null
 		}
 	},
 /*	components: {
@@ -104,27 +108,53 @@ export default {
 	},
 
 	async uploadImage3(event) {
-		let imageName = event.target.imageName
-		let images = event.target.files
+		let images = event.target.files;
 		const formData = new FormData();
-		const files = event.target.files;
-		formData.append(imageName, images, images.name);
+		const imageName = 'image'; 
 
-		this.status === STATUS_SAVING;
+		for (let i = 0; i < images.length; i++) {
+			formData.append(imageName, images[i], images[i].name);
+			const reader = new FileReader();
+			reader.readAsDataURL(images[i]);
+			reader.onload = () => {
+			this.images.push(reader.result);
+			// console.log(reader.result);
+			};
+		}
 
-		this.$axios.post(`/users/${this.id}/photos`, formData, 
-		  {headers: { 'Content-Type': 'multipart/form-data', Authorization: 'Bearer ' + this.id}})
-		  .then(response => {
-			this.uploadedFiles = JSON.parse(JSON.stringify(response.data))
+		this.status = STATUS_SAVING;
+
+		if (localStorage.getItem('isLoggedIn')) {
+		this.id = localStorage.getItem('userId');
+		}
+
+		try {
+		const response = await this.$axios.post(`/users/${this.id}/photos`, formData, 
+		  {headers: { 'Content-Type': 'multipart/form-data', Authorization: 'Bearer ' + this.id}});
+		  
+		 /* console.log(response.data);
+		  	const jsonData = response.data;
+			const imageBlob = jsonData.image;
+
+			// Create a Blob URL for the image Blob
+			const imageUrl = URL.createObjectURL(imageBlob);
+
+			// Push the URL into the array
+			this.images.push(imageUrl);
+
+			// Handle other parts of the JSON response as needed
+			this.uploadedFiles = jsonData;
+			*/
+
+			// this.uploadedFiles = JSON.parse(JSON.stringify(response.data))
 			this.status = STATUS_SUCCESS
-			this.$emit("changesDropbox");
-		})
-		.catch(err => {
-			this.uploadError = err.response;
-			this.status = STATUS_FAILED;
-		})
+
+		} catch (error) {
+		  console.error(error);
+		  this.status = STATUS_FAILED;
+		}
 	},
-	
+
 	isFailed() {
 		return this.status === STATUS_FAILED;
 	},
@@ -311,6 +341,7 @@ export default {
 	},
 	mounted() {
 	this.refresh()
+	this.reset()
 	/*if (localStorage.getItem('isLoggedIn')) {
 		this.id = localStorage.getItem('userId');
 		this.$axios.get(`/users/${this.id}/following/:following_id`, {headers: {Authorization: 'Bearer ' + this.id}})
@@ -332,7 +363,7 @@ export default {
       });
 
 		}*/
-	this.getImages();
+	this.getImages()
 	},
 	computed: {
 		/*usernamePattern() {
@@ -512,8 +543,8 @@ export default {
 				</h5>
 				<form enctype="multipart/form-data" novalidate v-if="isFirst || isSaving">
 					<input style = "display:none" type="file" :disabled="isSaving"  @change="uploadImage3" ref = "pickImage" accept="image/jpeg"/>
-					<p v-if="isFirst"> Click to select </p> 
-					<p v-if="isSaving"> Uploading image... </p> 
+					<!--  <p v-if="isFirst"> Click to select </p> 
+					<p v-if="isSaving"> Uploading image... </p>  -->
 					<button class='btn btn-sm-normal btn-outline-primary' type="button" @click="$refs.pickImage.click()">Choose</button>
 				</form>
 			</div>
@@ -524,8 +555,8 @@ export default {
 				</span>
 			</h5>
 			
-				 <div class="image-row">
-		<img v-for="(image, index) in images" :key="index" :src="image" :draggable="false" @click="showModal(index)"/>
+			<div class="image-row">
+				<img v-for="(image, index) in images" :key="index" :src="image" :draggable="false" @click="showModal(index)"/>
 			</div> 
 		</div>
 		<div id="Modal" v-if="show">

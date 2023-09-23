@@ -61,7 +61,7 @@ func (rt *_router) uploadPhoto(w http.ResponseWriter, r *http.Request, ps httpro
 
 	// Set the photo ID and return with a 201 status code
 	photo.PID = photoID
-	w.Header().Set("Content-Type", "image/jpeg")
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	_ = json.NewEncoder(w).Encode(photo)
 }
