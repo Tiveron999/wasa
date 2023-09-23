@@ -25,7 +25,6 @@ export default {
 			submitted: false,
 			text: 'Like',
 			username: '',
-			modalVisible: false,
 			posts: 0,
 			isUsernameModalOpen: false,
    			newUsername: '',
@@ -224,13 +223,6 @@ export default {
 			this.text = 'Like';
 		});
 	},
-	showUsernameModal() {
-      this.modalVisible = true;
-    },
-    hideUsernameModal() {
-      this.modalVisible = false;
-    },
-
 	openUsernameModal() {
 		console.log('here1: ' + this.isUsernameModalOpen);
 		this.isUsernameModalOpen = true;
@@ -511,8 +503,10 @@ export default {
 					<br>Use the button below to add images to your profile.<br>
 					</span>
 				</h5>
-				<form>
-					<input style = "display:none" type="file" @change="uploadImage2" ref = "pickImage"/>
+				<form enctype="multipart/form-data" novalidate v-if="isFirst || isSaving">
+					<input style = "display:none" type="file" :disabled="isSaving"  @change="uploadImage3" ref = "pickImage" accept="image/jpeg"/>
+					<p v-if="isFirst"> Click to select </p> 
+					<p v-if="isSaving"> Uploading image... </p> 
 					<button class='btn btn-sm-normal btn-outline-primary' type="button" @click="$refs.pickImage.click()">Choose</button>
 				</form>
 			</div>
