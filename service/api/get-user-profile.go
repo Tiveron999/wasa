@@ -67,7 +67,7 @@ func (rt *_router) getUserProfile(w http.ResponseWriter, r *http.Request, ps htt
 	}
 
 	// Retrieve user photos from the database as BLOBs
-	photoBLOBs, err := rt.db.GetUserPhotos(userID, laterThan, limitUint, offsetUint)
+	photos, err := rt.db.GetUserPhotos(userID, laterThan, limitUint, offsetUint)
 	if err != nil {
 		// Handle the error and return an appropriate response
 		ctx.Logger.WithError(err).Error("can't retrieve photos")
@@ -130,8 +130,7 @@ func (rt *_router) getUserProfile(w http.ResponseWriter, r *http.Request, ps htt
 
 	// Create the profile object
 	profile = Profile{
-		Photos:    photoBLOBs,
-		NumPhotos: uint64(len(photoBLOBs)),
+		NumPhotos: uint64(len(photos)),
 		Followers: uint64(len(followers)),
 		Following: uint64(len(following)),
 	}

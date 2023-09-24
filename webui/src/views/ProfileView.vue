@@ -40,6 +40,7 @@ export default {
       		isSaving: false,
 			status: STATUS_INITIAL, 
 			uploadedFiles: null, 
+			imageURLS : {}
 		}
 	},
 /*	components: {
@@ -108,18 +109,12 @@ export default {
 	},
 
 	async uploadImage3(event) {
-		let images = event.target.files;
+		let imagefiles = event.target.files;
 		const formData = new FormData();
 		const imageName = 'image'; 
 
-		for (let i = 0; i < images.length; i++) {
-			formData.append(imageName, images[i], images[i].name);
-			const reader = new FileReader();
-			reader.readAsDataURL(images[i]);
-			reader.onload = () => {
-			this.images.push(reader.result);
-			// console.log(reader.result);
-			};
+		for (let i = 0; i < imagefiles.length; i++) {
+			formData.append(imageName, imagefiles[i], imagefiles[i].name);
 		}
 
 		this.status = STATUS_SAVING;
@@ -132,6 +127,14 @@ export default {
 		const response = await this.$axios.post(`/users/${this.id}/photos`, formData, 
 		  {headers: { 'Content-Type': 'multipart/form-data', Authorization: 'Bearer ' + this.id}});
 		  
+		  // The response data now contains an array of relative paths
+			let newImage = JSON.parse(JSON.stringify(response.data))
+			this.images.push(newImage)
+
+			const imageUrl = URL.createObjectURL(newImage.image);
+			this.imageURLS[newImage.pid] = imageUrl;
+
+				
 		 /* console.log(response.data);
 		  	const jsonData = response.data;
 			const imageBlob = jsonData.image;
@@ -194,25 +197,29 @@ export default {
       });
     }
 	},
-	getImages() {
+	async getImages() {
 		if (localStorage.getItem('isLoggedIn')) {
 			this.id = localStorage.getItem('userId');
 		}
 
-		this.$axios.get(`/users/${this.id}/photos`, {
-			headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + this.id }
-		})
-		.then(response => {
-			// console.log('hi2', response.data);
+		try {
+			const response = await this.$axios.get(`/users/${this.id}/photos`, {
+				headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + this.id }
+			})
 
 			// The response data now contains an array of relative paths
-			this.images = response.data;
-			// console.log('images:', this.images);
-		})
-		.catch(error => {
-			console.log(error.response);
-		});
-		},
+			this.images = JSON.parse(JSON.stringify(response.data));
+			for (let i = 0; i < this.images.length; i++) {
+				console.log(this.images[i].image)
+				const imageUrl = URL.createObjectURL(this.images[i].image);
+				this.imageURLS[this.images[i].pid] = imageUrl;
+			
+				// console.log('images:', this.images);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	},
 
 
 	async getDataURLFromImageURL(imageURL) {
@@ -339,7 +346,7 @@ export default {
 
 	
 	},
-	mounted() {
+	async mounted() {
 	this.refresh()
 	this.reset()
 	/*if (localStorage.getItem('isLoggedIn')) {
@@ -363,7 +370,7 @@ export default {
       });
 
 		}*/
-	this.getImages()
+	await this.getImages()
 	},
 	computed: {
 		/*usernamePattern() {
@@ -556,7 +563,7 @@ export default {
 			</h5>
 			
 			<div class="image-row">
-				<img v-for="(image, index) in images" :key="index" :src="image" :draggable="false" @click="showModal(index)"/>
+				<img v-for="(image, index) in images" :key="index" :src="imageURLS[image.pid]" :draggable="false" @click="showModal(index)"/>
 			</div> 
 		</div>
 		<div id="Modal" v-if="show">

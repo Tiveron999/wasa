@@ -1,10 +1,10 @@
 package database
 
-func (db *appdbimpl) GetUserPhotos(id uint64, datet string, limit uint64, offset uint64) ([]byte, error) {
-	var ret []byte
+func (db *appdbimpl) GetUserPhotos(id uint64, datet string, limit uint64, offset uint64) ([]Photo, error) {
+	var ret []Photo
 
 	// Plain simple SELECT query
-	rows, err := db.c.Query(`SELECT image FROM photos WHERE posterid=? AND datetime >= ? ORDER BY datetime DESC LIMIT ? OFFSET ?`,
+	rows, err := db.c.Query(`SELECT pid, image, posterid, datetime, numlikes, numcomments FROM photos WHERE posterid=? AND datetime >= ? ORDER BY datetime DESC LIMIT ? OFFSET ?`,
 		id, datet, limit, offset)
 	if err != nil {
 		return nil, err
@@ -13,13 +13,13 @@ func (db *appdbimpl) GetUserPhotos(id uint64, datet string, limit uint64, offset
 
 	// Here we read the resultset and concatenate the image data
 	for rows.Next() {
-		var image []byte
-		err = rows.Scan(&image)
+		var photo Photo
+		err = rows.Scan(&photo.PID, &photo.Image, &photo.PosterID, &photo.Datetime, &photo.NumLikes, &photo.NumComments)
 		if err != nil {
 			return nil, err
 		}
 
-		ret = append(ret, image...)
+		ret = append(ret, photo)
 	}
 	if err = rows.Err(); err != nil {
 		return nil, err

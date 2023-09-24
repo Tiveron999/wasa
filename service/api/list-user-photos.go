@@ -1,10 +1,12 @@
 package api
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
+
 	// "github.com/Tiveron999/Wasa/service/database"
 	"github.com/julienschmidt/httprouter"
 )
@@ -48,7 +50,7 @@ func (rt *_router) getUserPhotos(w http.ResponseWriter, r *http.Request, ps http
 	}
 
 	// Retrieve user photos from the database as BLOBs
-	photoBlobs, err := rt.db.GetUserPhotos(userID, laterThan, limitUint, offsetUint)
+	photos, err := rt.db.GetUserPhotos(userID, laterThan, limitUint, offsetUint)
 	if err != nil {
 		// Handle the error and return an appropriate response
 		ctx.Logger.WithError(err).Error("can't retrieve photos")
@@ -56,18 +58,16 @@ func (rt *_router) getUserPhotos(w http.ResponseWriter, r *http.Request, ps http
 		return
 	}
 
-	w.Header().Set("Content-Type", "image/jpeg")
-
-	// Loop through the BLOBs and send them as binary data in the response
-	for _, photoBlob := range photoBlobs {
-		_, err := w.Write([]byte{photoBlob})
-		if err != nil {
-			// Handle any write errors, log them, and return an appropriate response
-			ctx.Logger.WithError(err).Error("error writing photo data")
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
+	// Before sending the list to the client we need to convert it to the "frontend" type
+	var frontendPhotos = make([]Photo, len(photos))
+	for idx := range photos {
+		frontendPhotos[idx].PhotoFromDatabase(photos[idx])
 	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	_ = json.NewEncoder(w).Encode(frontendPhotos)
+
 }
 
 /*
