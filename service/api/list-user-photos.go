@@ -64,9 +64,17 @@ func (rt *_router) getUserPhotos(w http.ResponseWriter, r *http.Request, ps http
 		frontendPhotos[idx].PhotoFromDatabase(photos[idx])
 	}
 
+	var pss []Photo
+	for _, photo := range photos {
+		var p Photo
+		p.PhotoFromDatabase(photo)
+
+		pss = append(pss, p)
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	_ = json.NewEncoder(w).Encode(frontendPhotos)
+	_ = json.NewEncoder(w).Encode(pss)
 
 }
 

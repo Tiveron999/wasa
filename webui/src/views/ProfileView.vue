@@ -113,9 +113,9 @@ export default {
 		const formData = new FormData();
 		const imageName = 'image'; 
 
-		for (let i = 0; i < imagefiles.length; i++) {
-			formData.append(imageName, imagefiles[i], imagefiles[i].name);
-		}
+		if (imagefiles.length != 1) return 
+
+		formData.append(imageName, imagefiles[0], imagefiles[0].name);
 
 		this.status = STATUS_SAVING;
 
@@ -127,14 +127,24 @@ export default {
 		const response = await this.$axios.post(`/users/${this.id}/photos`, formData, 
 		  {headers: { 'Content-Type': 'multipart/form-data', Authorization: 'Bearer ' + this.id}});
 		  
+		  /*
 		  // The response data now contains an array of relative paths
-			let newImage = JSON.parse(JSON.stringify(response.data))
+			let newImage = JSON.stringify(response.data)
 			this.images.push(newImage)
+			console.log(newImage)
+			// const imageUrl = URL.createObjectURL(newImage.image);
+			// this.imageURLS[newImage.pid] = imageUrl;
 
-			const imageUrl = URL.createObjectURL(newImage.image);
+
+			const binaryData = newImage.image
+
+			const blob = new Blob([binaryData], { type: 'image/jpeg' }); 
+			const imageUrl = URL.createObjectURL(blob);
 			this.imageURLS[newImage.pid] = imageUrl;
 
+			console.log(imageUrl) */
 				
+			await this.getImages()
 		 /* console.log(response.data);
 		  	const jsonData = response.data;
 			const imageBlob = jsonData.image;
@@ -170,12 +180,12 @@ export default {
 	
 
 		showModal(index) {
-		this.selectedImage = index;
+		this.selectedImage = this.images[index];
 		this.show = true;
 		
 	},
 		hideModal(index) {
-		this.selectedImage = index;
+		this.selectedImage = this.images[index];
 		this.show = false;
 	},
 	  /*profileLink() {
@@ -209,16 +219,68 @@ export default {
 
 			// The response data now contains an array of relative paths
 			this.images = JSON.parse(JSON.stringify(response.data));
+			// console.log(this.images)
+
+			if (this.images === null) {
+				this.images = []
+				return
+			} 
+
+			/*
 			for (let i = 0; i < this.images.length; i++) {
-				console.log(this.images[i].image)
-				const imageUrl = URL.createObjectURL(this.images[i].image);
+				// console.log(this.images[i].image)
+				const PID = this.images[i].pid
+
+
+				this.getImage()
+				
+				/*const imageUrl = URL.createObjectURL(this.images[i].image);
+				const binaryData = this.images[i].image
+
+				const blob = new Blob([binaryData], { type: 'image/jpeg' }); 
+				const imageUrl = URL.createObjectURL(blob);
 				this.imageURLS[this.images[i].pid] = imageUrl;
+
+				console.log(this.imageURLS)*/
 			
 				// console.log('images:', this.images);
-			}
+			
+
+
 		} catch (error) {
 			console.log(error);
 		}
+	},
+
+	async getImage(PID) {
+		try {
+				let response2 = await this.$axios.get(`/users/${this.id}/images/${PID}`, {responseType: "blob",
+				headers: { Accept: "image/jpeg", 'Authorization': 'Bearer ' + this.id }})
+
+				const imageUrl = URL.createObjectURL(response2.data);
+				
+				// this.imageURLS[this.images[i].pid] = imageUrl;
+				// const blob = new Blob([response2.data], { type: 'image/jpeg' });
+      			// const imageUrl = URL.createObjectURL(blob);
+
+				console.log(imageUrl)
+				console.log(response2.data instanceof Blob);
+
+				return imageUrl
+
+				} catch (error) {
+				console.log(error);
+				}
+	},
+
+	async resolveImageUrls() {
+
+		const promises = this.images.map(async (photo) => {
+			const imageUrl = await this.getImage(photo.pid);
+			this.imageURLS[photo.pid] = imageUrl;
+		});
+		await Promise.all(promises);
+
 	},
 
 
@@ -346,7 +408,7 @@ export default {
 
 	
 	},
-	async mounted() {
+	async created() {
 	this.refresh()
 	this.reset()
 	/*if (localStorage.getItem('isLoggedIn')) {
@@ -371,6 +433,7 @@ export default {
 
 		}*/
 	await this.getImages()
+	await this.resolveImageUrls()
 	},
 	computed: {
 		/*usernamePattern() {
@@ -563,17 +626,18 @@ export default {
 			</h5>
 			
 			<div class="image-row">
-				<img v-for="(image, index) in images" :key="index" :src="imageURLS[image.pid]" :draggable="false" @click="showModal(index)"/>
+				<img v-for="(image, index) in images" :key="image.pid" :src="imageURLS[image.pid]" :draggable="false" @click="showModal(index)"/>
 			</div> 
 		</div>
 		<div id="Modal" v-if="show">
-			<img :src="images[selectedImage]" @click="hideModal(index)" />
+			<img :src="imageURLS[selectedImage.pid]" @click="hideModal(index)" />
 			<div class="button-container">
 				<button class="heart" @click="toggleLike2" ></button>
-				<div class="like-counter">{{ images.likes }} Likes</div>
+				<div class="like-counter">{{ selectedImage.numlikes }} Likes</div>
 				<div class="button-space"></div>
 				<button class="cloud"> </button>
-				<div class="comment-counter">{{ images.comments }} Comments</div>				
+				<div class="comment-counter">{{ selectedImage.numcomments }} Comments</div>		
+				<div class="comment-counter">{{ selectedImage.datetime }} date</div>		
 			</div>
 		</div>     
 		

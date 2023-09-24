@@ -21,14 +21,14 @@ func (rt *_router) uploadPhoto(w http.ResponseWriter, r *http.Request, ps httpro
 	}
 
 	// Parse the multipart form data from the request
-	err = r.ParseMultipartForm(10 << 20) // max memory 10MB
+	err = r.ParseMultipartForm(32 << 20)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	// Get the uploaded file from the form data
-	file, _, err := r.FormFile("image") // The "_" denotes a blank identifier since we are not using it
+	file, _, err := r.FormFile("image")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -41,6 +41,12 @@ func (rt *_router) uploadPhoto(w http.ResponseWriter, r *http.Request, ps httpro
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	/*// Save the image blob to disk
+	if err := ioutil.WriteFile("images.png", imageData, os.ModePerm); err != nil {
+		http.Error(w, "Failed to save image", http.StatusInternalServerError)
+		return
+	}*/
 
 	// Create the photo object to pass to the db
 	photo := Photo{
@@ -61,9 +67,9 @@ func (rt *_router) uploadPhoto(w http.ResponseWriter, r *http.Request, ps httpro
 
 	// Set the photo ID and return with a 201 status code
 	photo.PID = photoID
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "image/jpeg")
 	w.WriteHeader(http.StatusCreated)
-	_ = json.NewEncoder(w).Encode(photo)
+	_ = json.NewEncoder(w).Encode(photo.Image)
 }
 
 /*
