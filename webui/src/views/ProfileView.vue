@@ -181,6 +181,7 @@ export default {
 
 		showModal(index) {
 		this.selectedImage = this.images[index];
+		console.log(this.selectedImage)
 		this.show = true;
 		
 	},
@@ -217,33 +218,55 @@ export default {
 				headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + this.id }
 			})
 
-			// The response data now contains an array of relative paths
+			console.log("over here", response.data)
+			// The response data now contains an array of photo objects
 			this.images = JSON.parse(JSON.stringify(response.data));
 			// console.log(this.images)
 
 			if (this.images === null) {
 				this.images = []
 				return
-			} 
+			}
 
-			/*
-			for (let i = 0; i < this.images.length; i++) {
+		  // Iterate through the images and create data URLs
+		  for (let i = 0; i < this.images.length; i++) {
+            const PID = this.images[i].pid;
+
+            // Convert the image string to a Blob object
+            const blob = new Blob([this.images[i].image], { type: 'image/jpeg' });
+
+            // Read the Blob as a data URL
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+
+            reader.onload = () => {
+                // Store the data URL in your imageURLS array
+                this.imageURLS[PID] = reader.result;
+				console.log(this.imageURLS)
+
+                // Now, `this.imageURLS[PID]` contains the data URL for each image.
+            };
+        }
+
+
+			
+			/*for (let i = 0; i < this.images.length; i++) {
 				// console.log(this.images[i].image)
 				const PID = this.images[i].pid
 
 
 				this.getImage()
 				
-				/*const imageUrl = URL.createObjectURL(this.images[i].image);
+				const imageUrl = URL.createObjectURL(this.images[i].image);
 				const binaryData = this.images[i].image
 
 				const blob = new Blob([binaryData], { type: 'image/jpeg' }); 
 				const imageUrl = URL.createObjectURL(blob);
 				this.imageURLS[this.images[i].pid] = imageUrl;
 
-				console.log(this.imageURLS)*/
+				console.log(this.imageURLS)
 			
-				// console.log('images:', this.images);
+				// console.log('images:', this.images);  */
 			
 
 
@@ -274,14 +297,14 @@ export default {
 	},
 
 	async resolveImageUrls() {
-
-		const promises = this.images.map(async (photo) => {
-			const imageUrl = await this.getImage(photo.pid);
-			this.imageURLS[photo.pid] = imageUrl;
-		});
-		await Promise.all(promises);
-
+	const promises = this.images.map(async (photo) => {
+		const imageUrl = await this.getImage(photo.pid);
+		const dataURL = await getDataURLFromImageURL(imageUrl); 
+		this.imageURLS[photo.pid] = dataURL;
+	});
+	await Promise.all(promises);
 	},
+
 
 
 	async getDataURLFromImageURL(imageURL) {
@@ -433,7 +456,7 @@ export default {
 
 		}*/
 	await this.getImages()
-	await this.resolveImageUrls()
+	// await this.resolveImageUrls()
 	},
 	computed: {
 		/*usernamePattern() {

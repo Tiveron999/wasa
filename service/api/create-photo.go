@@ -69,7 +69,7 @@ func (rt *_router) uploadPhoto(w http.ResponseWriter, r *http.Request, ps httpro
 	photo.PID = photoID
 	w.Header().Set("Content-Type", "image/jpeg")
 	w.WriteHeader(http.StatusCreated)
-	_ = json.NewEncoder(w).Encode(photo.Image)
+	_ = json.NewEncoder(w).Encode(photo)
 }
 
 /*
