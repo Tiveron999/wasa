@@ -215,7 +215,7 @@ export default {
 		}
 
 		try {
-			const response = await this.$axios.get(`/users/${this.id}/photos`, {
+			const response = await this.$axios.get(`/users/${this.$route.params.user_id}/photos`, {
 				headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + this.id }
 			})
 
@@ -245,82 +245,9 @@ export default {
 				this.imageURLS[photo.pid] = imageUrl;
 				}
 
-			/*
-			// The response data now contains an array of photo objects
-			this.images = JSON.parse(JSON.stringify(response.data));
-			// console.log(this.images)
-
-			if (this.images === null) {
-				this.images = []
-				return
-			}
-
-		  // Iterate through the images and create data URLs
-		  for (let i = 0; i < this.images.length; i++) {
-            const PID = this.images[i].pid;
-
-            // Convert the image string to a Blob object
-            const blob = new Blob([this.images[i].image], { type: 'image/jpeg' });
-
-            // Read the Blob as a data URL
-            const reader = new FileReader();
-            reader.readAsDataURL(blob);
-
-            reader.onload = () => {
-                // Store the data URL in your imageURLS array
-                this.imageURLS[PID] = reader.result;
-				console.log(this.imageURLS)
-
-                // Now, `this.imageURLS[PID]` contains the data URL for each image.
-            };
-        }*/
-
-
-			
-			/*for (let i = 0; i < this.images.length; i++) {
-				// console.log(this.images[i].image)
-				const PID = this.images[i].pid
-
-
-				this.getImage()
-				
-				const imageUrl = URL.createObjectURL(this.images[i].image);
-				const binaryData = this.images[i].image
-
-				const blob = new Blob([binaryData], { type: 'image/jpeg' }); 
-				const imageUrl = URL.createObjectURL(blob);
-				this.imageURLS[this.images[i].pid] = imageUrl;
-
-				console.log(this.imageURLS)
-			
-				// console.log('images:', this.images);  */
-			
-
-
 		} catch (error) {
 			console.log(error);
 		}
-	},
-
-	async getImage(PID) {
-		try {
-				let response2 = await this.$axios.get(`/users/${this.id}/images/${PID}`, {responseType: "blob",
-				headers: { Accept: "image/jpeg", 'Authorization': 'Bearer ' + this.id }})
-
-				const imageUrl = URL.createObjectURL(response2.data);
-				
-				// this.imageURLS[this.images[i].pid] = imageUrl;
-				// const blob = new Blob([response2.data], { type: 'image/jpeg' });
-      			// const imageUrl = URL.createObjectURL(blob);
-
-				console.log(imageUrl)
-				console.log(response2.data instanceof Blob);
-
-				return imageUrl
-
-				} catch (error) {
-				console.log(error);
-				}
 	},
 
 	async getDataURLFromImageURL(imageURL) {
@@ -442,7 +369,35 @@ export default {
 				console.error("error: ", e);
 				this.errormsg = e.toString();
 			}
-		}
+		},
+
+		async deletePhoto(photoId) {
+			try {
+				const response = await this.$axios.delete(`/users/${this.id}/photos/${photoId}`, {
+				headers: {
+					'Content-Type': 'application/json', "Authorization": 'Bearer ' + this.id 
+				},
+				});
+
+				if (response.status === 204) {
+				// Photo deleted successfully
+				console.log(`Photo with ID ${photoId} deleted successfully.`);
+				alert('Photo successfully deleted.');
+				this.show = false;
+				this.getImages()
+				} else if (response.status === 404) {
+				// The photo does not exist
+				console.error(`Photo with ID ${photoId} does not exist.`);
+				alert('This photo does not exist');
+				} else {
+				console.error(`Error deleting photo with ID ${photoId}. Status: ${response.status}`);
+				}
+			} catch (error) {
+				console.error(`Error deleting photo with ID ${photoId}: ${error.message}`);
+			}
+		},
+		
+
 
 
 	
@@ -679,7 +634,7 @@ export default {
 				<div class="photo-date"> Upload date and time: {{ selectedImage.datetime }}</div>	
 			</div>		
 				<div class="delete-button-container">
-					<button class="btn btn-sm-normal btn-outline-primary delete-photo" type="button" @click="deletePhoto(selectedImage.pid)">Delete</button>
+					<button class="btn btn-sm-normal btn-outline-primary delete-photo" type="button" v-if="isSameUser()" @click="deletePhoto(selectedImage.pid)">Delete</button>
 				</div>
 		</div>     
 		

@@ -6,8 +6,7 @@ import (
 
 // Handler returns an instance of httprouter.Router that handles APIs registered here
 func (rt *_router) Handler() http.Handler {
-	// Register routes
-
+	// context
 	rt.router.GET("/context", rt.wrap2(rt.getContextReply))
 
 	// users
@@ -20,9 +19,6 @@ func (rt *_router) Handler() http.Handler {
 	rt.router.POST("/users/:user_id/photos", rt.wrap(rt.uploadPhoto))
 	rt.router.GET("/users/:user_id/photos/:photo_id", rt.wrap(rt.getPhotoInfo))
 	rt.router.DELETE("/users/:user_id/photos/:photo_id", rt.wrap(rt.deletePhoto))
-
-	// image
-	rt.router.GET("/users/:user_id/images/:image_id", rt.wrap(rt.getImageFromPhoto))
 
 	// likes
 	rt.router.GET("/users/:user_id/photos/:photo_id/likes", rt.wrap(rt.getLikesList))
