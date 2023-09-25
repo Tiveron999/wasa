@@ -239,6 +239,7 @@ button {
     height: auto;
     max-width: 80%;
     max-height: 80%;
+    transform: translateX(20%);
     /* display: block; */
   }
   
@@ -260,9 +261,52 @@ button {
     font-family: Impact;
 }
 
-.button-container {
-  display: flex;
-  align-items: center;
+
+/* comment button */
+.cloud {
+  width: 116px;
+  height: 40px;
+  background: #3498db;
+  border-radius: 100px;
+  position: relative;
+  margin: 50px 25px;
+  outline: none;
+  border: none;
+}
+
+.cloud:after,
+.cloud:before {
+  content: '';
+  position: absolute;
+  background: #3498db;
+  z-index: 1;
+}
+
+.cloud:after {
+  width: 33px;
+  height: 33px;
+  top: -17px;
+  left: 17px;
+  border-radius: 100px;
+}
+
+.cloud:before {
+  width: 60px;
+  height: 60px;
+  top: -30px;
+  right: 17px;
+  border-radius: 100px;
+}
+
+
+  /* comment counter */
+  .comment-counter {
+    position: relative;
+    left: -7.7rem;
+    top: 3rem;
+    color: white;
+    /*font-family: 'Shadows Into Light', cursive;*/
+    font-family: Impact;
 }
 
 .button-space {
@@ -482,9 +526,9 @@ body {
 
 .follow-button {
   display: inline-flex;
-  align-items: center; /* Align items vertically in the center */
-  justify-content: center; /* Align items horizontally in the center */
-  padding: 0 15px; /* Add some padding to the button for spacing */
+  align-items: center; 
+  justify-content: center; 
+  padding: 0 15px;
 }
 
 .modal-backdrop {
@@ -502,49 +546,35 @@ body {
 }
 
 
-/* comment button */
-.cloud {
-  width: 116px;
-  height: 40px;
-  background: #3498db;
-  border-radius: 100px;
-  position: relative;
-  margin: 50px 25px;
-  outline: none;
-  border: none;
-}
-
-.cloud:after,
-.cloud:before {
-  content: '';
+.photo-date {
   position: absolute;
-  background: #3498db;
-  z-index: 1;
-}
-
-.cloud:after {
-  width: 33px;
-  height: 33px;
-  top: -17px;
-  left: 17px;
-  border-radius: 100px;
-}
-
-.cloud:before {
-  width: 60px;
-  height: 60px;
-  top: -30px;
-  right: 17px;
-  border-radius: 100px;
+  bottom: 10px; 
+  left: 50%; 
+  transform: translateX(-50%);
+  padding: 10px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #000;
+  margin-top: 10px;
+  font-size: 18px; 
 }
 
 
-  /* comment counter */
-  .comment-counter {
-    position: relative;
-    left: -7rem;
-    top: 3rem;
-    color: white;
-    /*font-family: 'Shadows Into Light', cursive;*/
-    font-family: Impact;
+/* Position the delete button in the bottom left corner */
+.delete-button-container {
+  position: absolute;
+  bottom: 10px; /* Adjust the distance from the bottom as needed */
+  left: 10px; /* Adjust the distance from the left as needed */
+}
+
+
+
+.delete-photo {
+  background-color: red;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  align-items: center; 
+  justify-content: center; 
+  border: 1px solid white;
 }

@@ -208,7 +208,7 @@ export default {
       });
     }
 	},
-	
+
 	async getImages() {
 		if (localStorage.getItem('isLoggedIn')) {
 			this.id = localStorage.getItem('userId');
@@ -322,17 +322,6 @@ export default {
 				console.log(error);
 				}
 	},
-
-	async resolveImageUrls() {
-	const promises = this.images.map(async (photo) => {
-		const imageUrl = await this.getImage(photo.pid);
-		const dataURL = await getDataURLFromImageURL(imageUrl); 
-		this.imageURLS[photo.pid] = dataURL;
-	});
-	await Promise.all(promises);
-	},
-
-
 
 	async getDataURLFromImageURL(imageURL) {
 	const response = await fetch(imageURL);
@@ -460,7 +449,7 @@ export default {
 	},
 	async created() {
 	this.refresh()
-	this.reset()
+
 	/*if (localStorage.getItem('isLoggedIn')) {
 		this.id = localStorage.getItem('userId');
 		this.$axios.get(`/users/${this.id}/following/:following_id`, {headers: {Authorization: 'Bearer ' + this.id}})
@@ -686,9 +675,12 @@ export default {
 				<div class="like-counter">{{ selectedImage.numlikes }} Likes</div>
 				<div class="button-space"></div>
 				<button class="cloud"> </button>
-				<div class="comment-counter">{{ selectedImage.numcomments }} Comments</div>		
-				<div class="comment-counter">{{ selectedImage.datetime }} date</div>		
-			</div>
+				<div class="comment-counter">{{ selectedImage.numcomments }} Comments</div>	
+				<div class="photo-date"> Upload date and time: {{ selectedImage.datetime }}</div>	
+			</div>		
+				<div class="delete-button-container">
+					<button class="btn btn-sm-normal btn-outline-primary delete-photo" type="button" @click="deletePhoto(selectedImage.pid)">Delete</button>
+				</div>
 		</div>     
 		
 
