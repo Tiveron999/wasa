@@ -208,6 +208,7 @@ export default {
       });
     }
 	},
+	
 	async getImages() {
 		if (localStorage.getItem('isLoggedIn')) {
 			this.id = localStorage.getItem('userId');
@@ -219,6 +220,32 @@ export default {
 			})
 
 			console.log("over here", response.data)
+
+			 // Assuming response.data is an array of photo objects
+			 this.images = response.data;
+
+			for (let i = 0; i < this.images.length; i++) {
+				const photo = this.images[i];
+
+				// Create a Blob from the Base64 data
+				const binaryImageData = atob(photo.image);
+				const dataArray = new Uint8Array(binaryImageData.length);
+
+				for (let i = 0; i < binaryImageData.length; i++) {
+				dataArray[i] = binaryImageData.charCodeAt(i);
+				}
+				const blob = new Blob([dataArray], { type: 'image/jpeg' });
+
+				// Create a data URL from the Blob
+				const imageUrl = URL.createObjectURL(blob);
+
+				// imageUrl now contains the data URL for the image
+				console.log(imageUrl);
+
+				this.imageURLS[photo.pid] = imageUrl;
+				}
+
+			/*
 			// The response data now contains an array of photo objects
 			this.images = JSON.parse(JSON.stringify(response.data));
 			// console.log(this.images)
@@ -246,7 +273,7 @@ export default {
 
                 // Now, `this.imageURLS[PID]` contains the data URL for each image.
             };
-        }
+        }*/
 
 
 			
