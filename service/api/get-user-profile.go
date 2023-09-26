@@ -11,26 +11,17 @@ import (
 )
 
 func (rt *_router) getUserProfile(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	// Get the value of the "username" query parameter
-	username := r.URL.Query().Get("username")
+	// Parse user ID from the URL
+	userID, err := strconv.ParseUint(ps.ByName("user_id"), 10, 64)
+	if err != nil {
+		// The value was not uint64, reject the action indicating an error on the client side.
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
-	// Read the new content for the profile from the request body.
 	var profile Profile
 
-	/*err := json.NewDecoder(r.Body).Decode(&profile)
-	if err != nil {
-		// The body was not a parseable JSON, reject it
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	} else if !profile.ProfileIsValid() {
-		// Here we validated the profile structure content (e.g., location coordinates in correct range, etc.), and we
-		// discovered that the profile data are not valid.
-		// Note: the IsValid() function skips the ID check (see below).
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}*/
-
-	userID, err := rt.db.GetUserID(username)
+	username, err := rt.db.GetUsername(userID)
 	if err != nil {
 		ctx.Logger.WithError(err).Error("an error occurred")
 		http.Error(w, err.Error(), http.StatusInternalServerError)

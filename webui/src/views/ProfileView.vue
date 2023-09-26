@@ -7,11 +7,6 @@ import { toRaw } from 'vue';
 // import UsernameModal from '../components/UsernameModal.vue';
 
 
-const STATUS_INITIAL = 0;
-const STATUS_SAVING = 1;
-const STATUS_SUCCESS = 5;
-const STATUS_FAILED = 10;
-
 export default {
 	data: function() {
 		return {
@@ -38,14 +33,18 @@ export default {
 			isBanned: false,
 			isFirst: true,
       		isSaving: false,
-			status: STATUS_INITIAL, 
-			uploadedFiles: null, 
-			imageURLS : {}
+			uploadedFilesa: null, 
+			imageURLS : {},
+			userProfile: null,
 		}
 	},
 /*	components: {
 		UsernameModal
 	}, */
+	watch: {
+    // Watch for changes to the route or path
+    '$route': 'onRouteChange'
+  	},
 
 	methods: {
 		/* this.$axios.post('/session', JSON.stringify({username: this.username}), {headers: { 'Content-Type': 'application/json',  'Accept': 'application/json', 
@@ -117,8 +116,6 @@ export default {
 
 		formData.append(imageName, imagefiles[0], imagefiles[0].name);
 
-		this.status = STATUS_SAVING;
-
 		if (localStorage.getItem('isLoggedIn')) {
 		this.id = localStorage.getItem('userId');
 		}
@@ -160,24 +157,11 @@ export default {
 			*/
 
 			// this.uploadedFiles = JSON.parse(JSON.stringify(response.data))
-			this.status = STATUS_SUCCESS
 
 		} catch (error) {
 		  console.error(error);
-		  this.status = STATUS_FAILED;
 		}
-	},
-
-	isFailed() {
-		return this.status === STATUS_FAILED;
-	},
-
-	reset() {
-		this.status = STATUS_INITIAL;
-		this.uploadedFiles = null;
-		this.uploadError = null;
-	},
-	
+	},	
 
 		showModal(index) {
 		this.selectedImage = this.images[index];
@@ -223,6 +207,11 @@ export default {
 
 			 // Assuming response.data is an array of photo objects
 			 this.images = response.data;
+
+			 if (this.images === null){
+				this.images = []
+			 }
+			 
 
 			for (let i = 0; i < this.images.length; i++) {
 				const photo = this.images[i];
@@ -319,6 +308,7 @@ export default {
 			this.username = ""
 			this.isUsernameModalOpen = false;
 			alert('You have successfully changed your username.')
+			this.getProfile()
 		})
 		.catch(error => {
 
@@ -355,6 +345,8 @@ export default {
 			const result = await this.$axios.put(`/users/${this.id}/following/${this.$route.params.user_id}`, null, {headers: {Authorization: 'Bearer ' + this.id}})
 			console.log(result)
 			this.followers += 1
+			console.log("followers", this.followers)
+			this.getProfile()
 		} catch (e) {
 			console.error("error: ", e);
 			this.errormsg = e.toString();
@@ -365,6 +357,7 @@ export default {
 				const result = await this.$axios.delete(`/users/${this.id}/following/${this.$route.params.user_id}`, {headers: { Authorization: 'Bearer ' + this.id }});
 				console.log(result);
 				this.followers -= 1;
+				this.getProfile()
 			} catch (e) {
 				console.error("error: ", e);
 				this.errormsg = e.toString();
@@ -397,45 +390,74 @@ export default {
 			}
 		},
 		
+		async getProfile() {
+			try {
+				const response = await this.$axios.get(`/users/${this.$route.params.user_id}/profile`);
+
+				this.userProfile = response.data;
+				console.log(this.userProfile)
+			} catch (error) {
+				// Handle any errors here
+				console.error(error);
+			}
+		},
+
+		onRouteChange(newRoute, oldRoute) {
+			// You can access the new route and old route objects
+			console.log('Route changed:', newRoute, oldRoute);
+			if (
+				oldRoute.params.user_id &&
+				newRoute.params.user_id &&
+				oldRoute.params.user_id !== newRoute.params.user_id &&
+				oldRoute.params.profile &&
+				newRoute.params.profile 
+			) {
+				// You are switching between user profiles
+				this.getProfile()
+				this.getImages()
+			}
+    	},
+
 
 
 
 	
 	},
 	async created() {
-	this.refresh()
+		this.refresh()
 
-	/*if (localStorage.getItem('isLoggedIn')) {
-		this.id = localStorage.getItem('userId');
-		this.$axios.get(`/users/${this.id}/following/:following_id`, {headers: {Authorization: 'Bearer ' + this.id}})
-      .then(response => {
-        this.following = response.data.following;
-		// console.log();
-      })
-      .catch(error => {
-        console.log(error);
-      });
+		/*if (localStorage.getItem('isLoggedIn')) {
+			this.id = localStorage.getItem('userId');
+			this.$axios.get(`/users/${this.id}/following/:following_id`, {headers: {Authorization: 'Bearer ' + this.id}})
+		.then(response => {
+			this.following = response.data.following;
+			// console.log();
+		})
+		.catch(error => {
+			console.log(error);
+		});
 
 
-	this.$axios.get(`/users/${this.id}/followers/:follower_id`, {headers: {Authorization: 'Bearer ' + this.id}})
-      .then(response => {
-        this.followers = response.data.followers;
-      })
-      .catch(error => {
-        console.log(error);
-      });
+		this.$axios.get(`/users/${this.id}/followers/:follower_id`, {headers: {Authorization: 'Bearer ' + this.id}})
+		.then(response => {
+			this.followers = response.data.followers;
+		})
+		.catch(error => {
+			console.log(error);
+		});
 
-		}*/
-	await this.getImages()
-	// await this.resolveImageUrls()
+			}*/
+		await this.getImages()
+		// await this.resolveImageUrls()
+		await this.getProfile()
 	},
 	computed: {
-		/*usernamePattern() {
-    return "^[A-Za-z][A-Za-z0-9_]{5,14}$";
-  }, */
-	isInvalid() {
-		return !this.newUsername.match(this.usernamePattern);
-	}
+			/*usernamePattern() {
+		return "^[A-Za-z][A-Za-z0-9_]{5,14}$";
+	}, */
+		isInvalid() {
+			return !this.newUsername.match(this.usernamePattern);
+		}
 	},
 
 
@@ -541,12 +563,12 @@ export default {
 
 		<div class="profile-container">
 			<br>
-			<div class="profile-info">
-				<h2>{{ username }}</h2>
+			<div class="profile-info" v-if="userProfile">
+				<h3 class="username"> {{ userProfile.username  }}</h3>
 				<div class="follow-info">
-				<p><strong>{{ posts }}</strong> posts</p>
-				<p><strong>{{ followers }}</strong> followers</p>
-				<p><strong>{{ following }}</strong> following</p>
+				<p><strong>{{ userProfile.numphotos }}</strong> posts</p>
+				<p><strong>{{ userProfile.followers  }}</strong> followers</p>
+				<p><strong>{{ userProfile.following  }}</strong> following</p>
 				</div>
 				<button type="button" class="btn btn-sm-normal btn-outline-primary follow-button" v-if="!isSameUser()" @click="toggleFollow" 
 				:class="{ following: isFollowing }">
@@ -605,8 +627,8 @@ export default {
 					<br>Use the button below to add images to your profile.<br>
 					</span>
 				</h5>
-				<form enctype="multipart/form-data" novalidate v-if="isFirst || isSaving">
-					<input style = "display:none" type="file" :disabled="isSaving"  @change="uploadImage3" ref = "pickImage" accept="image/jpeg"/>
+				<form enctype="multipart/form-data">
+					<input style = "display:none" type="file"  @change="uploadImage3" ref = "pickImage" accept="image/jpeg"/>
 					<!--  <p v-if="isFirst"> Click to select </p> 
 					<p v-if="isSaving"> Uploading image... </p>  -->
 					<button class='btn btn-sm-normal btn-outline-primary' type="button" @click="$refs.pickImage.click()">Choose</button>

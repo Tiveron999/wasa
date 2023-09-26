@@ -565,8 +565,7 @@ paths:
       operationId: getUserProfile
       summary: obtain the profile information for specified user
       description: |
-        Show the user's photos (in reverse chronological order), 
-        how many photos have been uploaded, and the user's followers and following.
+        Show how many photos have been uploaded, and the user's followers and following.
       tags:
         - profile
       responses:

@@ -129,11 +129,13 @@ type AppDatabase interface {
 
 	// GetToken(uint64) (Token, error)
 
-	GetUserID(username string) (uint64, error)
+	GetUserID(string) (uint64, error)
 
-	CheckUserExists(u string) (uint64, error)
+	CheckUserExists(string) (uint64, error)
 
 	GetUserImage(uint64) ([]byte, error)
+
+	GetUsername(uint64) (string, error)
 
 	// Ping checks whether the database is available or not (in that case, an error will be returned)
 	Ping() error

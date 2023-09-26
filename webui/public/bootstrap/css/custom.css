@@ -567,8 +567,6 @@ body {
   left: 10px; /* Adjust the distance from the left as needed */
 }
 
-
-
 .delete-photo {
   background-color: red;
   color: white;
@@ -577,4 +575,9 @@ body {
   align-items: center; 
   justify-content: center; 
   border: 1px solid white;
+}
+
+.username {
+  margin-right: 20px;
+  margin-bottom: 20px;
 }
