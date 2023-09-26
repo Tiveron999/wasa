@@ -21,7 +21,7 @@ export default {
 			}
 			this.loading = false;
 		},
-		async getProfile() {
+		/*async getProfile() {
 			try {
 				if (localStorage.getItem('isLoggedIn')) {
 					this.id = localStorage.getItem('userId');
@@ -34,8 +34,10 @@ export default {
 			} catch (err) {
 				console.log(err);
 			}
-		},
+		},*/
 		searchUsers() {
+			this.user = {}; // (re-)initialize the user object
+
 			if (!this.username) {
 				this.user = null;
 				return;
@@ -45,7 +47,6 @@ export default {
 				this.id = localStorage.getItem('userId');
 			}
 
-			this.user = null; // Reset the user data
 			try {
 				this.$axios.get(`/users?username=${this.username}`, {headers: { Authorization: 'Bearer ' + this.id },})
 				.then((response) => {
@@ -61,7 +62,11 @@ export default {
 
 				})
 				.catch((error) => {
-				console.error(error);
+					if (error.response) {
+						console.error('Status:', error.response.status);
+						console.error('Data:', error.response.data);
+					}
+					this.user = null;
 				});
 			} catch (e) {
 				this.errormsg = e.toString();
@@ -151,11 +156,11 @@ export default {
 
 	<div v-if="userExists" class="card">
 		<div class="card-body">
-			<h4 class="card-title">User: {{ user.username }}</h4>
-				<p class="card-text">Posts: {{ user.numphotos }}</p>
-				<p class="card-text">Followers: {{ user.followers }}</p>
-				<p class="card-text">Following: {{ user.following }}</p>
-				<button class="btn btn-sm btn-outline-primary" @click="visitProfile(user.userid)">
+			<h4 class="card-title" v-if="userExists">User: {{ user.username }}</h4>
+				<p class="card-text" v-if="userExists">Posts: {{ user.numphotos }}</p>
+				<p class="card-text" v-if="userExists">Followers: {{ user.followers }}</p>
+				<p class="card-text" v-if="userExists">Following: {{ user.following }}</p>
+				<button class="btn btn-sm btn-outline-primary" @click="visitProfile(user.userid)" v-if="userExists">
 				Go to
 				</button>
 		</div>
