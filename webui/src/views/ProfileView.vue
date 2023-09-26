@@ -542,7 +542,7 @@ export default {
 		<div class="profile-container">
 			<br>
 			<div class="profile-info">
-				 <!-- <h2>{{ username }}</h2> -->
+				<h2>{{ username }}</h2>
 				<div class="follow-info">
 				<p><strong>{{ posts }}</strong> posts</p>
 				<p><strong>{{ followers }}</strong> followers</p>

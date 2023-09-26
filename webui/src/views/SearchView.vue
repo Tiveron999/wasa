@@ -156,11 +156,11 @@ export default {
 
 	<div v-if="userExists" class="card">
 		<div class="card-body">
-			<h4 class="card-title" v-if="userExists">User: {{ user.username }}</h4>
-				<p class="card-text" v-if="userExists">Posts: {{ user.numphotos }}</p>
-				<p class="card-text" v-if="userExists">Followers: {{ user.followers }}</p>
-				<p class="card-text" v-if="userExists">Following: {{ user.following }}</p>
-				<button class="btn btn-sm btn-outline-primary" @click="visitProfile(user.userid)" v-if="userExists">
+			<h4 class="card-title">User: {{ user.username }}</h4>
+				<p class="card-text">Posts: {{ user.numphotos }}</p>
+				<p class="card-text">Followers: {{ user.followers }}</p>
+				<p class="card-text">Following: {{ user.following }}</p>
+				<button class="btn btn-sm btn-outline-primary" @click="visitProfile(user.userid)">
 				Go to
 				</button>
 		</div>
