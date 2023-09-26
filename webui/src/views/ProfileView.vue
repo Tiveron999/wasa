@@ -21,7 +21,7 @@ export default {
 			followers: 0,
       		following: 0,
 			appearance: "default",
-			liked: false,
+			isLiked: false,
 			submitted: false,
 			text: 'Like',
 			username: '',
@@ -180,7 +180,7 @@ export default {
         return '/users/:user_id/profile'
       }
 	},*/
-	toggleLike(image) {
+	/*toggleLike(image) {
       // Update the likes property of the selected image
       image.likes = image.likes ? 0 : 1
 	  if (localStorage.getItem('isLoggedIn')) {
@@ -191,7 +191,7 @@ export default {
         console.log(error);
       });
     }
-	},
+	}, */
 
 	async getImages() {
 		if (localStorage.getItem('isLoggedIn')) {
@@ -256,34 +256,40 @@ export default {
 		};
 	});
 	},
-	toggleLike2: function()
-	{
-		if(this.liked) {
-			this.unlikePhoto()
+	toggleLike() {
+		if (this.isLiked) {
+			this.unlikePhoto();
 		} else {
-			this.likePhoto()
+			this.likePhoto();
 		}
+		// Toggle the liked state
+		this.isLiked = !this.isLiked;
 	},
 
-	likePhoto: function() {
-		this.submitted = true;
-
-		this.$axios.put(this.$axios.put(`/users/${this.id}/photos/{photo_id}/likes/${this.id}`), function(resp) {
-			this.liked = true;
-			this.submitted = false;
-			this.text = 'Unlike';
-		});
-	},
-
-	unlikePhoto: function() {
-		this.submitted = true;
-
-		this.$axios.delete(`/users/${this.id}/photos/{photo_id}/likes/${this.id}`, function(resp) {
-			this.liked = false;
-			this.submitted = false;
-			this.text = 'Like';
-		});
-	},
+	async likePhoto() {
+		try {
+			console.log(this.id, this.$route.params.user_id)
+			const result = await this.$axios.put(`/users/${this.id}/following/${this.$route.params.user_id}`, null, {headers: {Authorization: 'Bearer ' + this.id}})
+			console.log(result)
+			this.followers += 1
+			console.log("followers", this.followers)
+			this.getProfile()
+		} catch (e) {
+			console.error("error: ", e);
+			this.errormsg = e.toString();
+		}
+		},
+		async unlikePhoto() {
+			try {
+				const result = await this.$axios.delete(`/users/${this.id}/following/${this.$route.params.user_id}`, {headers: { Authorization: 'Bearer ' + this.id }});
+				console.log(result);
+				this.followers -= 1;
+				this.getProfile()
+			} catch (e) {
+				console.error("error: ", e);
+				this.errormsg = e.toString();
+			}
+		},
 	openUsernameModal() {
 		console.log('here1: ' + this.isUsernameModalOpen);
 		this.isUsernameModalOpen = true;
