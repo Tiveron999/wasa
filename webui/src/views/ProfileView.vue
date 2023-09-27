@@ -256,35 +256,27 @@ export default {
 		};
 	});
 	},
-	toggleLike() {
+	toggleLike(pid, posterid) {
 		if (this.isLiked) {
-			this.unlikePhoto();
+			this.unlikePhoto(pid, posterid);
 		} else {
-			this.likePhoto();
+			this.likePhoto(pid, posterid);
 		}
 		// Toggle the liked state
 		this.isLiked = !this.isLiked;
 	},
 
-	async likePhoto() {
+	async likePhoto(pid, posterid) {
 		try {
-			console.log(this.id, this.$route.params.user_id)
-			const result = await this.$axios.put(`/users/${this.id}/following/${this.$route.params.user_id}`, null, {headers: {Authorization: 'Bearer ' + this.id}})
-			console.log(result)
-			this.followers += 1
-			console.log("followers", this.followers)
-			this.getProfile()
+			await this.$axios.put(`/users/${posterid}/photos/${pid}/likes/${this.id}`, null, {headers: {Authorization: 'Bearer ' + this.id}})
 		} catch (e) {
 			console.error("error: ", e);
 			this.errormsg = e.toString();
 		}
 		},
-		async unlikePhoto() {
+		async unlikePhoto(pid, posterid) {
 			try {
-				const result = await this.$axios.delete(`/users/${this.id}/following/${this.$route.params.user_id}`, {headers: { Authorization: 'Bearer ' + this.id }});
-				console.log(result);
-				this.followers -= 1;
-				this.getProfile()
+				await this.$axios.delete(`/users/${posterid}/photos/${pid}/likes/${this.id}`, {headers: { Authorization: 'Bearer ' + this.id }});
 			} catch (e) {
 				console.error("error: ", e);
 				this.errormsg = e.toString();
@@ -654,7 +646,7 @@ export default {
 		<div id="Modal" v-if="show">
 			<img :src="imageURLS[selectedImage.pid]" @click="hideModal(index)" />
 			<div class="button-container">
-				<button class="heart" @click="toggleLike2" ></button>
+				<button class="heart" @click="toggleLike(selectedImage.pid, selectedImage.posterID)" ></button>
 				<div class="like-counter">{{ selectedImage.numlikes }} Likes</div>
 				<div class="button-space"></div>
 				<button class="cloud"> </button>

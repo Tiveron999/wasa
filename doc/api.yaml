@@ -381,7 +381,7 @@ paths:
     - name: user_id
       in: path
       required: true
-      description: this is the user id
+      description: this is the id of the user whose photo is being liked
       schema:
         type: integer
         description: e.g., /users/1234
@@ -407,7 +407,7 @@ paths:
       tags:
         - photos
       responses:
-        "201":
+        "204":
           description: like placed
           content:
             application/json:

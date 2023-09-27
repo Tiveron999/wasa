@@ -136,10 +136,6 @@ func (f *Likes) LikeToDatabase() database.Likes {
 	}
 }
 
-func (f *Likes) LikeIsValid() bool {
-	return true
-}
-
 func (f *Comment) CommentFromDatabase(comment database.Comment) {
 	f.CID = comment.CID
 	f.CommenterID = comment.CommenterID

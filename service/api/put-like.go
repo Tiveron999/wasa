@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
 	"github.com/julienschmidt/httprouter"
@@ -16,13 +17,26 @@ func (rt *_router) likePhoto(w http.ResponseWriter, r *http.Request, ps httprout
 		// The body was not a parseable JSON, reject it
 		w.WriteHeader(http.StatusBadRequest)
 		return
-	} else if !like.LikeIsValid() {
-		// Here we validated the like structure content (e.g., location coordinates in correct range, etc.), and we
-		// discovered that the like data are not valid.
-		// Note: the IsValid() function skips the ID check (see below).
+	}
+
+	// Get the user ID and photo ID from the path parameters
+	photoID, err := strconv.ParseUint(ps.ByName("photo_id"), 10, 64)
+	if err != nil {
+		// Handle the error, e.g., invalid photo ID
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+
+	userID, err := strconv.ParseUint(ps.ByName("user_id"), 10, 64)
+	if err != nil {
+		// Handle the error, e.g., invalid user ID
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	// Build the like object with additional fields
+	like.LikerID = userID
+	like.PhotoID = photoID
 
 	// Create the like in the database. Note that this function will return a new instance of the like with the
 	// same information, plus the ID.
@@ -35,10 +49,8 @@ func (rt *_router) likePhoto(w http.ResponseWriter, r *http.Request, ps httprout
 		return
 	}
 
-	// Here we can re-use `like` as FromDatabase is overwriting every variabile in the structure.
+	// Here we can re-use `like` as FromDatabase is overwriting every variable in the structure.
 	like.LikeFromDatabase(dblike)
 
-	// Send the output to the user.
-	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(like)
+	w.WriteHeader(http.StatusNoContent)
 }
