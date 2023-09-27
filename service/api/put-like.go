@@ -9,10 +9,9 @@ import (
 )
 
 func (rt *_router) likePhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	// Read the new content for the like from the request body.
 	var like Likes
 
-	// Get the user ID and photo ID from the path parameters
+	/// Get the poster ID, photo ID and liker ID from the path parameters
 	posterID, err := strconv.ParseUint(ps.ByName("user_id"), 10, 64)
 	if err != nil {
 		// Handle the error, e.g., invalid photo ID
@@ -20,7 +19,6 @@ func (rt *_router) likePhoto(w http.ResponseWriter, r *http.Request, ps httprout
 		return
 	}
 
-	// Get the user ID and photo ID from the path parameters
 	photoID, err := strconv.ParseUint(ps.ByName("photo_id"), 10, 64)
 	if err != nil {
 		// Handle the error, e.g., invalid photo ID
