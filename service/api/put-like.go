@@ -33,6 +33,13 @@ func (rt *_router) likePhoto(w http.ResponseWriter, r *http.Request, ps httprout
 		return
 	}
 
+	// User is liking their own photo
+	if posterID == likerID {
+		ctx.Logger.WithError(err).Error("you cannot like your own photo")
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	// Create the like in the database. Note that this function will return a new instance of the like with the
 	// same information, plus the ID.
 

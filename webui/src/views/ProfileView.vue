@@ -276,9 +276,11 @@ export default {
 
 			// Now "likesCount" contains the updated number of likes
 			console.log(`Number of likes: ${likesCount}`);
-			}
 
 			this.selectedImage.numlikes = likesCount;
+			}
+
+			
 
 		} catch (e) {
 			console.error("error: ", e);
