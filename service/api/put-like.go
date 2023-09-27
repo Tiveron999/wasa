@@ -1,7 +1,6 @@
 package api
 
 import (
-	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -12,9 +11,11 @@ import (
 func (rt *_router) likePhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	// Read the new content for the like from the request body.
 	var like Likes
-	err := json.NewDecoder(r.Body).Decode(&like)
+
+	// Get the user ID and photo ID from the path parameters
+	posterID, err := strconv.ParseUint(ps.ByName("user_id"), 10, 64)
 	if err != nil {
-		// The body was not a parseable JSON, reject it
+		// Handle the error, e.g., invalid photo ID
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -27,7 +28,7 @@ func (rt *_router) likePhoto(w http.ResponseWriter, r *http.Request, ps httprout
 		return
 	}
 
-	userID, err := strconv.ParseUint(ps.ByName("user_id"), 10, 64)
+	likerID, err := strconv.ParseUint(ps.ByName("liker_id"), 10, 64)
 	if err != nil {
 		// Handle the error, e.g., invalid user ID
 		w.WriteHeader(http.StatusBadRequest)
@@ -35,7 +36,8 @@ func (rt *_router) likePhoto(w http.ResponseWriter, r *http.Request, ps httprout
 	}
 
 	// Build the like object with additional fields
-	like.LikerID = userID
+	like.PosterID = posterID
+	like.LikerID = likerID
 	like.PhotoID = photoID
 
 	// Create the like in the database. Note that this function will return a new instance of the like with the

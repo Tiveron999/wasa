@@ -35,9 +35,10 @@ type Photo struct {
 }
 
 type Likes struct {
-	LID     uint64
-	LikerID uint64
-	PhotoID uint64
+	LID      uint64
+	LikerID  uint64
+	PhotoID  uint64
+	PosterID uint64
 }
 
 type Comment struct {
@@ -136,6 +137,8 @@ type AppDatabase interface {
 	GetUserImage(uint64) ([]byte, error)
 
 	GetUsername(uint64) (string, error)
+
+	UpdateLikes(Photo) error
 
 	// Ping checks whether the database is available or not (in that case, an error will be returned)
 	Ping() error

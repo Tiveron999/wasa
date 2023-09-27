@@ -38,11 +38,11 @@ func (rt *_router) wrap(fn httpRouterHandler) func(http.ResponseWriter, *http.Re
 		}
 
 		authHeader := r.Header.Get("Authorization")
-		// if authHeader == "" {
-		// fmt.Println("bad")
-		// w.WriteHeader(http.StatusUnauthorized)
-		// return
-		// }
+		if authHeader == "" {
+			// fmt.Println("bad")
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
 		// Add the authorization header to the request context
 		r.Header.Add("Authorization", "Bearer: "+authHeader)
 

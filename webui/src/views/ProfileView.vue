@@ -257,6 +257,7 @@ export default {
 	});
 	},
 	toggleLike(pid, posterid) {
+		console.log("poster", posterid)
 		if (this.isLiked) {
 			this.unlikePhoto(pid, posterid);
 		} else {
@@ -373,7 +374,7 @@ export default {
 				if (response.status === 204) {
 				// Photo deleted successfully
 				console.log(`Photo with ID ${photoId} deleted successfully.`);
-				alert('Photo successfully deleted.');
+				alert('Photo deleted successfully.');
 				this.show = false;
 				this.getImages()
 				} else if (response.status === 404) {
@@ -390,7 +391,7 @@ export default {
 		
 		async getProfile() {
 			try {
-				const response = await this.$axios.get(`/users/${this.$route.params.user_id}/profile`);
+				const response = await this.$axios.get(`/users/${this.$route.params.user_id}/profile`, {headers: { Authorization: 'Bearer ' + this.id }});
 
 				this.userProfile = response.data;
 				console.log(this.userProfile)
@@ -646,7 +647,7 @@ export default {
 		<div id="Modal" v-if="show">
 			<img :src="imageURLS[selectedImage.pid]" @click="hideModal(index)" />
 			<div class="button-container">
-				<button class="heart" @click="toggleLike(selectedImage.pid, selectedImage.posterID)" ></button>
+				<button class="heart" @click="toggleLike(selectedImage.pid, selectedImage.posterid)" ></button>
 				<div class="like-counter">{{ selectedImage.numlikes }} Likes</div>
 				<div class="button-space"></div>
 				<button class="cloud"> </button>

@@ -12,7 +12,7 @@ import (
 
 func (rt *_router) unlikePhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	// The like ID in the path is a 64-bit unsigned integer. Let's parse it.
-	id, err := strconv.ParseUint(ps.ByName("like_id"), 10, 64)
+	id, err := strconv.ParseUint(ps.ByName("liker_id"), 10, 64)
 	if err != nil {
 		// The value was not uint64, reject the action indicating an error on the client side.
 		w.WriteHeader(http.StatusBadRequest)

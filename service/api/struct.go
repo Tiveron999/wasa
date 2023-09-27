@@ -24,9 +24,10 @@ type Photo struct {
 }
 
 type Likes struct {
-	LID     uint64 `json:"lid"`
-	LikerID uint64 `json:"likerid"`
-	PhotoID uint64 `json:"photoid"`
+	LID      uint64 `json:"lid"`
+	LikerID  uint64 `json:"likerid"`
+	PhotoID  uint64 `json:"photoid"`
+	PosterID uint64 `json:"posterid"`
 }
 
 type Comment struct {
@@ -125,14 +126,16 @@ func (f *Likes) LikeFromDatabase(like database.Likes) {
 	f.LID = like.LID
 	f.LikerID = like.LikerID
 	f.PhotoID = like.PhotoID
+	f.PosterID = like.PosterID
 }
 
 // ToDatabase returns the like in a database-compatible representation
 func (f *Likes) LikeToDatabase() database.Likes {
 	return database.Likes{
-		LID:     f.LID,
-		LikerID: f.LikerID,
-		PhotoID: f.PhotoID,
+		LID:      f.LID,
+		LikerID:  f.LikerID,
+		PhotoID:  f.PhotoID,
+		PosterID: f.PosterID,
 	}
 }
 
