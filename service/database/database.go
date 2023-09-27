@@ -92,7 +92,7 @@ type AppDatabase interface {
 
 	DeletePhoto(uint64) error
 
-	GetLikesList() ([]Likes, error)
+	GetLikesList(photoID, posterID uint64) ([]uint64, error)
 
 	LikePhoto(Likes) (Likes, error)
 
@@ -138,7 +138,7 @@ type AppDatabase interface {
 
 	GetUsername(uint64) (string, error)
 
-	UpdateLikes(Photo) error
+	UpdateLikes(uint64, uint64, uint64) error
 
 	// Ping checks whether the database is available or not (in that case, an error will be returned)
 	Ping() error

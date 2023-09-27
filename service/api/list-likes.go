@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
-	"github.com/Tiveron999/Wasa/service/database"
+	// "github.com/Tiveron999/Wasa/service/database"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -18,10 +18,13 @@ func (rt *_router) getLikesList(w http.ResponseWriter, r *http.Request, ps httpr
 	// If one of latitude or longitude is not specified (or both), no filter will be applied.
 
 	var err error
-	var likes []database.Likes
+	var likes []uint64
+
+	var pid uint64
+	var posterid uint64
 
 	// Request an unfiltered list of likes from the DB
-	likes, err = rt.db.GetLikesList()
+	likes, err = rt.db.GetLikesList(pid, posterid)
 
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the photo
@@ -31,13 +34,13 @@ func (rt *_router) getLikesList(w http.ResponseWriter, r *http.Request, ps httpr
 		return
 	}
 
-	// Before sending the list to the client we need to convert it to the "frontend" type
+	/*// Before sending the list to the client we need to convert it to the "frontend" type
 	var frontendLikes = make([]Likes, len(likes))
 	for idx := range likes {
 		frontendLikes[idx].LikeFromDatabase(likes[idx])
-	}
+	}*/
 
 	// Send the list to the user.
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(frontendLikes)
+	_ = json.NewEncoder(w).Encode(likes)
 }

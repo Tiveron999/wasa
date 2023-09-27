@@ -1,28 +1,30 @@
 package database
 
-func (db *appdbimpl) GetLikesList() ([]Likes, error) {
-	var ret []Likes
+// GetLikesList retrieves the number of likes for a specific photo.
+func (db *appdbimpl) GetLikesList(photoID, posterID uint64) ([]uint64, error) {
+	var userIDs []uint64
 
-	// Plain simple SELECT query
-	rows, err := db.c.Query(`SELECT * FROM likes LIMIT 10`)
+	// Execute a query to retrieve user IDs who liked the given photo and poster.
+	rows, err := db.c.Query("SELECT likerid FROM likes WHERE photoid = ? AND posterid = ?", photoID, posterID)
 	if err != nil {
 		return nil, err
 	}
-	defer func() { _ = rows.Close() }()
+	defer rows.Close()
 
-	// Here we read the resultset and we build the list to be returned
+	// Iterate through the rows to build the list of user IDs.
 	for rows.Next() {
-		var f Likes
-		err = rows.Scan(&f.LID, &f.LikerID, &f.PhotoID)
-		if err != nil {
+		var likerID uint64
+		if err := rows.Scan(&likerID); err != nil {
 			return nil, err
 		}
 
-		ret = append(ret, f)
+		userIDs = append(userIDs, likerID)
 	}
-	if err = rows.Err(); err != nil {
+
+	// Check for errors from iterating over rows.
+	if err := rows.Err(); err != nil {
 		return nil, err
 	}
 
-	return ret, nil
+	return userIDs, nil
 }

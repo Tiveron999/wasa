@@ -51,6 +51,20 @@ func (rt *_router) likePhoto(w http.ResponseWriter, r *http.Request, ps httprout
 		return
 	}
 
+	// Request an unfiltered list of likes from the DB
+	likes, err := rt.db.GetLikesList(photoID, posterID)
+
+	likesNumber := uint64(len(likes))
+
+	err2 := rt.db.UpdateLikes(photoID, posterID, likesNumber)
+	if err2 != nil {
+		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the user
+		// Note: we are using the "logger" inside the "ctx" (context) because the scope of this issue is the request.
+		ctx.Logger.WithError(err).Error("can't update the like number")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	// Here we can re-use `like` as FromDatabase is overwriting every variable in the structure.
 	like.LikeFromDatabase(dblike)
 
