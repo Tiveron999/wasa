@@ -22,6 +22,7 @@ export default {
       		following: 0,
 			appearance: "default",
 			isLiked: false,
+			likes: 0,
 			submitted: false,
 			text: 'Like',
 			username: '',
@@ -31,8 +32,6 @@ export default {
 			usernamePattern: "/^[A-Za-z][A-Za-z0-9_]{5,14}$/",
 			isFollowing: false,
 			isBanned: false,
-			isFirst: true,
-      		isSaving: false,
 			uploadedFilesa: null, 
 			imageURLS : {},
 			userProfile: null,
@@ -269,7 +268,18 @@ export default {
 
 	async likePhoto(pid, posterid) {
 		try {
-			await this.$axios.put(`/users/${posterid}/photos/${pid}/likes/${this.id}`, null, {headers: {Authorization: 'Bearer ' + this.id}})
+			const response = await this.$axios.put(`/users/${posterid}/photos/${pid}/likes/${this.id}`, null, {headers: {Authorization: 'Bearer ' + this.id}})
+
+			if (response.status === 200) {
+			const data = response.data;
+			const likesCount = data.likes; // Access the "likes" property from the response
+
+			// Now "likesCount" contains the updated number of likes
+			console.log(`Number of likes: ${likesCount}`);
+			}
+
+			this.selectedImage.numlikes = likesCount;
+
 		} catch (e) {
 			console.error("error: ", e);
 			this.errormsg = e.toString();
@@ -277,7 +287,18 @@ export default {
 		},
 		async unlikePhoto(pid, posterid) {
 			try {
-				await this.$axios.delete(`/users/${posterid}/photos/${pid}/likes/${this.id}`, {headers: { Authorization: 'Bearer ' + this.id }});
+				const response = await this.$axios.delete(`/users/${posterid}/photos/${pid}/likes/${this.id}`, {headers: { Authorization: 'Bearer ' + this.id }});
+
+			if (response.status === 200) {
+			const data = response.data;
+			const likesCount = data.likes; // Access the "likes" property from the response
+
+			// Now "likesCount" contains the updated number of likes
+			console.log(`Number of likes: ${likesCount}`);
+
+			this.selectedImage.numlikes = likesCount;
+			}
+
 			} catch (e) {
 				console.error("error: ", e);
 				this.errormsg = e.toString();

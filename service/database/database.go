@@ -94,9 +94,9 @@ type AppDatabase interface {
 
 	GetLikesList(photoID, posterID uint64) ([]uint64, error)
 
-	LikePhoto(Likes) (Likes, error)
+	LikePhoto(uint64, uint64, uint64) error
 
-	UnlikePhoto(likerid, photoid, posterid uint64) error
+	UnlikePhoto(uint64, uint64, uint64) error
 
 	CommentPhoto(Comment) (Comment, error)
 
@@ -198,8 +198,10 @@ func New(db *sql.DB) (AppDatabase, error) {
 	lid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	likerid INTEGER NOT NULL,
 	photoid INTEGER NOT NULL,
+	posterid INTEGER NOT NULL,
 	FOREIGN KEY(likerid) REFERENCES users(usid) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY(photoid) REFERENCES photos(pid) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY(photoid) REFERENCES photos(pid) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(posterid) REFERENCES users(usid) ON UPDATE CASCADE ON DELETE CASCADE
 );`
 		_, err2 = db.Exec(sqlStmt)
 		if err2 != nil {

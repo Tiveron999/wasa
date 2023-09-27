@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"errors"
 	"net/http"
 	"strconv"
@@ -55,5 +56,10 @@ func (rt *_router) unlikePhoto(w http.ResponseWriter, r *http.Request, ps httpro
 		return
 	}
 
-	w.WriteHeader(http.StatusNoContent)
+	// Set the Content-Type header to indicate JSON response
+	w.Header().Set("Content-Type", "application/json")
+
+	// Write the response with the updated like count
+	w.WriteHeader(http.StatusOK)
+	_ = json.NewEncoder(w).Encode(map[string]int{"likes": int(likesNumber)})
 }
