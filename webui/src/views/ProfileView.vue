@@ -497,6 +497,7 @@ export default {
 
 
 <template>
+<div>
 	<div>
 		<div
 			class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -603,7 +604,7 @@ export default {
 				{{ isFollowing ? 'Following' : 'Follow' }}
 				</button>
 				<br>
-				<button type="button" class="btn btn-sm-normal btn-outline-primary red-bg" v-if="!isSameUser()" @click="" 
+				<button type="button" class="btn btn-sm-normal btn-outline-primary red-bg" v-if="!isSameUser()" @click="toggleBan" 
 				:class="{ banned: isBanned }">
 				{{ isBanned ? 'Unban' : 'Ban' }}
 				</button>
@@ -725,7 +726,7 @@ export default {
 		</div>
 	</div>  -->
 
-		
+</div>
 
 </template>
 
