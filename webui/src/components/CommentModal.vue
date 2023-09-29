@@ -8,6 +8,14 @@ export default {
     },
     props: {
         showCommentModal: Boolean,
+        
+
+  },
+  mounted() {
+    console.log('CommentModal mounted');
+  },
+  updated() {
+    console.log('CommentModal updated');
   },
   
     methods: {
@@ -32,32 +40,39 @@ export default {
 
 <template>
  <!-- Comment Modal -->
-<div class="modal" v-if="showCommentModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
+ <div class="modal fade my-modal" :id="modal_id" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content bg-primary text-white">
       <div class="modal-header">
-        <h5 class="modal-title">Comments</h5>
-        <button type="button" class="close" @click="closeModal">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <h1 class="modal-title fs-5 text-center" :id="modal_id">Comments</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="commentInput">Add a Comment</label>
-          <textarea class="form-control" id="commentInput" rows="3" v-model="newComment"></textarea>
+
+      
+
+      <div class="modal-footer d-flex justify-content-center w-100">
+        <div class="row w-100">
+          <div class="col-10">
+            <div class="mb-3 me-auto">
+              <textarea class="form-control bg-dark text-white" id="exampleFormControlTextarea1" 
+                placeholder="Add a comment..." rows="1" maxLength="30" v-model="commentValue"></textarea>
+            </div>
+          </div>
+
+          <div class="col-2 d-flex align-items-center">
+            <button type="button" class="btn btn-light" 
+              @click.prevent="addComment" 
+              :disabled="commentValue.length < 1 || commentValue.length > 30">
+              Send
+            </button>
+          </div>
         </div>
-        <button class="btn btn-primary" @click="addComment">Submit Comment</button>
-        <div v-for="(comment, index) in comments" :key="index">
-          <p>{{ comment.author }} - {{ comment.timestamp }}</p>
-          <p>{{ comment.text }}</p>
-        </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" @click="closeModal">Close</button>
-      </div>
+
     </div>
   </div>
 </div>
+
 
 
 </template>

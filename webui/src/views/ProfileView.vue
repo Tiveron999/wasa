@@ -36,7 +36,7 @@ export default {
 			imageURLS : {},
 			userProfile: null,
 			showCommentModal: false,
-			isLoading: true,
+			isLoading: false,
 		}
 	},
 /*	components: {
@@ -198,7 +198,9 @@ export default {
 		if (localStorage.getItem('isLoggedIn')) {
 			this.id = localStorage.getItem('userId');
 		}
+		
 		this.isLoading = true;
+		console.log(this.isLoading)
 		try {
 			const response = await this.$axios.get(`/users/${this.$route.params.user_id}/photos`, {
 				headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + this.id }
@@ -235,6 +237,7 @@ export default {
 				this.imageURLS[photo.pid] = imageUrl;
 				}
 				this.isLoading = false;
+				console.log(this.isLoading)
 
 		} catch (error) {
 			console.log(error);
@@ -667,10 +670,12 @@ export default {
 			</h5>
 			
 			<div class="image-row">
-				<div v-if="isLoading" class="loading-circle" role="status">		</div>
-				<div v-else>
-				<img v-for="(image, index) in images" :key="image.pid" :src="imageURLS[image.pid]" :draggable="false" @click="showModal(index)"/>
+				<!-- <div v-if="isLoading">	
+					<LoadingSpinner></LoadingSpinner>
 				</div> 
+				<div v-else> -->
+				<img v-for="(image, index) in images" :key="image.pid" :src="imageURLS[image.pid]" :draggable="false" @click="showModal(index)"/>
+				
 			</div> 
 		</div>
 		<div id="Modal" v-if="show">
