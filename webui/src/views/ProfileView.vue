@@ -674,7 +674,13 @@ export default {
 				<!-- <div v-if="isLoading">	
 					<LoadingSpinner></LoadingSpinner>
 				</div> 
-				<div v-else> -->
+				<div v-else> 
+					
+				
+				@click="showCommentModal = true"
+			
+			
+			<CommentModal :showCommentModal="showCommentModal" @update:showCommentModal="showCommentModal = $event"></CommentModal>-->
 				<img v-for="(image, index) in images" :key="image.pid" :src="imageURLS[image.pid]" :draggable="false" @click="showModal(index)"/>
 				
 			</div> 
@@ -685,8 +691,8 @@ export default {
 				<button class="heart" @click="toggleLike(selectedImage.pid, selectedImage.posterid)" ></button>
 				<div class="like-counter">{{ selectedImage.numlikes }} Likes</div>
 				<div class="button-space"></div>
-				<button class="cloud" @click="showCommentModal = true"> </button>
-				<CommentModal :showCommentModal="showCommentModal" @update:showCommentModal="showCommentModal = $event"></CommentModal>
+				<button class="cloud"> </button>
+				
 				<p>{{ showCommentModal }}</p>
 				<div class="comment-counter">{{ selectedImage.numcomments }} Comments</div>	
 				<div class="photo-date"> Upload date and time: {{ selectedImage.datetime }}</div>	
