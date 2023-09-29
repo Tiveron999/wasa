@@ -36,6 +36,7 @@ export default {
 			imageURLS : {},
 			userProfile: null,
 			showCommentModal: false,
+			isLoading: true,
 		}
 	},
 /*	components: {
@@ -197,7 +198,7 @@ export default {
 		if (localStorage.getItem('isLoggedIn')) {
 			this.id = localStorage.getItem('userId');
 		}
-
+		this.isLoading = true;
 		try {
 			const response = await this.$axios.get(`/users/${this.$route.params.user_id}/photos`, {
 				headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + this.id }
@@ -233,6 +234,7 @@ export default {
 
 				this.imageURLS[photo.pid] = imageUrl;
 				}
+				this.isLoading = false;
 
 		} catch (error) {
 			console.log(error);
@@ -665,7 +667,10 @@ export default {
 			</h5>
 			
 			<div class="image-row">
+				<div v-if="isLoading" class="loading-circle" role="status">		</div>
+				<div v-else>
 				<img v-for="(image, index) in images" :key="image.pid" :src="imageURLS[image.pid]" :draggable="false" @click="showModal(index)"/>
+				</div> 
 			</div> 
 		</div>
 		<div id="Modal" v-if="show">
@@ -676,6 +681,7 @@ export default {
 				<div class="button-space"></div>
 				<button class="cloud" @click="showCommentModal = true"> </button>
 				<CommentModal :showCommentModal="showCommentModal" @update:showCommentModal="showCommentModal = $event"></CommentModal>
+				<p>{{ showCommentModal }}</p>
 				<div class="comment-counter">{{ selectedImage.numcomments }} Comments</div>	
 				<div class="photo-date"> Upload date and time: {{ selectedImage.datetime }}</div>	
 			</div>		

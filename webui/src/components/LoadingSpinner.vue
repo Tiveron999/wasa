@@ -7,8 +7,11 @@ export default {
 <template>
 	<div v-if="loading">
 		<div style="text-align: center">
-			<div class="spinner-border" role="status">
-				<span class="visually-hidden">Loading...</span>
+			<div class="loading-circle">
+				<div class="progress-bar"></div>
+				<div class="progress-bar yellow"></div>
+				<div class="progress-bar green"></div>
+				<div class="progress-bar blue"></div>
 			</div>
 		</div>
 	</div>
