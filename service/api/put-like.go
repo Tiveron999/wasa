@@ -35,7 +35,7 @@ func (rt *_router) likePhoto(w http.ResponseWriter, r *http.Request, ps httprout
 
 	// User is liking their own photo
 	if posterID == likerID {
-		ctx.Logger.WithError(err).Error("you cannot like your own photo")
+		ctx.Logger.WithError(err).Error("cannot like your won")
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}

@@ -10,6 +10,10 @@ export default {
             errormsg: null,
             loading: false,
             isLoggedIn: false,
+            images: [],
+			show: false,
+            selectedImage: null,
+			imageURLS : {},
         };
     },
     methods: {
@@ -42,14 +46,76 @@ export default {
                 this.isLoggedIn = false;
             }
         },
+        async getFeed() {
+		if (localStorage.getItem('isLoggedIn')) {
+			this.id = localStorage.getItem('userId');
+            console.log("id", this.id)
+		}
+		
+		this.isLoading = true;
+		console.log(this.isLoading)
+		try {
+			const response = await this.$axios.get(`/users/${this.id}/feed`, {
+				headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + this.id }
+			})
+
+			console.log("over here", response.data)
+
+			 // Assuming response.data is an array of photo objects
+			 this.images = response.data;
+
+			 if (this.images === null){
+				this.images = []
+			 }
+			 
+
+			for (let i = 0; i < this.images.length; i++) {
+				const photo = this.images[i];
+
+				// Create a Blob from the Base64 data
+				const binaryImageData = atob(photo.image);
+				const dataArray = new Uint8Array(binaryImageData.length);
+
+				for (let i = 0; i < binaryImageData.length; i++) {
+				dataArray[i] = binaryImageData.charCodeAt(i);
+				}
+				const blob = new Blob([dataArray], { type: 'image/jpeg' });
+
+				// Create a data URL from the Blob
+				const imageUrl = URL.createObjectURL(blob);
+
+				// imageUrl now contains the data URL for the image
+				console.log(imageUrl);
+
+				this.imageURLS[photo.pid] = imageUrl;
+				}
+				this.isLoading = false;
+				console.log(this.isLoading)
+
+		} catch (error) {
+			console.log(error);
+		}
+	},
+    showModal(index) {
+		this.selectedImage = this.images[index];
+		console.log(this.selectedImage)
+		this.show = true;
+		
+	},
+		hideModal(index) {
+		this.selectedImage = this.images[index];
+		this.show = false;
+	},
     },
     mounted() {
         this.refresh();
         /*this.checkLoginStatus();*/
     },
-    created() {
-        /*this.checkLoginStatus();*/
-    },
+    async created() {
+		this.refresh()
+
+		await this.getFeed()
+	},
 }
 </script>
 
@@ -66,7 +132,7 @@ export default {
 			</div>
 		</div>
 
-		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
+		
 
         <h6>
 			<span id = "type" class = "special">
@@ -80,7 +146,37 @@ export default {
                 <br>Here are your followers' uploaded images: <br>
             </span>
 		</h5>
-	</div>
+
+        <ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
+
+        <div class="image-row">
+				<!-- <div v-if="isLoading">	
+					<LoadingSpinner></LoadingSpinner>
+				</div> 
+				<div v-else> 
+					
+				
+				@click="showCommentModal = true"
+			
+			
+			<CommentModal :showCommentModal="showCommentModal" @update:showCommentModal="showCommentModal = $event"></CommentModal>-->
+				<img v-for="(image, index) in images" :key="image.pid" :src="imageURLS[image.pid]" :draggable="false" @click="showModal(index)"/>
+				
+			</div> 
+		</div>
+		<div id="Modal" v-if="show">
+			<img :src="imageURLS[selectedImage.pid]" @click="hideModal(index)" />
+			<div class="button-container">
+				<button class="heart" @click="toggleLike(selectedImage.pid, selectedImage.posterid)" ></button>
+				<div class="like-counter">{{ selectedImage.numlikes }} Likes</div>
+				<div class="button-space"></div>
+				<button class="cloud"> </button>
+	
+				<div class="comment-counter">{{ selectedImage.numcomments }} Comments</div>	
+				<div class="photo-date"> Upload date and time: {{ selectedImage.datetime }}</div>	
+			</div>		
+
+    </div>
 </template>
 
 <style>

@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -33,20 +34,29 @@ func (rt *_router) getMyStream(w http.ResponseWriter, r *http.Request, ps httpro
 	limit := queryValues.Get("limit")
 	offset := queryValues.Get("offset")
 
+	if laterThan == "" {
+		laterThan = "2006-01-02 15:04:05" // Set a default value for laterThan
+	}
+	if limit == "" {
+		limit = "10" // Set a default value for limit
+	}
+	if offset == "" {
+		offset = "0" // Set a default value for offset
+	}
+
 	// Convert limit and offset to uints
 	limitUint, err := strconv.ParseUint(limit, 10, 64)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
-
 	}
-
+	fmt.Println("what")
 	offsetUint, err := strconv.ParseUint(offset, 10, 64)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
+	fmt.Println("hi")
 	// Request an unfiltered list of photos from the DB
 	photos, err = rt.db.GetMyStream(userID, laterThan, limitUint, offsetUint)
 
@@ -66,5 +76,6 @@ func (rt *_router) getMyStream(w http.ResponseWriter, r *http.Request, ps httpro
 
 	// Send the list to the user.
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	_ = json.NewEncoder(w).Encode(frontendPhotos)
 }

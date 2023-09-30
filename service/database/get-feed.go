@@ -4,7 +4,7 @@ func (db *appdbimpl) GetMyStream(userid uint64, datet string, limit uint64, offs
 	var ret []Photo
 
 	// Plain simple SELECT query
-	rows, err := db.c.Query(`SELECT * FROM photos WHERE posterid IN 
+	rows, err := db.c.Query(`SELECT pid, image, posterid, datetime, numlikes, numcomments FROM photos WHERE posterid IN 
 	(SELECT userid FROM followers WHERE followerid = ?) AND datetime >= ? ORDER BY datetime DESC LIMIT ? OFFSET ?`,
 		userid, datet, limit, offset)
 
@@ -15,13 +15,13 @@ func (db *appdbimpl) GetMyStream(userid uint64, datet string, limit uint64, offs
 
 	// Here we read the resultset and we build the list to be returned
 	for rows.Next() {
-		var f Photo
-		err = rows.Scan(&f.PID, &f.Image, &f.PosterID, &f.Datetime, &f.NumLikes, &f.NumComments)
+		var photo Photo
+		err = rows.Scan(&photo.PID, &photo.Image, &photo.PosterID, &photo.Datetime, &photo.NumLikes, &photo.NumComments)
 		if err != nil {
 			return nil, err
 		}
 
-		ret = append(ret, f)
+		ret = append(ret, photo)
 	}
 	if err = rows.Err(); err != nil {
 		return nil, err

@@ -680,7 +680,9 @@ export default {
 				@click="showCommentModal = true"
 			
 			
-			<CommentModal :showCommentModal="showCommentModal" @update:showCommentModal="showCommentModal = $event"></CommentModal>-->
+			<CommentModal :showCommentModal="showCommentModal" @update:showCommentModal="showCommentModal = $event"></CommentModal>
+		
+		<p>{{ showCommentModal }}</p>-->
 				<img v-for="(image, index) in images" :key="image.pid" :src="imageURLS[image.pid]" :draggable="false" @click="showModal(index)"/>
 				
 			</div> 
@@ -693,7 +695,6 @@ export default {
 				<div class="button-space"></div>
 				<button class="cloud"> </button>
 				
-				<p>{{ showCommentModal }}</p>
 				<div class="comment-counter">{{ selectedImage.numcomments }} Comments</div>	
 				<div class="photo-date"> Upload date and time: {{ selectedImage.datetime }}</div>	
 			</div>		
