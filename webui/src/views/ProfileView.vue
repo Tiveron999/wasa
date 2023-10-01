@@ -262,6 +262,9 @@ export default {
 	});
 	},
 	toggleLike(pid, posterid) {
+		if (localStorage.getItem('isLoggedIn')) {
+			this.id = localStorage.getItem('userId');
+		}
 		console.log("poster", posterid)
 		if (this.isLiked) {
 			this.unlikePhoto(pid, posterid);
@@ -324,6 +327,9 @@ export default {
 	},
 
 	changeUsername() {
+		if (localStorage.getItem('isLoggedIn')) {
+			this.id = localStorage.getItem('userId');
+		}
 		// Username is not valid
 		const regex = /^[A-Za-z][A-Za-z0-9_]{5,14}$/;
 		if (!regex.test(this.newUsername)) {
@@ -357,6 +363,9 @@ export default {
 		},
 
 		toggleFollow() {
+			if (localStorage.getItem('isLoggedIn')) {
+			this.id = localStorage.getItem('userId');
+		}
 		// If the user is following, unfollow on click
 		if (this.isFollowing) {
 			this.unfollowUser();
@@ -419,6 +428,9 @@ export default {
 		},
 		
 		async getProfile() {
+			if (localStorage.getItem('isLoggedIn')) {
+			this.id = localStorage.getItem('userId');
+		}
 			try {
 				const response = await this.$axios.get(`/users/${this.$route.params.user_id}/profile`, {headers: { Authorization: 'Bearer ' + this.id }});
 

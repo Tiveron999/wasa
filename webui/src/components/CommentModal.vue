@@ -8,27 +8,28 @@ export default {
     },
     props: {
         showCommentModal: Boolean,
-        
 
   },
-  mounted() {
-    console.log('CommentModal mounted');
-  },
-  updated() {
-    console.log('CommentModal updated');
-  },
-  
     methods: {
-        addComment() {
-            // Logic to add a new comment
-            const comment = {
-                author: 'Your Name',
-                timestamp: new Date().toLocaleString(),
-                text: this.newComment,
-            };
-            this.comments.push(comment);
-            this.newComment = '';
-        },
+        async submitComment() {
+          if (localStorage.getItem('isLoggedIn')) {
+            this.id = localStorage.getItem('userId');
+          }
+          try {
+          const commentText = this.newComment;
+          
+          let response = await this.$axios.post("/users/"+ this.photo_owner +"/photos/"+this.photo_id+"/comments", 
+          {comment: this.newComment}, {headers: { 'Content-Type': 'application/json', "Authorization": 'Bearer ' + this.id}});
+          
+          // Clear the input field after submission
+          this.newComment = '';
+
+        } catch (e) {
+        console.error("error: ", e);
+        this.errormsg = e.toString();
+      }
+
+      },
         closeModal() {
       this.$emit('update:showCommentModal', false);
         },

@@ -4,25 +4,58 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
 	"github.com/julienschmidt/httprouter"
 )
 
 func (rt *_router) commentPhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	/// Get the poster ID and photo ID from the path parameters
-	posterID, err := strconv.ParseUint(ps.ByName("user_id"), 10, 64)
+	// Get the poster ID and photo ID from the path parameters
+
+	/*posterID, err := strconv.ParseUint(ps.ByName("user_id"), 10, 64)                     useful for the ban
 	if err != nil {
 		// Handle the error, e.g., invalid photo ID
 		w.WriteHeader(http.StatusBadRequest)
 		return
-	}
+	}*/
 
 	photoID, err := strconv.ParseUint(ps.ByName("photo_id"), 10, 64)
 	if err != nil {
 		// Handle the error, e.g., invalid photo ID
 		w.WriteHeader(http.StatusBadRequest)
 		return
+	}
+
+	// Get the Authorization header value
+	authorizationHeader := r.Header.Get("Authorization")
+
+	// Get the user ID from the Authorization header
+	commenterID, isValid := idFromAuthorizationHeader(authorizationHeader)
+	if !isValid {
+		// If the Authorization header is invalid or not present, handle the error
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Get the comment text
+	var comment Comment
+
+	// Access the Text field
+	commentText := comment.Text
+
+	err = json.NewDecoder(r.Body).Decode(&commentText)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	comment = Comment{
+		CID:         0,
+		CommenterID: commenterID,
+		PhotoID:     photoID,
+		Text:        commentText,
+		Datetime:    time.Now().Format("2006-01-02 15:04:05"),
 	}
 
 	// Create the comment in the database. Note that this function will return a new instance of the comment with the
