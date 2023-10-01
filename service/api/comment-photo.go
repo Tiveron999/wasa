@@ -3,23 +3,24 @@ package api
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
 	"github.com/julienschmidt/httprouter"
 )
 
 func (rt *_router) commentPhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	// Read the new content for the comment from the request body.
-	var comment Comment
-	err := json.NewDecoder(r.Body).Decode(&comment)
+	/// Get the poster ID and photo ID from the path parameters
+	posterID, err := strconv.ParseUint(ps.ByName("user_id"), 10, 64)
 	if err != nil {
-		// The body was not a parseable JSON, reject it
+		// Handle the error, e.g., invalid photo ID
 		w.WriteHeader(http.StatusBadRequest)
 		return
-	} else if !comment.CommentIsValid() {
-		// Here we validated the comment structure content (e.g., location coordinates in correct range, etc.), and we
-		// discovered that the comment data are not valid.
-		// Note: the IsValid() function skips the ID check (see below).
+	}
+
+	photoID, err := strconv.ParseUint(ps.ByName("photo_id"), 10, 64)
+	if err != nil {
+		// Handle the error, e.g., invalid photo ID
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
