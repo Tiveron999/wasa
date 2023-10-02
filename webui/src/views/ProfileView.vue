@@ -463,8 +463,6 @@ export default {
 		},
 
 
-
-
 	
 	},
 	async created() {
