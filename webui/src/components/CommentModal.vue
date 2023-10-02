@@ -128,7 +128,7 @@ export default {
           <button class="comment-btn comment-btn-primary" @click="submitComment">Post</button>
         </div>
         <div class="comment-modal-footer">
-          <button type="button" class="comment-btn comment-btn-secondary" @click="closeModal">Close</button>
+          <button type="button" class="comment-btn comment-btn-secondary close-comment-modal" @click="closeModal">Close</button>
         </div>
       </div>
     </div>
