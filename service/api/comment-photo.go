@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -41,14 +42,22 @@ func (rt *_router) commentPhoto(w http.ResponseWriter, r *http.Request, ps httpr
 	// Get the comment text
 	var comment Comment
 
-	// Access the Text field
-	commentText := comment.Text
+	// Create a struct to hold the request body
+	var requestBodyComment struct {
+		Text string `json:"text"`
+	}
 
-	err = json.NewDecoder(r.Body).Decode(&commentText)
+	// Decode the JSON data into the requestBodyComment struct
+	err = json.NewDecoder(r.Body).Decode(&requestBodyComment)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+
+	// Access the comment text
+	commentText := requestBodyComment.Text
+
+	fmt.Println("here")
 
 	comment = Comment{
 		CID:         0,
@@ -60,7 +69,7 @@ func (rt *_router) commentPhoto(w http.ResponseWriter, r *http.Request, ps httpr
 
 	// Create the comment in the database. Note that this function will return a new instance of the comment with the
 	// same information, plus the ID.
-	dbcomment, err := rt.db.CommentPhoto(comment.CommentToDatabase())
+	err = rt.db.CommentPhoto(comment.CommentToDatabase())
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the comment
 		// Note: we are using the "logger" inside the "ctx" (context) because the scope of this issue is the request.
@@ -69,10 +78,31 @@ func (rt *_router) commentPhoto(w http.ResponseWriter, r *http.Request, ps httpr
 		return
 	}
 
-	// Here we can re-use `comment` as FromDatabase is overwriting every variabile in the structure.
-	comment.CommentFromDatabase(dbcomment)
+	// Request an unfiltered list of comments from the DB
+	comments, err := rt.db.GetCommentsList(photoID)
+	if err != nil {
+		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the photo
+		// Note: we are using the "logger" inside the "ctx" (context) because the scope of this issue is the request.
+		ctx.Logger.WithError(err).Error("can't list comments")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
-	// Send the output to the user.
+	commentsNumber := uint64(len(comments))
+
+	err = rt.db.UpdateComments(photoID, commentsNumber)
+	if err != nil {
+		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the user
+		// Note: we are using the "logger" inside the "ctx" (context) because the scope of this issue is the request.
+		ctx.Logger.WithError(err).Error("can't update the comment number")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	// Set the Content-Type header to indicate JSON response
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(comment)
+
+	// Write the response with the updated comment count
+	w.WriteHeader(http.StatusOK)
+	_ = json.NewEncoder(w).Encode(map[string]int{"comments": int(commentsNumber)})
 }

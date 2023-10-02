@@ -20,8 +20,10 @@ func (rt *_router) getCommentsList(w http.ResponseWriter, r *http.Request, ps ht
 	var err error
 	var comments []database.Comment
 
+	var id uint64
+
 	// Request an unfiltered list of comments from the DB
-	comments, err = rt.db.GetCommentsList()
+	comments, err = rt.db.GetCommentsList(id)
 
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the photo

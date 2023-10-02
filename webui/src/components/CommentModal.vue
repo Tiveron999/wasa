@@ -1,13 +1,19 @@
 <script>
+import { isIntegerKey } from '@vue/shared';
+
 export default {
     data() {
         return {
             newComment: '',
             comments: [],
+            newCommentsNumber: 0,
         };
     },
     props: {
         showCommentModal: Boolean,
+        posterID: Number,
+        pid: Number,
+
 
   },
     methods: {
@@ -18,9 +24,13 @@ export default {
           try {
           const commentText = this.newComment;
           
-          let response = await this.$axios.post("/users/"+ this.photo_owner +"/photos/"+this.photo_id+"/comments", 
-          {comment: this.newComment}, {headers: { 'Content-Type': 'application/json', "Authorization": 'Bearer ' + this.id}});
+          const response = await this.$axios.post(`/users/${this.posterID}/photos/${this.pid}/comments`, {comment: commentText},
+            {headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + this.id }});
+
           
+            this.newCommentsNumber = response.data.comments
+            this.updateCommentsNumber(this.newCommentsNumber)
+  
           // Clear the input field after submission
           this.newComment = '';
 
@@ -31,7 +41,10 @@ export default {
 
       },
         closeModal() {
-      this.$emit('update:showCommentModal', false);
+          this.$emit('update:showCommentModal', false);
+        },
+        updateCommentsNumber(newComments) {
+          this.$emit('update-comments', newComments);
         },
     },
 };
@@ -56,7 +69,7 @@ export default {
             <label for="commentInput">Add a Comment</label>
             <textarea class="comment-form-control" id="commentInput" rows="3" v-model="newComment"></textarea>
           </div>
-          <button class="comment-btn comment-btn-primary" @click="addComment">Submit Comment</button>
+          <button class="comment-btn comment-btn-primary" @click="submitComment">Submit Comment</button>
           <!-- Display existing comments here -->
           <div v-for="(comment, index) in comments" :key="index" class="comment">
             <p class="comment-author">{{ comment.author }} - {{ comment.timestamp }}</p>

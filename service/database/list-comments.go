@@ -1,10 +1,10 @@
 package database
 
-func (db *appdbimpl) GetCommentsList() ([]Comment, error) {
+func (db *appdbimpl) GetCommentsList(photoID uint64) ([]Comment, error) {
 	var ret []Comment
 
 	// Plain simple SELECT query
-	rows, err := db.c.Query(`SELECT * FROM comments LIMIT 10`)
+	rows, err := db.c.Query(`SELECT cid, commenterid, photoid, text, datetime FROM comments WHERE photoid = ?`, photoID)
 	if err != nil {
 		return nil, err
 	}

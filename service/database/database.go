@@ -98,9 +98,9 @@ type AppDatabase interface {
 
 	UnlikePhoto(uint64, uint64, uint64) error
 
-	CommentPhoto(Comment) (Comment, error)
+	CommentPhoto(Comment) error
 
-	GetCommentsList() ([]Comment, error)
+	GetCommentsList(uint64) ([]Comment, error)
 
 	GetCommentInfo(uint64) (Comment, error)
 
@@ -139,6 +139,8 @@ type AppDatabase interface {
 	GetUsername(uint64) (string, error)
 
 	UpdateLikes(uint64, uint64, uint64) error
+
+	UpdateComments(uint64, uint64) error
 
 	// Ping checks whether the database is available or not (in that case, an error will be returned)
 	Ping() error

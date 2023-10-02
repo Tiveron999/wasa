@@ -457,6 +457,10 @@ export default {
 				this.getImages()
 			}
     	},
+		updateComments(newComments) {
+			console.log(`New number of comments: ${newComments}`);
+			this.selectedImage.numcomments = newComments
+		},
 
 
 
@@ -703,7 +707,10 @@ export default {
 				<div class="like-counter">{{ selectedImage.numlikes }} Likes</div>
 				<div class="button-space"></div>
 				<button class="cloud" @click="showCommentModal = true"> </button>
-				<CommentModal :showCommentModal="showCommentModal" @update:showCommentModal="showCommentModal = $event"></CommentModal>
+				<CommentModal :showCommentModal="showCommentModal" 
+				:posterID="selectedImage.posterid" :pid="selectedImage.pid" 
+				@update:showCommentModal="showCommentModal = $event"
+				@update-comments="updateComments"></CommentModal>
 				<div class="comment-counter">{{ selectedImage.numcomments }} Comments</div>	
 				<div class="photo-date"> Upload date and time: {{ selectedImage.datetime }}</div>	
 			</div>		
