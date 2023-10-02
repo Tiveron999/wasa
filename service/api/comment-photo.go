@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -44,7 +43,7 @@ func (rt *_router) commentPhoto(w http.ResponseWriter, r *http.Request, ps httpr
 
 	// Create a struct to hold the request body
 	type requestBodyComment struct {
-		Text string `json:"text"`
+		Comment string `json:"comment"`
 	}
 
 	// fmt.Printf("please")
@@ -56,12 +55,8 @@ func (rt *_router) commentPhoto(w http.ResponseWriter, r *http.Request, ps httpr
 		return
 	}
 
-	// Log the request body and the decoded comment text
-	fmt.Println("Request body:", r.Body)
-	fmt.Println("Comment text:", req.Text)
-
 	// Access the comment text
-	commentText := req.Text
+	commentText := req.Comment
 
 	comment = Comment{
 		CID:         0,
