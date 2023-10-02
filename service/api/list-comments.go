@@ -2,7 +2,7 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
+	// "fmt"
 	"net/http"
 	"strconv"
 
@@ -34,7 +34,7 @@ func (rt *_router) getCommentsList(w http.ResponseWriter, r *http.Request, ps ht
 		return
 	}
 
-	fmt.Println(comments)
+	// fmt.Println(comments)
 
 	// Convert comments to the desired frontend structure if needed
 	var frontendComments []Comment
