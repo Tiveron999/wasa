@@ -511,241 +511,245 @@ export default {
 
 
 <template>
+	
 <div>
 	<div>
-		<div
-			class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-			<h1 class="h2">WasaPhoto</h1>
-			<div class="btn-toolbar mb-2 mb-md-0">
-				<div class="btn-group me-2">				
-					
-				</div>
-			</div>
-
-		</div>
-		<h6>
-			<span id = "type" class = "special">
-            Profile
-			</span>
-        </h6>
-	
-
-		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
-
-
-
 		<div>
-
-    
-    <!-- 
-    <button class="btn btn-primary" @click="openUsernameModal">Edit</button>
-
-
-    <div class="modal" :class="{ 'show': isUsernameModalOpen }">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Change Username</h5>
-            <button type="button" class="close" @click="closeUsernameModal">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form @submit.prevent="changeUsername">
-              <div class="form-group">
-                <label for="newUsername">New Username</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="newUsername"
-                  v-model="newUsername"
-                  :pattern="usernamePattern"
-                  title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
-                />
-              </div>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Save</button>
-                <button type="button" class="btn btn-secondary" @click="closeUsernameModal">Close</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div> -->
- 	</div>
-
-		</div>
-		
-					
-
-
-			<!-- fix modal appearing by clicking on a button instead of being static 
-				<modal v-model="modalVisible" @modify="changeUsername">
-				<div class="input-group mb-3 w-25" v-if="isSameUser()">
-					<input
-				type="text"
-				class="form-control w-25"
-				placeholder="Your new username..."
-				v-model="newUsername"
-				:pattern="usernamePattern"
-				title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
-				/>
-
-					<div class="input-group-append" v-if="isSameUser()">
-					<button class="btn btn-outline-secondary" @click="changeUsername" >Modify</button>
+			<div
+				class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+				<h1 class="h2">WasaPhoto</h1>
+				<div class="btn-toolbar mb-2 mb-md-0">
+					<div class="btn-group me-2">				
+						
 					</div>
 				</div>
-				</modal>  --> 
 
-				
-
-
-
-
-
-
-		<div class="profile-container">
-			<br>
-			<div class="profile-info" v-if="userProfile">
-				<h3 class="username"> {{ userProfile.username  }}</h3>
-				<div class="follow-info">
-				<p><strong>{{ userProfile.numphotos }}</strong> posts</p>
-				<p><strong>{{ userProfile.followers  }}</strong> followers</p>
-				<p><strong>{{ userProfile.following  }}</strong> following</p>
-				</div>
-				<button type="button" class="btn btn-sm-normal btn-outline-primary follow-button" v-if="!isSameUser()" @click="toggleFollow" 
-				:class="{ following: isFollowing }">
-				{{ isFollowing ? 'Following' : 'Follow' }}
-				</button>
-				<br>
-				<button type="button" class="btn btn-sm-normal btn-outline-primary red-bg" v-if="!isSameUser()" @click="toggleBan" 
-				:class="{ banned: isBanned }">
-				{{ isBanned ? 'Unban' : 'Ban' }}
-				</button>
 			</div>
-			<br> <br> <br> <br>
-		</div>
-
-
-
-
-
-
-		<button v-if="isSameUser()" class="btn btn-sm-normal btn-outline-primary" @click="openUsernameModal" data-bs-toggle="modal" data-bs-target="#UsernameModal">Edit</button>
-
-		<div class="modal fade" id="UsernameModal" tabindex="-1" :class="{ 'show': isUsernameModalOpen }">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Change Username</h5>
-					</div>
-					<div class="modal-body">
-						<input
-						type="text"
-						class="form-control"
-						placeholder="New Username"
-						v-model="newUsername"
-						:pattern="usernamePattern"
-						title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
-						/>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-sm-normal btn-outline-secondary green-bg"  @click="changeUsername">Save</button>
-						<button type="button" class="btn btn-sm-normal btn-outline-primary red-bg" @click="closeUsernameModal">Close</button>
-
-					</div>
-				</div>
-			</div>
-		</div>
-
-
-
-
-
-		<br> <br><br>
-		<div id="image-container"> 
-			<div v-if="isSameUser()"> 
-				<h5>
-					<span id = "type" class = "normal">
-					<br>Use the button below to add images to your profile.<br>
-					</span>
-				</h5>
-				<form enctype="multipart/form-data">
-					<input style = "display:none" type="file"  @change="uploadImage3" ref = "pickImage" accept="image/jpeg"/>
-					<!--  <p v-if="isFirst"> Click to select </p> 
-					<p v-if="isSaving"> Uploading image... </p>  -->
-					<button class='btn btn-sm-normal btn-outline-primary' type="button" @click="$refs.pickImage.click()">Choose</button>
-				</form>
-			</div>
-			<h5>
-				<span id = "type" class = "normal">
-					<br><br>Click on an image to view it in fullscreen mode, click on it again to return to the profile page.<br><br>
-					<br>Here are the uploaded images: <br>
+			<h6>
+				<span id = "type" class = "special">
+				Profile
 				</span>
-			</h5>
-			
-			<div class="image-row">
-				<!-- <div v-if="isLoading">	
-					<LoadingSpinner></LoadingSpinner>
-				</div> 
-				<div v-else> 
-					
-				
-				
-		
-		<p>{{ showCommentModal }}</p>-->
-				<img v-for="(image, index) in images" :key="image.pid" :src="imageURLS[image.pid]" :draggable="false" @click="showModal(index)"/>
-				
-			</div> 
-		</div>
-		<div id="Modal" v-if="show">
-			<img :src="imageURLS[selectedImage.pid]" @click="hideModal(index)" />
-			<div class="button-container">
-				<button class="heart" @click="toggleLike(selectedImage.pid, selectedImage.posterid)" ></button>
-				<div class="like-counter">{{ selectedImage.numlikes }} Likes</div>
-				<div class="button-space"></div>
-				<button class="cloud" @click="showCommentModal = true"> </button>
-				<CommentModal :showCommentModal="showCommentModal" 
-				:posterID="selectedImage.posterid" :pid="selectedImage.pid" 
-				@update:showCommentModal="showCommentModal = $event"
-				@update-comments="updateComments"></CommentModal>
-				<div class="comment-counter">{{ selectedImage.numcomments }} Comments</div>	
-				<div class="photo-date"> Upload date and time: {{ selectedImage.datetime }}</div>	
-			</div>		
-				<div class="delete-button-container">
-					<button class="btn btn-sm-normal btn-outline-primary delete-photo" type="button" v-if="isSameUser()" @click="deletePhoto(selectedImage.pid)">Delete</button>
-				</div>
-		</div>     
+			</h6>
 		
 
-	<!-- <div class="input-group-append">
-		<button class="btn btn-sm btn-outline-primary" v-if="isSameUser()" @click="showUsernameModal()">Edit</button>
-	</div>  -->
-	<p v-if="error">{{ error }}</p>
+			<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
 
-	<!-- 
-	<div class="modal fade" id="editUsernameModal" tabindex="-1" role="dialog" aria-labelledby="editUsernameModalLabel" aria-hidden="true" v-show="modalVisible">
+
+
+			<div>
+
+		
+		<!-- 
+		<button class="btn btn-primary" @click="openUsernameModal">Edit</button>
+
+
+		<div class="modal" :class="{ 'show': isUsernameModalOpen }">
 		<div class="modal-dialog">
-		<div class="modal-content">
+			<div class="modal-content">
 			<div class="modal-header">
-			<h5 class="modal-title" id="editUsernameModalLabel">Edit Username</h5>
-			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="hideUsernameModal()"></button>
+				<h5 class="modal-title">Change Username</h5>
+				<button type="button" class="close" @click="closeUsernameModal">
+				<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body">
-			<form>
-				<div class="mb-3">
-				<label for="modal-input" class="form-label">New Username</label>
-				<input type="text" class="form-control" id="modal-input" v-model="newUsername">
+				<form @submit.prevent="changeUsername">
+				<div class="form-group">
+					<label for="newUsername">New Username</label>
+					<input
+					type="text"
+					class="form-control"
+					id="newUsername"
+					v-model="newUsername"
+					:pattern="usernamePattern"
+					title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
+					/>
 				</div>
-			</form>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary">Save</button>
+					<button type="button" class="btn btn-secondary" @click="closeUsernameModal">Close</button>
+				</div>
+				</form>
 			</div>
-			<div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="hideUsernameModal()">Cancel</button>
-			<button type="button" class="btn btn-primary" v-if="isSameUser()" @click="updateUsername()">Confirm</button>
 			</div>
 		</div>
+		</div> -->
 		</div>
-	</div>  -->
+
+			</div>
+			
+						
+
+
+				<!-- fix modal appearing by clicking on a button instead of being static 
+					<modal v-model="modalVisible" @modify="changeUsername">
+					<div class="input-group mb-3 w-25" v-if="isSameUser()">
+						<input
+					type="text"
+					class="form-control w-25"
+					placeholder="Your new username..."
+					v-model="newUsername"
+					:pattern="usernamePattern"
+					title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
+					/>
+
+						<div class="input-group-append" v-if="isSameUser()">
+						<button class="btn btn-outline-secondary" @click="changeUsername" >Modify</button>
+						</div>
+					</div>
+					</modal>  --> 
+
+					
+
+
+
+
+
+
+			<div class="profile-container">
+				<br>
+				<div class="profile-info" v-if="userProfile">
+					<h3 class="username"> {{ userProfile.username  }}</h3>
+					<div class="follow-info">
+					<p><strong>{{ userProfile.numphotos }}</strong> posts</p>
+					<p><strong>{{ userProfile.followers  }}</strong> followers</p>
+					<p><strong>{{ userProfile.following  }}</strong> following</p>
+					</div>
+					<button type="button" class="btn btn-sm-normal btn-outline-primary follow-button" v-if="!isSameUser()" @click="toggleFollow" 
+					:class="{ following: isFollowing }">
+					{{ isFollowing ? 'Following' : 'Follow' }}
+					</button>
+					<br>
+					<button type="button" class="btn btn-sm-normal btn-outline-primary red-bg" v-if="!isSameUser()" @click="toggleBan" 
+					:class="{ banned: isBanned }">
+					{{ isBanned ? 'Unban' : 'Ban' }}
+					</button>
+				</div>
+				<br> <br> <br> <br>
+			</div>
+
+
+
+
+
+
+			<button v-if="isSameUser()" class="btn btn-sm-normal btn-outline-primary" @click="openUsernameModal" data-bs-toggle="modal" data-bs-target="#UsernameModal">Edit</button>
+
+			<div class="modal fade" id="UsernameModal" tabindex="-1" :class="{ 'show': isUsernameModalOpen }">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Change Username</h5>
+						</div>
+						<div class="modal-body">
+							<input
+							type="text"
+							class="form-control"
+							placeholder="New Username"
+							v-model="newUsername"
+							:pattern="usernamePattern"
+							title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
+							/>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-sm-normal btn-outline-secondary green-bg"  @click="changeUsername">Save</button>
+							<button type="button" class="btn btn-sm-normal btn-outline-primary red-bg" @click="closeUsernameModal">Close</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+
+
+			<br> <br><br>
+			<div id="image-container"> 
+				<div v-if="isSameUser()"> 
+					<h5>
+						<span id = "type" class = "normal">
+						<br>Use the button below to add images to your profile.<br>
+						</span>
+					</h5>
+					<form enctype="multipart/form-data">
+						<input style = "display:none" type="file"  @change="uploadImage3" ref = "pickImage" accept="image/jpeg"/>
+						<!--  <p v-if="isFirst"> Click to select </p> 
+						<p v-if="isSaving"> Uploading image... </p>  -->
+						<button class='btn btn-sm-normal btn-outline-primary' type="button" @click="$refs.pickImage.click()">Choose</button>
+					</form>
+				</div>
+				<h5>
+					<span id = "type" class = "normal">
+						<br><br>Click on an image to view it in fullscreen mode, click on it again to return to the profile page.<br><br>
+						<br>Here are the uploaded images: <br>
+					</span>
+				</h5>
+				
+				<div class="image-row">
+					<!-- <div v-if="isLoading">	
+						<LoadingSpinner></LoadingSpinner>
+					</div> 
+					<div v-else> 
+						
+					
+					
+			
+			<p>{{ showCommentModal }}</p>-->
+					<img v-for="(image, index) in images" :key="image.pid" :src="imageURLS[image.pid]" :draggable="false" @click="showModal(index)"/>
+					
+				</div> 
+			</div>
+			<div id="Modal" v-if="show">
+				<img :src="imageURLS[selectedImage.pid]" @click="hideModal(index)" />
+				<div class="button-container">
+					<button class="heart" @click="toggleLike(selectedImage.pid, selectedImage.posterid)" ></button>
+					<div class="like-counter">{{ selectedImage.numlikes }} Likes</div>
+					<div class="button-space"></div>
+					<button class="cloud" @click="showCommentModal = true"> </button>
+					<CommentModal :showCommentModal="showCommentModal" 
+					:posterID="selectedImage.posterid" :pid="selectedImage.pid" 
+					@update:showCommentModal="showCommentModal = $event"
+					@update-comments="updateComments"></CommentModal>
+					<div class="comment-counter">{{ selectedImage.numcomments }} Comments</div>	
+					<div class="photo-date"> Upload date and time: {{ selectedImage.datetime }}</div>	
+				</div>		
+					<div class="delete-button-container">
+						<button class="btn btn-sm-normal btn-outline-primary delete-photo" type="button" v-if="isSameUser()" @click="deletePhoto(selectedImage.pid)">Delete</button>
+					</div>
+			</div>     
+			
+
+		<!-- <div class="input-group-append">
+			<button class="btn btn-sm btn-outline-primary" v-if="isSameUser()" @click="showUsernameModal()">Edit</button>
+		</div>  -->
+		<p v-if="error">{{ error }}</p>
+
+		<!-- 
+		<div class="modal fade" id="editUsernameModal" tabindex="-1" role="dialog" aria-labelledby="editUsernameModalLabel" aria-hidden="true" v-show="modalVisible">
+			<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+				<h5 class="modal-title" id="editUsernameModalLabel">Edit Username</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="hideUsernameModal()"></button>
+				</div>
+				<div class="modal-body">
+				<form>
+					<div class="mb-3">
+					<label for="modal-input" class="form-label">New Username</label>
+					<input type="text" class="form-control" id="modal-input" v-model="newUsername">
+					</div>
+				</form>
+				</div>
+				<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="hideUsernameModal()">Cancel</button>
+				<button type="button" class="btn btn-primary" v-if="isSameUser()" @click="updateUsername()">Confirm</button>
+				</div>
+			</div>
+			</div>
+		</div>  -->
+
+	</div>
 
 </div>
 

@@ -409,10 +409,6 @@ paths:
       responses:
         "204":
           description: like placed
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/user-info"
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
