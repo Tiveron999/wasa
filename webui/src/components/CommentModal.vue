@@ -22,39 +22,61 @@ export default {
             this.id = localStorage.getItem('userId');
           }
           try {
-          const commentText = this.newComment;
-          console.log(commentText)
-          
-          const response = await this.$axios.post(`/users/${this.posterID}/photos/${this.pid}/comments`, JSON.stringify({comment: commentText}),
-            {headers: {'Content-Type': 'application/json', Authorization: 'Bearer ' + this.id }});
+            const commentText = this.newComment;
+            console.log(commentText)
+            
+            const response = await this.$axios.post(`/users/${this.posterID}/photos/${this.pid}/comments`, JSON.stringify({comment: commentText}),
+              {headers: {'Content-Type': 'application/json', Authorization: 'Bearer ' + this.id }});
 
-          
-            this.newCommentsNumber = response.data.comments
-            this.updateCommentsNumber(this.newCommentsNumber)
-  
-          // Clear the input field after submission
-          this.newComment = '';
+            
+              this.newCommentsNumber = response.data.comments
+              this.updateCommentsNumber(this.newCommentsNumber)
+    
+            // Clear the input field after submission
+            this.newComment = '';
 
-          this.listComments()
+            this.listComments()
 
-        } catch (e) {
-        console.error("error: ", e);
-        this.errormsg = e.toString();
-      }
-
-      },
-
-      async listComments() {
-        if (localStorage.getItem('isLoggedIn')) {
-            this.id = localStorage.getItem('userId');
+            } catch (e) {
+            console.error("error: ", e);
+            this.errormsg = e.toString();
           }
-        try {
-          const response = await this.$axios.get(`/users/${this.posterID}/photos/${this.pid}/comments`, {headers: {Authorization: 'Bearer ' + this.id }}); 
-          this.comments = response.data;
-        } catch (error) {
-          console.error('Error fetching comments:', error);
-        }
-      },
+
+          },
+
+          async listComments() {
+            if (localStorage.getItem('isLoggedIn')) {
+                this.id = localStorage.getItem('userId');
+              }
+            try {
+              const response = await this.$axios.get(`/users/${this.posterID}/photos/${this.pid}/comments`, {headers: {Authorization: 'Bearer ' + this.id }}); 
+              this.comments = response.data;
+            } catch (error) {
+              console.error('Error fetching comments:', error);
+            }
+          },
+
+          isCommenter(commenterID) {
+            const storedUserId = localStorage.getItem('userId');
+            return commenterID === storedUserId;
+        },
+
+        deleteComment(cid) {
+          // Assuming you have a way to identify comments by index
+          const commentToDelete = this.comments[index];
+          
+          // Make an API request or perform any action to delete the comment
+          // For example, you can use Axios for the request
+          // Replace 'yourApiEndpoint' with your actual API endpoint
+          axios.delete('yourApiEndpoint/' + commentToDelete.CID)
+            .then(() => {
+              // Remove the comment from the comments array
+              this.comments.splice(index, 1);
+            })
+            .catch((error) => {
+              console.error('Error deleting comment:', error);
+            });
+        },
 
 
         closeModal() {
@@ -87,8 +109,9 @@ export default {
         <div class="comment-modal-body">
           <!-- comments -->
           <div v-for="(comment, index) in comments" :key="index" class="comment">
-            <p class="comment-author">{{ comment.posterid }} - {{ comment.datetime }}</p>
+            <p class="comment-author">{{ comment.commenterid }} - {{ comment.datetime }}</p>
             <p class="comment-text">{{ comment.text }}</p>
+            <i class="fas fa-trash-alt" v-if="isCommenter(comment.commenterid)" @click="deleteComment(comment.cid)"></i>
           </div>
           <div class="comment-form-group">
             <label for="commentInput">Add a Comment</label>
