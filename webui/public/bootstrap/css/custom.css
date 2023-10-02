@@ -694,3 +694,21 @@ body {
   font-size: 16px;
   color: #007bff; /* Primary button color */
 }
+
+/* Style for the delete comment button */
+.delete-comment-button {
+  background-color: #ff0000; 
+  color: #ffffff; 
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+}
+
+/* Hover effect for the button */
+.delete-comment-button:hover {
+  background-color: #cc0000; /* Darker red on hover */
+}

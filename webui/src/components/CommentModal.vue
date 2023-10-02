@@ -58,24 +58,29 @@ export default {
 
           isCommenter(commenterID) {
             const storedUserId = localStorage.getItem('userId');
-            return commenterID === storedUserId;
+            
+            const commenterIDString = commenterID.toString();
+             //const storedUserIdString = storedUserId.toString();
+            if (typeof storedUserId === typeof commenterIDString) {
+              console.log("stupid", commenterID, commenterIDString)
+  console.log('Both variables have the same data type.');}
+            return storedUserId === commenterIDString;
         },
 
-        deleteComment(cid) {
-          // Assuming you have a way to identify comments by index
-          const commentToDelete = this.comments[index];
-          
-          // Make an API request or perform any action to delete the comment
-          // For example, you can use Axios for the request
-          // Replace 'yourApiEndpoint' with your actual API endpoint
-          axios.delete('yourApiEndpoint/' + commentToDelete.CID)
-            .then(() => {
-              // Remove the comment from the comments array
-              this.comments.splice(index, 1);
-            })
-            .catch((error) => {
-              console.error('Error deleting comment:', error);
-            });
+        async deleteComment(cid) {
+          try {
+          const response = await this.$axios.delete(`/users/${this.posterID}/photos/${this.pid}/comments/${cid}`, {headers: { Authorization: 'Bearer ' + this.id }});
+
+          this.newCommentsNumber = response.data.comments
+          this.updateCommentsNumber(this.newCommentsNumber)
+
+          this.listComments()
+
+          } catch (e) {
+          console.error("error: ", e);
+          this.errormsg = e.toString();
+        }
+
         },
 
 
@@ -111,7 +116,10 @@ export default {
           <div v-for="(comment, index) in comments" :key="index" class="comment">
             <p class="comment-author">{{ comment.commenterid }} - {{ comment.datetime }}</p>
             <p class="comment-text">{{ comment.text }}</p>
-            <i class="fas fa-trash-alt" v-if="isCommenter(comment.commenterid)" @click="deleteComment(comment.cid)"></i>
+            <div>
+            <button type="button" id="deleteComment" class="delete-comment-button" v-if="isCommenter(comment.commenterid)" @click="deleteComment(comment.cid)">
+              Delete </button>
+            </div>
           </div>
           <div class="comment-form-group">
             <label for="commentInput">Add a Comment</label>
