@@ -143,6 +143,7 @@ func (f *Comment) CommentFromDatabase(comment database.Comment) {
 	f.CID = comment.CID
 	f.CommenterID = comment.CommenterID
 	f.PhotoID = comment.PhotoID
+	f.Text = comment.Text
 	f.Datetime = comment.Datetime
 }
 
@@ -152,6 +153,7 @@ func (f *Comment) CommentToDatabase() database.Comment {
 		CID:         f.CID,
 		CommenterID: f.CommenterID,
 		PhotoID:     f.PhotoID,
+		Text:        f.Text,
 		Datetime:    f.Datetime,
 	}
 }

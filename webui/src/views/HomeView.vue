@@ -14,6 +14,8 @@ export default {
 			show: false,
             selectedImage: null,
 			imageURLS : {},
+			showCommentModal: false,
+			isLoading: false,
         };
     },
     methods: {
@@ -106,6 +108,64 @@ export default {
 		this.selectedImage = this.images[index];
 		this.show = false;
 	},
+
+	toggleLike(pid, posterid) {
+		if (localStorage.getItem('isLoggedIn')) {
+			this.id = localStorage.getItem('userId');
+		}
+		console.log("poster", posterid)
+		if (this.isLiked) {
+			this.unlikePhoto(pid, posterid);
+		} else {
+			this.likePhoto(pid, posterid);
+		}
+		// Toggle the liked state
+		this.isLiked = !this.isLiked;
+	},
+
+	async likePhoto(pid, posterid) {
+		try {
+			const response = await this.$axios.put(`/users/${posterid}/photos/${pid}/likes/${this.id}`, null, {headers: {Authorization: 'Bearer ' + this.id}})
+
+			if (response.status === 200) {
+			const data = response.data;
+			const likesCount = data.likes; // Access the "likes" property from the response
+
+			// Now "likesCount" contains the updated number of likes
+			console.log(`Number of likes: ${likesCount}`);
+
+			this.selectedImage.numlikes = likesCount;
+			}
+			
+		} catch (e) {
+			console.error("error: ", e);
+			this.errormsg = e.toString();
+		}
+		},
+		async unlikePhoto(pid, posterid) {
+			try {
+				const response = await this.$axios.delete(`/users/${posterid}/photos/${pid}/likes/${this.id}`, {headers: { Authorization: 'Bearer ' + this.id }});
+
+			if (response.status === 200) {
+			const data = response.data;
+			const likesCount = data.likes; // Access the "likes" property from the response
+
+			// Now "likesCount" contains the updated number of likes
+			console.log(`Number of likes: ${likesCount}`);
+
+			this.selectedImage.numlikes = likesCount;
+			}
+
+			} catch (e) {
+				console.error("error: ", e);
+				this.errormsg = e.toString();
+			}
+		},
+		updateComments(newComments) {
+			console.log(`New number of comments: ${newComments}`);
+			this.selectedImage.numcomments = newComments
+		},
+
     },
     mounted() {
         this.refresh();
@@ -165,17 +225,22 @@ export default {
 			</div> 
 		</div>
 		<div id="Modal" v-if="show">
-			<img :src="imageURLS[selectedImage.pid]" @click="hideModal(index)" />
-			<div class="button-container">
-				<button class="heart" @click="toggleLike(selectedImage.pid, selectedImage.posterid)" ></button>
-				<div class="like-counter">{{ selectedImage.numlikes }} Likes</div>
-				<div class="button-space"></div>
-				<button class="cloud"> </button>
-	
-				<div class="comment-counter">{{ selectedImage.numcomments }} Comments</div>	
-				<div class="photo-date"> Upload date and time: {{ selectedImage.datetime }}</div>	
-			</div>		
-
+				<img :src="imageURLS[selectedImage.pid]" @click="hideModal(index)" />
+				<div class="button-container">
+					<button class="heart" @click="toggleLike(selectedImage.pid, selectedImage.posterid)" ></button>
+					<div class="like-counter">{{ selectedImage.numlikes }} Likes</div>
+					<div class="button-space"></div>
+					<button class="cloud" @click="showCommentModal = true"> </button>
+					<CommentModal :showCommentModal="showCommentModal" 
+					:posterID="selectedImage.posterid" :pid="selectedImage.pid" 
+					@update:showCommentModal="showCommentModal = $event"
+					@update-comments="updateComments"></CommentModal>
+					<div class="comment-counter">{{ selectedImage.numcomments }} Comments</div>	
+					<div class="photo-date"> Upload date and time: {{ selectedImage.datetime }}</div>	
+				</div>		
+					<div class="delete-button-container">
+						<button class="btn btn-sm-normal btn-outline-primary delete-photo" type="button" @click="deletePhoto(selectedImage.pid)">Delete</button>
+					</div>
     </div>
 </template>
 

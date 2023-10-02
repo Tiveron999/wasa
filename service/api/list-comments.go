@@ -2,44 +2,53 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
-	"github.com/Tiveron999/Wasa/service/database"
 	"github.com/julienschmidt/httprouter"
 )
 
 func (rt *_router) getCommentsList(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-
-	// Parse the query string part. To do that, we need to check whether the latitude, longitude and range exists.
-	// If latitude and longitude are specified, we parse them, and we filter results for them. If range is specified,
-	// the value will be parsed and used as a filter. If it's not specified, 10 will be used as default (as specified in
-	// the OpenAPI file).
-	// If one of latitude or longitude is not specified (or both), no filter will be applied.
-
-	var err error
-	var comments []database.Comment
-
-	var id uint64
-
-	// Request an unfiltered list of comments from the DB
-	comments, err = rt.db.GetCommentsList(id)
-
+	/*posterID, err := strconv.ParseUint(ps.ByName("user_id"), 10, 64)                     useful for the ban
 	if err != nil {
-		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the photo
-		// Note: we are using the "logger" inside the "ctx" (context) because the scope of this issue is the request.
+		// Handle the error, e.g., invalid photo ID
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}*/
+
+	photoID, err := strconv.ParseUint(ps.ByName("photo_id"), 10, 64)
+	if err != nil {
+		// Handle the error, e.g., invalid photo ID
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	// Fetch comments from the database based on 'id'
+	comments, err := rt.db.GetCommentsList(photoID)
+	if err != nil {
+		// Handle database error
 		ctx.Logger.WithError(err).Error("can't list comments")
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	// Before sending the list to the client we need to convert it to the "frontend" type
-	var frontendComment = make([]Comment, len(comments))
-	for idx := range comments {
-		frontendComment[idx].CommentFromDatabase(comments[idx])
+	fmt.Println(comments)
+
+	// Convert comments to the desired frontend structure if needed
+	var frontendComments []Comment
+	for _, c := range comments {
+		var co Comment
+		co.CommentFromDatabase(c)
+		frontendComments = append(frontendComments, co)
 	}
 
-	// Send the list to the user.
+	// Send the list of comments to the client as JSON
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(frontendComment)
+	if err := json.NewEncoder(w).Encode(frontendComments); err != nil {
+		ctx.Logger.WithError(err).Error("can't encode comments to JSON")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 }

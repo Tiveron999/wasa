@@ -59,7 +59,7 @@ func (rt *_router) getUserPhotos(w http.ResponseWriter, r *http.Request, ps http
 	}
 
 	// Before sending the list to the client we need to convert it to the "frontend" type
-	var frontendPhotos = make([]Photo, len(photos))
+	var frontendPhotos = make([]Photo, len(photos)) // delete if not needed
 	for idx := range photos {
 		frontendPhotos[idx].PhotoFromDatabase(photos[idx])
 	}

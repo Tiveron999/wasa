@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	// "fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -57,6 +58,8 @@ func (rt *_router) commentPhoto(w http.ResponseWriter, r *http.Request, ps httpr
 
 	// Access the comment text
 	commentText := req.Comment
+
+	// fmt.Println(req.Comment)
 
 	comment = Comment{
 		CID:         0,

@@ -288,9 +288,7 @@ export default {
 
 			this.selectedImage.numlikes = likesCount;
 			}
-
 			
-
 		} catch (e) {
 			console.error("error: ", e);
 			this.errormsg = e.toString();
@@ -511,7 +509,7 @@ export default {
 
 
 <template>
-	
+
 <div>
 	<div>
 		<div>
