@@ -43,21 +43,25 @@ func (rt *_router) commentPhoto(w http.ResponseWriter, r *http.Request, ps httpr
 	var comment Comment
 
 	// Create a struct to hold the request body
-	var requestBodyComment struct {
+	type requestBodyComment struct {
 		Text string `json:"text"`
 	}
 
+	// fmt.Printf("please")
+	var req requestBodyComment
 	// Decode the JSON data into the requestBodyComment struct
-	err = json.NewDecoder(r.Body).Decode(&requestBodyComment)
+	err = json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	// Access the comment text
-	commentText := requestBodyComment.Text
+	// Log the request body and the decoded comment text
+	fmt.Println("Request body:", r.Body)
+	fmt.Println("Comment text:", req.Text)
 
-	fmt.Println("here")
+	// Access the comment text
+	commentText := req.Text
 
 	comment = Comment{
 		CID:         0,

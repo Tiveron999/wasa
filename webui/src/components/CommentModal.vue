@@ -23,9 +23,10 @@ export default {
           }
           try {
           const commentText = this.newComment;
+          console.log(commentText)
           
           const response = await this.$axios.post(`/users/${this.posterID}/photos/${this.pid}/comments`, {comment: commentText},
-            {headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + this.id }});
+            {headers: {'Content-Type': 'application/json', Authorization: 'Bearer ' + this.id }});
 
           
             this.newCommentsNumber = response.data.comments
