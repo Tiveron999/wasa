@@ -60,10 +60,7 @@ export default {
             const storedUserId = localStorage.getItem('userId');
             
             const commenterIDString = commenterID.toString();
-             //const storedUserIdString = storedUserId.toString();
-            if (typeof storedUserId === typeof commenterIDString) {
-              console.log("stupid", commenterID, commenterIDString)
-  console.log('Both variables have the same data type.');}
+            
             return storedUserId === commenterIDString;
         },
 

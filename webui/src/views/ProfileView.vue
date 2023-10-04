@@ -440,6 +440,44 @@ export default {
 			}
 		},
 
+		toggleBan() {
+			if (localStorage.getItem('isLoggedIn')) {
+			this.id = localStorage.getItem('userId');
+		}
+		// If the user is banned, unban on click
+		if (this.isBanned) {
+			this.unbanser();
+		} else {
+			this.banUser(); // Ban the user on click
+		}
+
+		// Toggle the ban state
+		this.isBanned = !this.isBanned;
+		},
+		async followUser() {
+		try {
+			console.log(this.id, this.$route.params.user_id)
+			const result = await this.$axios.put(`/users/${this.id}/banned/${this.$route.params.user_id}`, null, {headers: {Authorization: 'Bearer ' + this.id}})
+			console.log(result)
+			// console.log("followers", this.followers)
+			// this.getProfile()
+		} catch (e) {
+			console.error("error: ", e);
+			this.errormsg = e.toString();
+		}
+		},
+		async unfollowUser() {
+			try {
+				const result = await this.$axios.delete(`/users/${this.id}/banned/${this.$route.params.user_id}`, {headers: { Authorization: 'Bearer ' + this.id }});
+				console.log(result);
+				// this.followers -= 1;
+				// this.getProfile()
+			} catch (e) {
+				console.error("error: ", e);
+				this.errormsg = e.toString();
+			}
+		},
+
 		onRouteChange(newRoute, oldRoute) {
 			// You can access the new route and old route objects
 			console.log('Route changed:', newRoute, oldRoute);
