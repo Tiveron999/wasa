@@ -446,7 +446,7 @@ export default {
 		}
 		// If the user is banned, unban on click
 		if (this.isBanned) {
-			this.unbanser();
+			this.unbanUser();
 		} else {
 			this.banUser(); // Ban the user on click
 		}
