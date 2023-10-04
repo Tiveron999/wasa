@@ -454,7 +454,7 @@ export default {
 		// Toggle the ban state
 		this.isBanned = !this.isBanned;
 		},
-		async followUser() {
+		async banUser() {
 		try {
 			console.log(this.id, this.$route.params.user_id)
 			const result = await this.$axios.put(`/users/${this.id}/banned/${this.$route.params.user_id}`, null, {headers: {Authorization: 'Bearer ' + this.id}})
@@ -466,7 +466,7 @@ export default {
 			this.errormsg = e.toString();
 		}
 		},
-		async unfollowUser() {
+		async unbanUser() {
 			try {
 				const result = await this.$axios.delete(`/users/${this.id}/banned/${this.$route.params.user_id}`, {headers: { Authorization: 'Bearer ' + this.id }});
 				console.log(result);
