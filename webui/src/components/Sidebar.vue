@@ -1,44 +1,46 @@
 <template>
-     <body id="body-pd">
+  <div>
+      <body id="body-pd">
      
-      <div class="l-navbar" id="nav-bar">
-        <nav class="nav">
-            <div class="nav_list">
-                <li class="nav-item">
-                    <RouterLink to="/session" class="nav_link">
-                    <svg class="feather"><use href="/feather-sprite-v4.29.0.svg#key"/></svg>
-                    Login
-                    </RouterLink>
-                </li>
-                <li class="nav-item">
-                    <RouterLink to="/" class="nav_link">
-                    <svg class="feather"><use href="/feather-sprite-v4.29.0.svg#home"/></svg>
-                    Home
-                    </RouterLink>
-                </li>
-                <li class="nav-item">
-                    <RouterLink to="/users" class="nav_link">
-                    <svg class="feather"><use href="/feather-sprite-v4.29.0.svg#search"/></svg>
-                    Search
-                    </RouterLink>
-                </li>
-                <li class="nav-item">
-                    <RouterLink to="/users/:user_id/profile" @click="updateProfileLink" class="nav_link">
-                    <svg class="feather"><use href="/feather-sprite-v4.29.0.svg#instagram"/></svg>
-                    Profile
-                    </RouterLink>
-                </li>       
-            </div>
+        <div class="l-navbar" id="nav-bar">
+          <nav class="nav">
+              <div class="nav_list">
+                  <li class="nav-item">
+                      <RouterLink to="/session" class="nav_link">
+                      <svg class="feather"><use href="/feather-sprite-v4.29.0.svg#key"/></svg>
+                      Login
+                      </RouterLink>
+                  </li>
+                  <li class="nav-item">
+                      <RouterLink to="/" class="nav_link">
+                      <svg class="feather"><use href="/feather-sprite-v4.29.0.svg#home"/></svg>
+                      Home
+                      </RouterLink>
+                  </li>
+                  <li class="nav-item">
+                      <RouterLink to="/users" class="nav_link">
+                      <svg class="feather"><use href="/feather-sprite-v4.29.0.svg#search"/></svg>
+                      Search
+                      </RouterLink>
+                  </li>
+                  <li class="nav-item">
+                      <RouterLink to="/users/:user_id/profile" @click="updateProfileLink" class="nav_link">
+                      <svg class="feather"><use href="/feather-sprite-v4.29.0.svg#instagram"/></svg>
+                      Profile
+                      </RouterLink>
+                  </li>       
+              </div>
 
-          <a href="#" class="nav_link" @click="logout">
-            <svg class="feather"><use href="/feather-sprite-v4.29.0.svg#log-out"/></svg>
-            <span class="nav_name">Log out</span>
-          </a>
+            <a href="#" class="nav_link" @click="logout">
+              <svg class="feather"><use href="/feather-sprite-v4.29.0.svg#log-out"/></svg>
+              <span class="nav_name">Log out</span>
+            </a>
+        
+          </nav>
+        </div>
       
-        </nav>
-      </div>
-     
-    </body>
+      </body>
+    </div>
   </template>
   
   <style>
