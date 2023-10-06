@@ -10,6 +10,7 @@ import { toRaw } from 'vue';
 export default {
 	data: function() {
 		return {
+			youAreBanned: false,
 			errormsg: null,
 			loading: false,
 			isLoggedIn: false,
@@ -51,6 +52,8 @@ export default {
 		/* this.$axios.post('/session', JSON.stringify({username: this.username}), {headers: { 'Content-Type': 'application/json',  'Accept': 'application/json', 
 		'Authorization': `Bearer ${localStorage.getItem('userId')}`}}) */
 		async refresh() {
+			this.youAreBanned = false,
+			this.isBanned = false,
 			this.loading = true;
 			this.errormsg = null;
 			// console.log(localStorage.getItem('userId'))
@@ -135,7 +138,7 @@ export default {
 
 
 			const binaryData = newImage.image
-
+ 
 			const blob = new Blob([binaryData], { type: 'image/jpeg' }); 
 			const imageUrl = URL.createObjectURL(blob);
 			this.imageURLS[newImage.pid] = imageUrl;
@@ -166,7 +169,8 @@ export default {
 
 		showModal(index) {
 		this.selectedImage = this.images[index];
-		console.log(this.selectedImage)
+	
+		
 		this.show = true;
 		
 	},
@@ -200,7 +204,8 @@ export default {
 		}
 		
 		this.isLoading = true;
-		console.log(this.isLoading)
+	
+		
 		try {
 			const response = await this.$axios.get(`/users/${this.$route.params.user_id}/photos`, {
 				headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + this.id }
@@ -232,12 +237,12 @@ export default {
 				const imageUrl = URL.createObjectURL(blob);
 
 				// imageUrl now contains the data URL for the image
-				console.log(imageUrl);
+
 
 				this.imageURLS[photo.pid] = imageUrl;
 				}
 				this.isLoading = false;
-				console.log(this.isLoading)
+		
 
 		} catch (error) {
 			console.log(error);
@@ -250,13 +255,13 @@ export default {
 	if (blob.type !== 'image/jpeg') {
 		blob = new Blob([blob], { type: 'image/jpeg' });
 	}
-	console.log(blob.type, response)
+
 	const reader = new FileReader();
 	return new Promise((resolve) => {
 		reader.readAsDataURL(blob);
 		reader.onload = () => {
 		const dataURL = reader.result;
-		console.log(dataURL)
+
 		resolve(dataURL);
 		};
 	});
@@ -265,7 +270,7 @@ export default {
 		if (localStorage.getItem('isLoggedIn')) {
 			this.id = localStorage.getItem('userId');
 		}
-		console.log("poster", posterid)
+	
 		if (this.isLiked) {
 			this.unlikePhoto(pid, posterid);
 		} else {
@@ -439,6 +444,64 @@ export default {
 				console.error(error);
 			}
 		},
+		async getYourBans() {
+			if (localStorage.getItem('isLoggedIn')) {
+			this.id = Number(localStorage.getItem('userId'));
+		}
+			// save time
+			if(this.isSameUser()){
+				return 
+			}
+			try {
+				const response = await this.$axios.get(`/users/${this.id}/bans`, {headers: { Authorization: 'Bearer ' + this.id }});
+
+				let bans = response.data;
+	
+				for (let i = 0; i < bans.length; i++) {
+	
+					if (bans[i].userid===this.id && bans[i].bannedid === Number(this.$route.params.user_id)){
+				
+						this.isBanned=true
+						break
+					}
+				};
+				
+	 			
+			} catch (error) {
+				// Handle any errors here
+				console.error(error);
+			}
+		},
+
+		async getSearchBans() {
+			if (localStorage.getItem('isLoggedIn')) {
+			this.id = Number(localStorage.getItem('userId'));
+		}
+			// save time
+			if(this.isSameUser()){
+				return 
+			}
+
+			try {
+				const response = await this.$axios.get(`/users/${this.$route.params.user_id}/bans`, {headers: { Authorization: 'Bearer ' + this.id }});
+
+				let bans = response.data;
+
+				for (let i = 0; i < bans.length; i++) {
+
+					if (bans[i].userid === Number(this.$route.params.user_id) && bans[i].bannedid === this.id) {
+
+						this.youAreBanned = true;
+						break
+						}
+
+				};
+				
+			} catch (error) {
+				// Handle any errors here
+				console.error(error);
+			}
+		},
 
 		toggleBan() {
 			if (localStorage.getItem('isLoggedIn')) {
@@ -456,9 +519,9 @@ export default {
 		},
 		async banUser() {
 		try {
-			console.log(this.id, this.$route.params.user_id)
+
 			const result = await this.$axios.put(`/users/${this.id}/banned/${this.$route.params.user_id}`, null, {headers: {Authorization: 'Bearer ' + this.id}})
-			console.log(result)
+
 			// console.log("followers", this.followers)
 			// this.getProfile()
 		} catch (e) {
@@ -469,7 +532,7 @@ export default {
 		async unbanUser() {
 			try {
 				const result = await this.$axios.delete(`/users/${this.id}/banned/${this.$route.params.user_id}`, {headers: { Authorization: 'Bearer ' + this.id }});
-				console.log(result);
+				
 				// this.followers -= 1;
 				// this.getProfile()
 			} catch (e) {
@@ -525,6 +588,12 @@ export default {
 		});
 
 			}*/
+		
+		console.log("are you?", this.youAreBanned)
+
+
+		await this.getYourBans()
+		await this.getSearchBans()
 		await this.getImages()
 		// await this.resolveImageUrls()
 		await this.getProfile()
@@ -572,7 +641,7 @@ export default {
 
 
 
-			<div>
+			
 
 		
 		<!-- 
@@ -610,7 +679,7 @@ export default {
 			</div>
 		</div>
 		</div> -->
-		</div>
+	
 
 			</div>
 			
@@ -639,7 +708,7 @@ export default {
 
 
 
-
+		<div v-if=!this.youAreBanned>
 
 
 			<div class="profile-container">
@@ -784,6 +853,14 @@ export default {
 			</div>
 			</div>
 		</div>  -->
+
+		</div>
+		<div v-else>
+			<span id = "type" class="normal" style="white-space: nowrap;">
+			<br>You are banned by this user.<br>
+			</span>
+		</div>
+
 
 	</div>
 

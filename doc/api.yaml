@@ -795,34 +795,6 @@ paths:
       schema:
         type: integer
         description: e.g., /banned/1234
-    get:
-      operationId: getBannedList
-      summary: list all banned users
-      description: |
-        Obtain the list of all the users that were banned by the token bearer.
-      tags:
-        - users
-      responses:
-        "200":
-          description: |
-            An object containing all of the users banned by the token bearer
-          content:
-            application/json:
-              schema:
-                type: array
-                description: list of banned users
-                maxItems: 20
-                minItems: 0
-                items:
-                  $ref: "#/components/schemas/banned-users"
-          #links:
-           # GetUserByUserId:
-            #  $ref: '#/components/links/GetUserByUserId'
-        "400": { $ref: "#/components/responses/BadRequest"}
-        "401": { $ref: "#/components/responses/Unauthorized"}
-        "403": { $ref: "#/components/responses/Forbidden"}
-        "404": { $ref: "#/components/responses/Not-Found"}
-        "500": { $ref: "#/components/responses/InternalServerError"}
     put:
       operationId: banUser
       summary: ban a new user
@@ -861,6 +833,44 @@ paths:
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+  
+  /users/{user_id}/bans:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
+    get:
+      operationId: getBannedList
+      summary: list all banned users
+      description: |
+        Obtain the list of all the users that were banned by the token bearer.
+      tags:
+        - users
+      responses:
+        "200":
+          description: |
+            An object containing all of the users banned by the token bearer
+          content:
+            application/json:
+              schema:
+                type: array
+                description: list of banned users
+                maxItems: 20
+                minItems: 0
+                items:
+                  $ref: "#/components/schemas/banned-users"
+          #links:
+           # GetUserByUserId:
+            #  $ref: '#/components/links/GetUserByUserId'
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "404": { $ref: "#/components/responses/Not-Found"}
         "500": { $ref: "#/components/responses/InternalServerError"}
 
                   

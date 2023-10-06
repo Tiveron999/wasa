@@ -4,7 +4,7 @@ func (db *appdbimpl) GetBannedList() ([]Banned, error) {
 	var ret []Banned
 
 	// Plain simple SELECT query
-	rows, err := db.c.Query(`SELECT bannedid FROM banned WHERE userid=? LIMIT 10`)
+	rows, err := db.c.Query(`SELECT userid, bannedid FROM banned`)
 	if err != nil {
 		return nil, err
 	}
