@@ -547,11 +547,13 @@ export default {
 			if (
 				oldRoute.params.user_id &&
 				newRoute.params.user_id &&
-				oldRoute.params.user_id !== newRoute.params.user_id &&
-				oldRoute.params.profile &&
-				newRoute.params.profile 
+				oldRoute.params.user_id !== newRoute.params.user_id
 			) {
+				console.log('switched');
 				// You are switching between user profiles
+				this.refresh()
+				this.getYourBans()
+				this.getSearchBans()
 				this.getProfile()
 				this.getImages()
 			}
@@ -564,7 +566,7 @@ export default {
 
 	
 	},
-	async created() {
+	async mounted() {
 		this.refresh()
 
 		/*if (localStorage.getItem('isLoggedIn')) {
