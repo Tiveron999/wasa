@@ -16,6 +16,7 @@ export default {
 			imageURLS : {},
 			showCommentModal: false,
 			isLoading: false,
+			showLikesModal: false,
         };
     },
     methods: {
@@ -228,7 +229,10 @@ export default {
 				<img :src="imageURLS[selectedImage.pid]" @click="hideModal(index)" />
 				<div class="button-container">
 					<button class="heart" @click="toggleLike(selectedImage.pid, selectedImage.posterid)" ></button>
-					<div class="like-counter">{{ selectedImage.numlikes }} Likes</div>
+					<button class="like-counter-button" @click="showLikesModal = true"> {{ selectedImage.numlikes }} Likes</button>
+    				<LikesModal :showLikesModal="showLikesModal" 
+					:posterID="selectedImage.posterid" :pid="selectedImage.pid" 
+					@update:showLikesModal="showLikesModal = $event" />
 					<div class="button-space"></div>
 					<button class="cloud" @click="showCommentModal = true"> </button>
 					<CommentModal :showCommentModal="showCommentModal" 

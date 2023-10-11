@@ -302,24 +302,6 @@ export default {
 				this.errormsg = e.toString();
 			}
 		},
-
-		async listLikes() {
-			if (localStorage.getItem('isLoggedIn')) {
-			this.id = Number(localStorage.getItem('userId'));
-		}
-			// save time
-			if(this.isSameUser()){
-				return 
-			}
-			try {
-				const response = await this.$axios.get(`/users/${posterid}/photos/${pid}/likes`, {headers: { Authorization: 'Bearer ' + this.id }});
-
-				this.likesList = response.data;
-
-			} catch (error) {
-				console.error(error);
-			}
-		},
 	
 	openUsernameModal() {
 		console.log('here1: ' + this.isUsernameModalOpen);
@@ -816,8 +798,7 @@ export default {
 					<button class="like-counter-button" @click="showLikesModal = true"> {{ selectedImage.numlikes }} Likes</button>
     				<LikesModal :showLikesModal="showLikesModal" 
 					:posterID="selectedImage.posterid" :pid="selectedImage.pid" 
-					@update:showLikesModal="showLikesModal = $event"
-					/>
+					@update:showLikesModal="showLikesModal = $event" />
 					<div class="button-space"></div>
 					<button class="cloud" @click="showCommentModal = true"> </button>
 					<CommentModal :showCommentModal="showCommentModal" 
