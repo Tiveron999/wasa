@@ -14,7 +14,6 @@ export default {
         posterID: Number,
         pid: Number,
 
-
   },
     methods: {
         async submitComment() {

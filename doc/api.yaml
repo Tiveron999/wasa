@@ -23,25 +23,6 @@ paths:
       schema:
         type: integer
         description: e.g., /users/1234
-    get:
-      operationId: getUserInfo
-      summary: obtain the user's information by using the ID
-      description: |
-        Return the user information for the token bearer which includes 
-        their username, ID and profile picture.
-      tags:
-        - users
-      responses:
-        "200":
-          description: user info shown
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/user-info"
-        "400": { $ref: "#/components/responses/BadRequest"}
-        "401": { $ref: "#/components/responses/Unauthorized"}
-        "404": { $ref: "#/components/responses/Not-Found"}
-        "500": { $ref: "#/components/responses/InternalServerError" }
     put:
       operationId: setMyUserName
       summary: create or change the username of the token bearer
@@ -188,7 +169,6 @@ paths:
       description: The number of images to skip before starting to see new ones (so that scrolling will produce new pictures)
       schema:
         type: integer
-      
     get:
       operationId: getMyStream
       summary: show the stream of photos (feed)
@@ -306,25 +286,6 @@ paths:
       schema:
         type: integer
         description: e.g., /photos/1234
-    get:
-      operationId: getPhotoInfo
-      summary: obtain the photo's information
-      description: |
-        Return all the photo's information which includes when each photo was uploaded (date and time) and how many likes and comments it has.
-      tags:
-        - photos
-      responses:
-        "200":
-          description: Request accepted, information obtained
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/photo-info"
-        "400": { $ref: "#/components/responses/BadRequest"}
-        "401": { $ref: "#/components/responses/Unauthorized"}
-        "403": { $ref: "#/components/responses/Forbidden"}
-        "404": { $ref: "#/components/responses/Not-Found"}
-        "500": { $ref: "#/components/responses/InternalServerError"}
     delete:
       operationId: deletePhoto
       summary: delete a photo 
@@ -513,26 +474,6 @@ paths:
       schema:
         type: integer
         description: e.g., /comments/1234
-    get:
-      operationId: getCommentInfo
-      summary: obtain information about a comment
-      description: |
-        Return all the information about a comment posted
-      tags:
-        - photos
-      responses:
-        "200":
-          description: Request accepted, all comments info in content
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/comments-info"
-
-        "400": { $ref: "#/components/responses/BadRequest"}
-        "401": { $ref: "#/components/responses/Unauthorized"}
-        "403": { $ref: "#/components/responses/Forbidden"}
-        "404": { $ref: "#/components/responses/Not-Found"}
-        "500": { $ref: "#/components/responses/InternalServerError"}
     delete:
       operationId: uncommentPhoto
       summary: delete a comment

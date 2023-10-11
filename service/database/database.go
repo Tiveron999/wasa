@@ -92,7 +92,7 @@ type AppDatabase interface {
 
 	DeletePhoto(uint64) error
 
-	GetLikesList(photoID, posterID uint64) ([]uint64, error)
+	GetLikesList(uint64, uint64) ([]string, error)
 
 	LikePhoto(uint64, uint64, uint64) error
 

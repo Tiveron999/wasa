@@ -38,6 +38,7 @@ export default {
 			userProfile: null,
 			showCommentModal: false,
 			isLoading: false,
+			showLikesModal: false,
 		}
 	},
 /*	components: {
@@ -249,23 +250,6 @@ export default {
 		}
 	},
 
-	async getDataURLFromImageURL(imageURL) {
-	const response = await fetch(imageURL);
-	let blob = await response.blob();
-	if (blob.type !== 'image/jpeg') {
-		blob = new Blob([blob], { type: 'image/jpeg' });
-	}
-
-	const reader = new FileReader();
-	return new Promise((resolve) => {
-		reader.readAsDataURL(blob);
-		reader.onload = () => {
-		const dataURL = reader.result;
-
-		resolve(dataURL);
-		};
-	});
-	},
 	toggleLike(pid, posterid) {
 		if (localStorage.getItem('isLoggedIn')) {
 			this.id = localStorage.getItem('userId');
@@ -318,6 +302,25 @@ export default {
 				this.errormsg = e.toString();
 			}
 		},
+
+		async listLikes() {
+			if (localStorage.getItem('isLoggedIn')) {
+			this.id = Number(localStorage.getItem('userId'));
+		}
+			// save time
+			if(this.isSameUser()){
+				return 
+			}
+			try {
+				const response = await this.$axios.get(`/users/${posterid}/photos/${pid}/likes`, {headers: { Authorization: 'Bearer ' + this.id }});
+
+				this.likesList = response.data;
+
+			} catch (error) {
+				console.error(error);
+			}
+		},
+	
 	openUsernameModal() {
 		console.log('here1: ' + this.isUsernameModalOpen);
 		this.isUsernameModalOpen = true;
@@ -562,7 +565,6 @@ export default {
 			console.log(`New number of comments: ${newComments}`);
 			this.selectedImage.numcomments = newComments
 		},
-
 
 	
 	},
@@ -811,7 +813,11 @@ export default {
 				<img :src="imageURLS[selectedImage.pid]" @click="hideModal(index)" />
 				<div class="button-container">
 					<button class="heart" @click="toggleLike(selectedImage.pid, selectedImage.posterid)" ></button>
-					<div class="like-counter">{{ selectedImage.numlikes }} Likes</div>
+					<button class="like-counter-button" @click="showLikesModal = true"> {{ selectedImage.numlikes }} Likes</button>
+    				<LikesModal :showLikesModal="showLikesModal" 
+					:posterID="selectedImage.posterid" :pid="selectedImage.pid" 
+					@update:showLikesModal="showLikesModal = $event"
+					/>
 					<div class="button-space"></div>
 					<button class="cloud" @click="showCommentModal = true"> </button>
 					<CommentModal :showCommentModal="showCommentModal" 

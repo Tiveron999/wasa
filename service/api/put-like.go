@@ -11,7 +11,7 @@ import (
 
 func (rt *_router) likePhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 
-	/// Get the poster ID, photo ID and liker ID from the path parameters
+	// Get the poster ID, photo ID and liker ID from the path parameters
 	posterID, err := strconv.ParseUint(ps.ByName("user_id"), 10, 64)
 	if err != nil {
 		// Handle the error, e.g., invalid photo ID

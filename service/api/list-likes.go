@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
 	// "github.com/Tiveron999/Wasa/service/database"
@@ -11,21 +12,23 @@ import (
 
 func (rt *_router) getLikesList(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 
-	// Parse the query string part. To do that, we need to check whether the latitude, longitude and range exists.
-	// If latitude and longitude are specified, we parse them, and we filter results for them. If range is specified,
-	// the value will be parsed and used as a filter. If it's not specified, 10 will be used as default (as specified in
-	// the OpenAPI file).
-	// If one of latitude or longitude is not specified (or both), no filter will be applied.
+	// Get the poster ID and photo ID from the path parameters
+	posterID, err := strconv.ParseUint(ps.ByName("user_id"), 10, 64)
+	if err != nil {
+		// Handle the error, e.g., invalid photo ID
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
-	var err error
-	var likes []uint64
-
-	var pid uint64
-	var posterid uint64
+	photoID, err := strconv.ParseUint(ps.ByName("photo_id"), 10, 64)
+	if err != nil {
+		// Handle the error, e.g., invalid photo ID
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
 	// Request an unfiltered list of likes from the DB
-	likes, err = rt.db.GetLikesList(pid, posterid)
-
+	likes, err := rt.db.GetLikesList(photoID, posterID)
 	if err != nil {
 		// In this case, we have an error on our side. Log the error (so we can be notified) and send a 500 to the photo
 		// Note: we are using the "logger" inside the "ctx" (context) because the scope of this issue is the request.
@@ -34,13 +37,8 @@ func (rt *_router) getLikesList(w http.ResponseWriter, r *http.Request, ps httpr
 		return
 	}
 
-	/*// Before sending the list to the client we need to convert it to the "frontend" type
-	var frontendLikes = make([]Likes, len(likes))
-	for idx := range likes {
-		frontendLikes[idx].LikeFromDatabase(likes[idx])
-	}*/
-
 	// Send the list to the user.
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	_ = json.NewEncoder(w).Encode(likes)
 }

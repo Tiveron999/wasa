@@ -261,6 +261,20 @@ button {
     font-family: Impact;
 }
 
+  .like-counter-button {
+    /* Remove default button styles */
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+
+    position: relative;
+    left: -3.7rem;
+    top: 3rem;
+
+    color: white;
+    font-family: Impact;
+  }
 
 /* comment button */
 .cloud {
@@ -723,4 +737,82 @@ body {
 /* Hover effect for the button */
 .delete-comment-button:hover {
   background-color: #cc0000; /* Darker red on hover */
+}
+
+/* likes modal */
+.likes-list-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.likes-list-modal-dialog {
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 600px;
+}
+
+.likes-list-modal-content {
+  padding: 20px;
+}
+
+.likes-list-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.likes-list-modal-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.likes-list-modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #ccc;
+}
+
+.likes-list-modal-body {
+  margin-bottom: 20px;
+}
+
+.likes-list-item {
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.likes-list-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.likes-list-modal-btn {
+  background: none;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #007BFF;
+}
+
+.likes-list-modal-close:hover {
+  color: #0056b3;
+}
+
+.likes-list-modal-btn:hover {
+  text-decoration: underline;
 }
