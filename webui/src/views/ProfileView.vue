@@ -704,6 +704,16 @@ export default {
 					<div class="follow-info">
 					<p><strong>{{ userProfile.numphotos }}</strong> posts</p>
 					<p><strong>{{ userProfile.followers  }}</strong> followers</p>
+
+					<button class="follower-button" @click="showFollowersModal = true">
+					<p><strong>{{ userProfile.followers }}</strong> followers</p>
+					</button>
+
+    				<LikesModal :showLikesModal="showLikesModal" 
+					:posterID="selectedImage.posterid" :pid="selectedImage.pid" 
+					@update:showLikesModal="showLikesModal = $event" />
+
+					
 					<p><strong>{{ userProfile.following  }}</strong> following</p>
 					</div>
 					<button type="button" class="btn btn-sm-normal btn-outline-primary follow-button" v-if="!isSameUser()" @click="toggleFollow" 
