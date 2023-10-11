@@ -714,7 +714,7 @@ export default {
 					@update:showLikesModal="showLikesModal = $event" />
 
 					
-					<p><strong>{{ userProfile.following  }}</strong> following</p>
+					<p><strong>{{ userProfile.following }}</strong> following</p>
 					</div>
 					<button type="button" class="btn btn-sm-normal btn-outline-primary follow-button" v-if="!isSameUser()" @click="toggleFollow" 
 					:class="{ following: isFollowing }">
