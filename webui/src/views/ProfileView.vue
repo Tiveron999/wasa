@@ -700,12 +700,12 @@ export default {
 	
 					<p><strong>{{ userProfile.following }}</strong> following</p>
 					</div>
-					<button type="button" class="btn btn-sm-normal btn-outline-primary follow-button" v-if="!isSameUser()" @click="toggleFollow" 
+					<button type="button" class="btn btn-sm-normal btn-outline-primary follow-button bump-up-buttons" v-if="!isSameUser()" @click="toggleFollow" 
 					:class="{ following: isFollowing }">
 					{{ isFollowing ? 'Following' : 'Follow' }}
 					</button>
 					<br>
-					<button type="button" class="btn btn-sm-normal btn-outline-primary red-bg" v-if="!isSameUser()" @click="toggleBan" 
+					<button type="button" class="btn btn-sm-normal btn-outline-primary red-bg bump-up-buttons" v-if="!isSameUser()" @click="toggleBan" 
 					:class="{ banned: isBanned }">
 					{{ isBanned ? 'Unban' : 'Ban' }}
 					</button>
