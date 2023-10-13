@@ -39,6 +39,7 @@ export default {
 			showCommentModal: false,
 			isLoading: false,
 			showLikesModal: false,
+			showFollowersModal: false,
 		}
 	},
 /*	components: {
@@ -706,14 +707,11 @@ export default {
 					<p><strong>{{ userProfile.followers  }}</strong> followers</p>
 
 					<button class="follower-button" @click="showFollowersModal = true">
+					<FollowersModal :showFollowersModal="showFollowersModal" 
+					:userID="userProfile.userID" 
+					@update:showFollowersModal="showFollowersModal = $event" />
 					<p><strong>{{ userProfile.followers }}</strong> followers</p>
-					</button>
-
-    				<LikesModal :showLikesModal="showLikesModal" 
-					:posterID="selectedImage.posterid" :pid="selectedImage.pid" 
-					@update:showLikesModal="showLikesModal = $event" />
-
-					
+					</button>					
 					<p><strong>{{ userProfile.following }}</strong> following</p>
 					</div>
 					<button type="button" class="btn btn-sm-normal btn-outline-primary follow-button" v-if="!isSameUser()" @click="toggleFollow" 
