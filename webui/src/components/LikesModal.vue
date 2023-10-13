@@ -49,7 +49,7 @@ export default {
       <div class="likes-list-modal-dialog">
         <div class="likes-list-modal-content">
           <div class="likes-list-modal-header">
-            <h5 class="likes-list-modal-title">Likes List</h5>
+            <h5 class="likes-list-modal-title">Likes</h5>
             <button type="button" class="likes-list-modal-close" @click="closeModal">
               <span aria-hidden="true">&times;</span>
             </button>

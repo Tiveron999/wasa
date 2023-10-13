@@ -877,6 +877,14 @@ body {
   color: #ccc;
 }
 
+.likes-list-modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #ccc;
+}
+
 .followers-list-modal-body {
   margin-bottom: 20px;
 }

@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
-	"github.com/Tiveron999/Wasa/service/database"
+	// "github.com/Tiveron999/Wasa/service/database"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -19,7 +19,7 @@ func (rt *_router) getFollowers(w http.ResponseWriter, r *http.Request, ps httpr
 	// If one of latitude or longitude is not specified (or both), no filter will be applied.
 
 	var err error
-	var followers []database.Follower
+	var followers []string
 
 	// Extract the user ID from the path
 	userID, err := strconv.ParseUint(ps.ByName("user_id"), 10, 64)
@@ -63,13 +63,7 @@ func (rt *_router) getFollowers(w http.ResponseWriter, r *http.Request, ps httpr
 		return
 	}
 
-	// Before sending the list to the client we need to convert it to the "frontend" type
-	var frontendFollower = make([]Follower, len(followers))
-	for idx := range followers {
-		frontendFollower[idx].FollowerFromDatabase(followers[idx])
-	}
-
 	// Send the list to the user.
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(frontendFollower)
+	_ = json.NewEncoder(w).Encode(followers)
 }

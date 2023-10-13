@@ -547,6 +547,10 @@ export default {
 			this.selectedImage.numcomments = newComments
 		},
 
+		updateIsFollowing(flag) {
+			this.isFollowing = flag
+		},
+
 	
 	},
 	async mounted() {
@@ -689,8 +693,9 @@ export default {
 						</div>
 						<FollowersModal
 							:showFollowersModal="showFollowersModal"
-							:userID="userProfile.userid"
-							@update:showFollowersModal="showFollowersModal = $event" />
+							:userID="userProfile.userid" :sameUser="isSameUser()"
+							@update:showFollowersModal="showFollowersModal = $event" 
+							@following-check="updateIsFollowing"/>
 					</div>
 	
 					<p><strong>{{ userProfile.following }}</strong> following</p>

@@ -106,7 +106,7 @@ type AppDatabase interface {
 
 	UncommentPhoto(uint64) error
 
-	GetFollowers(uint64, uint64, uint64) ([]Follower, error)
+	GetFollowers(uint64, uint64, uint64) ([]string, error)
 
 	RemoveFollower(uint64, uint64) error
 

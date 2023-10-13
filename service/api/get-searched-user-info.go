@@ -110,7 +110,7 @@ func (rt *_router) getSearchedUserInfo(w http.ResponseWriter, r *http.Request, p
 		return
 	}
 
-	var followers []database.Follower
+	var followers []string
 
 	const limitfs = "10"
 	limitfsUint, err := strconv.ParseUint(limitfs, 10, 64)

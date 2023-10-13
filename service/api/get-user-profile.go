@@ -93,7 +93,7 @@ func (rt *_router) getUserProfile(w http.ResponseWriter, r *http.Request, ps htt
 		return
 	}
 
-	var followers []database.Follower
+	var followers []string
 
 	const limitfs = "10"
 	limitfsUint, err := strconv.ParseUint(limitfs, 10, 64)
