@@ -13,24 +13,26 @@ export default {
     sameUser: Boolean,
   },
 
-  methods: {
-    async listFollowers() {
-        
-            try {
-              const response = await this.$axios.get(`/users/${this.userID}/followers`, {headers: {Authorization: 'Bearer ' + this.id }}); 
-              this.followers = response.data;
-              this.checkIsFollowing(this.followers)
-            } catch (error) {
-              console.error('Error fetching followers:', error);
-            }
-          },
+  methods: {  
 
-    checkIsFollowing(followers) {
-        if (!this.sameUser) {
+    async listFollowers() {
+
+			try {
+        const response = await this.$axios.get(`/users/${this.userID}/followers`, {headers: {Authorization: 'Bearer ' + this.id }}); 
+        this.followers = response.data;
+        this.checkIsFollowing(this.followers)
+        } catch (error) {
+        console.error('Error fetching followers:', error);
+        }
+		},
+
+		checkIsFollowing(followers) {
+        if (!this.sameUser && followers) {
             // check if the user is already following so to update the button
             const isFollowing = followers.some(follower => follower.id === this.id);
             console.log(isFollowing)
-            this.$emit('following-check', isFollowing);
+			      this.$emit('following-check', isFollowing);
+            
         }
     },
 
@@ -43,6 +45,7 @@ export default {
   created() {
     this.listFollowers();
   },
+  
 };
 
 </script>

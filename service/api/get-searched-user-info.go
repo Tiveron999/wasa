@@ -83,7 +83,7 @@ func (rt *_router) getSearchedUserInfo(w http.ResponseWriter, r *http.Request, p
 		return
 	}
 
-	var following []database.Follower
+	var following []string
 	const limitf = "10"
 
 	limitfUint, err := strconv.ParseUint(limitf, 10, 64)

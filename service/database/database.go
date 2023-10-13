@@ -114,7 +114,7 @@ type AppDatabase interface {
 
 	BanUser(Banned) (Banned, error)
 
-	GetFollowing(uint64, uint64, uint64) ([]Follower, error)
+	GetFollowing(uint64, uint64, uint64) ([]string, error)
 
 	FollowUser(Follower) error
 

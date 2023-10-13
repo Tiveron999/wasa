@@ -534,8 +534,53 @@ paths:
         "404": { $ref: "#/components/responses/Not-Found"}
         "500": { $ref: "#/components/responses/InternalServerError"}
 
-
   
+  /users/{user_id}/following:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
+    - name: following_id
+      in: path
+      required: true
+      description: this is the following user id
+      schema:
+        type: integer
+        description: e.g., /following/1234
+    get:
+      operationId: getFollowing
+      summary: list all followed users
+      description: |
+        Obtain the list of all followed users
+      tags:
+        - profile
+      responses:
+        "200":
+          description: |
+            list of followed users shown
+          content:
+            application/json:
+              schema:
+                type: array
+                description: list of users followed
+                maxItems: 500
+                minItems: 0
+                items:
+                  $ref: "#/components/schemas/following-list"
+          #links:
+           # GetUserByUserId:
+            #  $ref: '#/components/links/GetUserByUserId'
+        "400": { $ref: "#/components/responses/BadRequest"}
+        "401": { $ref: "#/components/responses/Unauthorized"}
+        "403": { $ref: "#/components/responses/Forbidden"}
+        "404": { $ref: "#/components/responses/Not-Found"}
+        "500": { $ref: "#/components/responses/InternalServerError"}
+
+
   /users/{user_id}/following/{following_id}:
     parameters:
     - name: user_id
@@ -564,34 +609,6 @@ paths:
           #    GetUserByUserId:
            #     $ref: '#/components/links/GetUserByUserId'
         "204": { description: user followed successfully }
-        "400": { $ref: "#/components/responses/BadRequest"}
-        "401": { $ref: "#/components/responses/Unauthorized"}
-        "403": { $ref: "#/components/responses/Forbidden"}
-        "404": { $ref: "#/components/responses/Not-Found"}
-        "500": { $ref: "#/components/responses/InternalServerError"}
-    get:
-      operationId: getFollowing
-      summary: list all followed users
-      description: |
-        Obtain the list of all followed users
-      tags:
-        - profile
-      responses:
-        "200":
-          description: |
-            list of followed users shown
-          content:
-            application/json:
-              schema:
-                type: array
-                description: list of users followed
-                maxItems: 500
-                minItems: 0
-                items:
-                  $ref: "#/components/schemas/following-list"
-          #links:
-           # GetUserByUserId:
-            #  $ref: '#/components/links/GetUserByUserId'
         "400": { $ref: "#/components/responses/BadRequest"}
         "401": { $ref: "#/components/responses/Unauthorized"}
         "403": { $ref: "#/components/responses/Forbidden"}

@@ -1,11 +1,11 @@
 package database
 
-func (db *appdbimpl) GetFollowing(id uint64, limit uint64, offset uint64) ([]Follower, error) {
-	var ret []Follower
+func (db *appdbimpl) GetFollowing(id uint64, limit uint64, offset uint64) ([]string, error) {
+	var ret []string
 
 	// Plain simple SELECT query
-	rows, err := db.c.Query(`SELECT userid FROM followers WHERE followerid=? LIMIT ? OFFSET ?`,
-		id, limit, offset)
+	rows, err := db.c.Query(
+		`SELECT users.username FROM followers INNER JOIN users ON followers.followerid = users.usid WHERE followers.followerid = ? LIMIT ? OFFSET ?`, id, limit, offset)
 	if err != nil {
 		return nil, err
 	}
@@ -13,13 +13,13 @@ func (db *appdbimpl) GetFollowing(id uint64, limit uint64, offset uint64) ([]Fol
 
 	// Here we read the resultset and we build the list to be returned
 	for rows.Next() {
-		var f Follower
-		err = rows.Scan(&f.UserID)
+		var username string
+		err = rows.Scan(&username)
 		if err != nil {
 			return nil, err
 		}
 
-		ret = append(ret, f)
+		ret = append(ret, username)
 	}
 	if err = rows.Err(); err != nil {
 		return nil, err

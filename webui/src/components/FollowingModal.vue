@@ -18,7 +18,6 @@ export default {
             try {
               const response = await this.$axios.get(`/users/${this.userID}/following`, {headers: {Authorization: 'Bearer ' + this.id }}); 
               this.following = response.data;
-              this.checkIsFollowing(this.following)
             } catch (error) {
               console.error('Error fetching following:', error);
             }

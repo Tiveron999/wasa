@@ -4,7 +4,6 @@ import axios from 'axios'
 
 import { toRaw } from 'vue';
 
-// import UsernameModal from '../components/UsernameModal.vue';
 
 
 export default {
@@ -41,19 +40,17 @@ export default {
 			showLikesModal: false,
 			showFollowersModal: false,
 			showFollowingModal: false,
+			followers_list: [],
+			following_list: [],
 		}
 	},
-/*	components: {
-		UsernameModal
-	}, */
+
 	watch: {
     // Watch for changes to the route or path
     '$route': 'onRouteChange'
   	},
 
 	methods: {
-		/* this.$axios.post('/session', JSON.stringify({username: this.username}), {headers: { 'Content-Type': 'application/json',  'Accept': 'application/json', 
-		'Authorization': `Bearer ${localStorage.getItem('userId')}`}}) */
 		async refresh() {
 			this.youAreBanned = false,
 			this.isBanned = false,
@@ -68,26 +65,7 @@ export default {
 			}
 			this.loading = false;
 		},
-		/*async uploadImage(event) {
-			const file = event.target.files[0];
-			const formData = new FormData();
-			formData.append('image', file);
-
-			const reader = new FileReader();
-			reader.readAsDataURL(file);
-			reader.onload = function(event) {
-			const img = document.createElement("img");
-			img.src = event.target.result;
-			document.body.appendChild(img);
-	};
-  
-		try {
-		  const response = await this.$axios.post("/users/:user_id/photos/:photo_id", formData);
-		  console.log(response.data);
-		} catch (error) {
-		  console.error(error);
-		}
-	  },*/
+		
 	  async uploadImage2(event) {
 		const formData = new FormData();
 		const files = event.target.files;
@@ -140,8 +118,6 @@ export default {
 
 		showModal(index) {
 		this.selectedImage = this.images[index];
-	
-		
 		this.show = true;
 		
 	},
@@ -149,25 +125,6 @@ export default {
 		this.selectedImage = this.images[index];
 		this.show = false;
 	},
-	  /*profileLink() {
-      if (this.isLoggedIn) {
-        return `/users/${localStorage.getItem('userId')}/profile`
-      } else {
-        return '/users/:user_id/profile'
-      }
-	},*/
-	/*toggleLike(image) {
-      // Update the likes property of the selected image
-      image.likes = image.likes ? 0 : 1
-	  if (localStorage.getItem('isLoggedIn')) {
-		this.id = localStorage.getItem('userId');
-		this.$axios.put(`/users/${this.id}/photos/{photo_id}/likes/${this.id}`)
-      .then(response => {})
-      .catch(error => {
-        console.log(error);
-      });
-    }
-	}, */
 
 	async getImages() {
 		if (localStorage.getItem('isLoggedIn')) {
@@ -490,10 +447,6 @@ export default {
 			}
 		},
 
-		onFollowerButtonClick() {
-      console.log('Follower button clicked!');
-    },
-
 		onRouteChange(newRoute, oldRoute) {
 			// Access the new route and old route objects
 			console.log('Route changed:', newRoute, oldRoute);
@@ -519,17 +472,12 @@ export default {
 		updateIsFollowing(flag) {
 			this.isFollowing = flag
 		},
-
 	
 	},
 	async mounted() {
 		this.refresh()
 		
 		console.log("are you?", this.youAreBanned)
-
-		
-      console.log('Follower button clicked!', this.showFollowersModal);
-    
 
 		await this.getYourBans()
 		await this.getSearchBans()
@@ -664,7 +612,7 @@ export default {
 							:showFollowersModal="showFollowersModal"
 							:userID="userProfile.userid" :sameUser="isSameUser()"
 							@update:showFollowersModal="showFollowersModal = $event" 
-							@following-check="updateIsFollowing"/>
+							/>
 					</div>
 	
 					<div class="following-container">
@@ -675,9 +623,9 @@ export default {
 							:showFollowingModal="showFollowingModal"
 							:userID="userProfile.userid" 
 							@update:showFollowingModal="showFollowingModal = $event" 
+							@following-check="updateComments"
 							/>
 					</div>
-					<p><strong>{{ userProfile.following }}</strong> following</p>
 					</div>
 					<button type="button" class="btn btn-sm-normal btn-outline-primary follow-button bump-up-buttons" v-if="!isSameUser()" @click="toggleFollow" 
 					:class="{ following: isFollowing }">

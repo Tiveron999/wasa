@@ -40,7 +40,7 @@ func (rt *_router) Handler() http.Handler {
 	rt.router.PUT("/users/:user_id/banned/:banned_id", rt.wrap(rt.banUser))
 
 	// following
-	rt.router.GET("/users/:user_id/following/:following_id", rt.wrap(rt.getFollowing))
+	rt.router.GET("/users/:user_id/following", rt.wrap(rt.getFollowing))
 	rt.router.DELETE("/users/:user_id/following/:following_id", rt.wrap(rt.unfollowUser))
 	rt.router.PUT("/users/:user_id/following/:following_id", rt.wrap(rt.followUser))
 

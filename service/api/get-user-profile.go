@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/Tiveron999/Wasa/service/api/reqcontext"
-	"github.com/Tiveron999/Wasa/service/database"
+	// "github.com/Tiveron999/Wasa/service/database"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -66,7 +66,7 @@ func (rt *_router) getUserProfile(w http.ResponseWriter, r *http.Request, ps htt
 		return
 	}
 
-	var following []database.Follower
+	var following []string
 	const limitf = "10"
 
 	limitfUint, err := strconv.ParseUint(limitf, 10, 64)
