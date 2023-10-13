@@ -40,6 +40,7 @@ export default {
 			isLoading: false,
 			showLikesModal: false,
 			showFollowersModal: false,
+			showFollowingModal: false,
 		}
 	},
 /*	components: {
@@ -127,43 +128,11 @@ export default {
 		}
 
 		try {
-		const response = await this.$axios.post(`/users/${this.id}/photos`, formData, 
-		  {headers: { 'Content-Type': 'multipart/form-data', Authorization: 'Bearer ' + this.id}});
+			await this.$axios.post(`/users/${this.id}/photos`, formData, 
+		 	 {headers: { 'Content-Type': 'multipart/form-data', Authorization: 'Bearer ' + this.id}});
 		  
-		  /*
-		  // The response data now contains an array of relative paths
-			let newImage = JSON.stringify(response.data)
-			this.images.push(newImage)
-			console.log(newImage)
-			// const imageUrl = URL.createObjectURL(newImage.image);
-			// this.imageURLS[newImage.pid] = imageUrl;
-
-
-			const binaryData = newImage.image
- 
-			const blob = new Blob([binaryData], { type: 'image/jpeg' }); 
-			const imageUrl = URL.createObjectURL(blob);
-			this.imageURLS[newImage.pid] = imageUrl;
-
-			console.log(imageUrl) */
-				
 			await this.getImages()
-		 /* console.log(response.data);
-		  	const jsonData = response.data;
-			const imageBlob = jsonData.image;
-
-			// Create a Blob URL for the image Blob
-			const imageUrl = URL.createObjectURL(imageBlob);
-
-			// Push the URL into the array
-			this.images.push(imageUrl);
-
-			// Handle other parts of the JSON response as needed
-			this.uploadedFiles = jsonData;
-			*/
-
-			// this.uploadedFiles = JSON.parse(JSON.stringify(response.data))
-
+		
 		} catch (error) {
 		  console.error(error);
 		}
@@ -698,6 +667,16 @@ export default {
 							@following-check="updateIsFollowing"/>
 					</div>
 	
+					<div class="following-container">
+						<div @click="showFollowingModal = true" class="following-button">
+							<p><strong>{{ userProfile.following }}</strong> following</p>
+						</div>
+						<FollowingModal
+							:showFollowingModal="showFollowingModal"
+							:userID="userProfile.userid" 
+							@update:showFollowingModal="showFollowingModal = $event" 
+							/>
+					</div>
 					<p><strong>{{ userProfile.following }}</strong> following</p>
 					</div>
 					<button type="button" class="btn btn-sm-normal btn-outline-primary follow-button bump-up-buttons" v-if="!isSameUser()" @click="toggleFollow" 
