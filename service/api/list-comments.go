@@ -11,12 +11,6 @@ import (
 )
 
 func (rt *_router) getCommentsList(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	/*posterID, err := strconv.ParseUint(ps.ByName("user_id"), 10, 64)                     useful for the ban
-	if err != nil {
-		// Handle the error, e.g., invalid photo ID
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}*/
 
 	photoID, err := strconv.ParseUint(ps.ByName("photo_id"), 10, 64)
 	if err != nil {
@@ -46,6 +40,7 @@ func (rt *_router) getCommentsList(w http.ResponseWriter, r *http.Request, ps ht
 
 	// Send the list of comments to the client as JSON
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(frontendComments); err != nil {
 		ctx.Logger.WithError(err).Error("can't encode comments to JSON")
 		w.WriteHeader(http.StatusInternalServerError)

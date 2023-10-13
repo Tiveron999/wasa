@@ -108,8 +108,6 @@ type AppDatabase interface {
 
 	GetFollowers(uint64, uint64, uint64) ([]string, error)
 
-	RemoveFollower(uint64, uint64) error
-
 	GetBannedList() ([]Banned, error)
 
 	UnbanUser(uint64, uint64) error

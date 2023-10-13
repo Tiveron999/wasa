@@ -65,5 +65,6 @@ func (rt *_router) getFollowers(w http.ResponseWriter, r *http.Request, ps httpr
 
 	// Send the list to the user.
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	_ = json.NewEncoder(w).Encode(followers)
 }

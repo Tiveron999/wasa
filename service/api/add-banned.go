@@ -47,7 +47,11 @@ func (rt *_router) banUser(w http.ResponseWriter, r *http.Request, ps httprouter
 	// banned.BannedFromDatabase(dbbanned)
 
 	// stop following user you ban (may not be already following)
-	err = rt.db.RemoveFollower(BannerID, toBeBannedID)
+	follower1 := Follower{
+		UserID:     BannerID,
+		FollowerID: toBeBannedID,
+	}
+	err = rt.db.UnfollowUser(follower1.FollowerToDatabase())
 	if errors.Is(err, database.ErrFollowerDoesNotExist) {
 		// The follower (indicated by `(uid, fid)`) does not exist, reject the action indicating an error on the client side.
 		s := fmt.Sprintf("%s + %s", strconv.FormatUint(BannerID, 10), strconv.FormatUint(toBeBannedID, 10)) // to create one string that keeps track of both IDs
@@ -66,7 +70,11 @@ func (rt *_router) banUser(w http.ResponseWriter, r *http.Request, ps httprouter
 	}
 
 	// banned user can't see the banner's posts
-	err = rt.db.RemoveFollower(toBeBannedID, BannerID)
+	follower2 := Follower{
+		UserID:     toBeBannedID,
+		FollowerID: BannerID,
+	}
+	err = rt.db.UnfollowUser(follower2.FollowerToDatabase())
 	if errors.Is(err, database.ErrFollowerDoesNotExist) {
 		// The follower (indicated by `(uid, fid)`) does not exist, reject the action indicating an error on the client side.
 		s := fmt.Sprintf("%s + %s", strconv.FormatUint(toBeBannedID, 10), strconv.FormatUint(BannerID, 10)) // to create one string that keeps track of both IDs

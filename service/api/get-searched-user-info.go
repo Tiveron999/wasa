@@ -147,5 +147,6 @@ func (rt *_router) getSearchedUserInfo(w http.ResponseWriter, r *http.Request, p
 
 	// Send the output to the user.
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	_ = json.NewEncoder(w).Encode(profile)
 }

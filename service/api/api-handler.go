@@ -33,7 +33,6 @@ func (rt *_router) Handler() http.Handler {
 
 	// followers
 	rt.router.GET("/users/:user_id/followers", rt.wrap(rt.getFollowers))
-	rt.router.DELETE("/users/:user_id/followers/:follower_id", rt.wrap(rt.removeFollower))
 
 	// banned
 	rt.router.GET("/users/:user_id/bans", rt.wrap(rt.getBannedList))

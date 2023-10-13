@@ -12,15 +12,7 @@ import (
 )
 
 func (rt *_router) commentPhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	// Get the poster ID and photo ID from the path parameters
-
-	/*posterID, err := strconv.ParseUint(ps.ByName("user_id"), 10, 64)                     useful for the ban
-	if err != nil {
-		// Handle the error, e.g., invalid photo ID
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}*/
-
+	// Get the photo ID from the path parameters
 	photoID, err := strconv.ParseUint(ps.ByName("photo_id"), 10, 64)
 	if err != nil {
 		// Handle the error, e.g., invalid photo ID
@@ -105,6 +97,6 @@ func (rt *_router) commentPhoto(w http.ResponseWriter, r *http.Request, ps httpr
 	w.Header().Set("Content-Type", "application/json")
 
 	// Write the response with the updated comment count
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusCreated)
 	_ = json.NewEncoder(w).Encode(map[string]int{"comments": int(commentsNumber)})
 }

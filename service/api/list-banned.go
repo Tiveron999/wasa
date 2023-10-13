@@ -39,5 +39,6 @@ func (rt *_router) getBannedList(w http.ResponseWriter, r *http.Request, ps http
 
 	// Send the list to the user.
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	_ = json.NewEncoder(w).Encode(frontendBanned)
 }
