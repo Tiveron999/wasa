@@ -7,6 +7,7 @@ import LoadingSpinner from './components/LoadingSpinner.vue'
 import UsernameModal from './components/UsernameModal.vue'
 import CommentModal from './components/CommentModal.vue';
 import LikesModal from './components/LikesModal.vue';
+import FollowersModal from './components/FollowersModal.vue';
 
 import './assets/dashboard.css'
 import './assets/main.css'
@@ -19,6 +20,7 @@ app.component("LoadingSpinner", LoadingSpinner);
 app.component("UsernameModal", UsernameModal);
 app.component("CommentModal", CommentModal);
 app.component("LikesModal", LikesModal);
+app.component("FollowersModal", FollowersModal);
 
 app.use(router)
 app.mount('#app')

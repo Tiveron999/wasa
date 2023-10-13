@@ -506,10 +506,7 @@ export default {
 		async banUser() {
 		try {
 
-			const result = await this.$axios.put(`/users/${this.id}/banned/${this.$route.params.user_id}`, null, {headers: {Authorization: 'Bearer ' + this.id}})
-
-			// console.log("followers", this.followers)
-			// this.getProfile()
+			await this.$axios.put(`/users/${this.id}/banned/${this.$route.params.user_id}`, null, {headers: {Authorization: 'Bearer ' + this.id}})
 		} catch (e) {
 			console.error("error: ", e);
 			this.errormsg = e.toString();
@@ -517,18 +514,19 @@ export default {
 		},
 		async unbanUser() {
 			try {
-				const result = await this.$axios.delete(`/users/${this.id}/banned/${this.$route.params.user_id}`, {headers: { Authorization: 'Bearer ' + this.id }});
-				
-				// this.followers -= 1;
-				// this.getProfile()
+				await this.$axios.delete(`/users/${this.id}/banned/${this.$route.params.user_id}`, {headers: { Authorization: 'Bearer ' + this.id }});
 			} catch (e) {
 				console.error("error: ", e);
 				this.errormsg = e.toString();
 			}
 		},
 
+		onFollowerButtonClick() {
+      console.log('Follower button clicked!');
+    },
+
 		onRouteChange(newRoute, oldRoute) {
-			// You can access the new route and old route objects
+			// Access the new route and old route objects
 			console.log('Route changed:', newRoute, oldRoute);
 			if (
 				oldRoute.params.user_id &&
@@ -553,37 +551,17 @@ export default {
 	},
 	async mounted() {
 		this.refresh()
-
-		/*if (localStorage.getItem('isLoggedIn')) {
-			this.id = localStorage.getItem('userId');
-			this.$axios.get(`/users/${this.id}/following/:following_id`, {headers: {Authorization: 'Bearer ' + this.id}})
-		.then(response => {
-			this.following = response.data.following;
-			// console.log();
-		})
-		.catch(error => {
-			console.log(error);
-		});
-
-
-		this.$axios.get(`/users/${this.id}/followers/:follower_id`, {headers: {Authorization: 'Bearer ' + this.id}})
-		.then(response => {
-			this.followers = response.data.followers;
-		})
-		.catch(error => {
-			console.log(error);
-		});
-
-			}*/
 		
 		console.log("are you?", this.youAreBanned)
 
+		
+      console.log('Follower button clicked!', this.showFollowersModal);
+    
 
 		await this.getYourBans()
 		await this.getSearchBans()
-		await this.getImages()
-		// await this.resolveImageUrls()
 		await this.getProfile()
+		await this.getImages()
 	},
 	computed: {
 			/*usernamePattern() {
@@ -704,14 +682,17 @@ export default {
 					<h3 class="username"> {{ userProfile.username  }}</h3>
 					<div class="follow-info">
 					<p><strong>{{ userProfile.numphotos }}</strong> posts</p>
-					<p><strong>{{ userProfile.followers  }}</strong> followers</p>
-
-					<button class="follower-button" @click="showFollowersModal = true">
-					<FollowersModal :showFollowersModal="showFollowersModal" 
-					:userID="userProfile.userID" 
-					@update:showFollowersModal="showFollowersModal = $event" />
-					<p><strong>{{ userProfile.followers }}</strong> followers</p>
-					</button>					
+					
+					<div class="follower-container">
+						<div @click="showFollowersModal = true" class="follower-button">
+							<p><strong>{{ userProfile.followers }}</strong> followers</p>
+						</div>
+						<FollowersModal
+							:showFollowersModal="showFollowersModal"
+							:userID="userProfile.userid"
+							@update:showFollowersModal="showFollowersModal = $event" />
+					</div>
+	
 					<p><strong>{{ userProfile.following }}</strong> following</p>
 					</div>
 					<button type="button" class="btn btn-sm-normal btn-outline-primary follow-button" v-if="!isSameUser()" @click="toggleFollow" 
@@ -773,8 +754,7 @@ export default {
 					</h5>
 					<form enctype="multipart/form-data">
 						<input style = "display:none" type="file"  @change="uploadImage3" ref = "pickImage" accept="image/jpeg"/>
-						<!--  <p v-if="isFirst"> Click to select </p> 
-						<p v-if="isSaving"> Uploading image... </p>  -->
+						<!-- <p v-if="isSaving"> Uploading image... </p>  -->
 						<button class='btn btn-sm-normal btn-outline-primary' type="button" @click="$refs.pickImage.click()">Choose</button>
 					</form>
 				</div>

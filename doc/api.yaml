@@ -654,8 +654,8 @@ paths:
         "403": { $ref: "#/components/responses/Forbidden"}
         "500": { $ref: "#/components/responses/InternalServerError"}
 
-  
-  /users/{user_id}/followers/{follower_id}:
+
+  /users/{user_id}/followers:
     parameters:
     - name: user_id
       in: path
@@ -664,13 +664,6 @@ paths:
       schema:
         type: integer
         description: e.g., /users/1234
-    - name: follower_id
-      in: path
-      required: true
-      description: this is the follower id
-      schema:
-        type: integer
-        description: e.g., /followers/1234
     get:
       operationId: getFollowers
       summary: list all followers for the specified user
@@ -699,6 +692,24 @@ paths:
         "403": { $ref: "#/components/responses/Forbidden"}
         "404": { $ref: "#/components/responses/Not-Found"}
         "500": { $ref: "#/components/responses/InternalServerError"}
+
+
+  /users/{user_id}/followers/{follower_id}:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      description: this is the user id
+      schema:
+        type: integer
+        description: e.g., /users/1234
+    - name: follower_id
+      in: path
+      required: true
+      description: this is the follower id
+      schema:
+        type: integer
+        description: e.g., /followers/1234
     delete:
       operationId: removeFollower
       summary: remove a user from followers list

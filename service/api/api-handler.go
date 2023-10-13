@@ -32,7 +32,7 @@ func (rt *_router) Handler() http.Handler {
 	rt.router.DELETE("/users/:user_id/photos/:photo_id/comments/:comment_id", rt.wrap(rt.uncommentPhoto))
 
 	// followers
-	rt.router.GET("/users/:user_id/followers/:follower_id", rt.wrap(rt.getFollowers))
+	rt.router.GET("/users/:user_id/followers", rt.wrap(rt.getFollowers))
 	rt.router.DELETE("/users/:user_id/followers/:follower_id", rt.wrap(rt.removeFollower))
 
 	// banned

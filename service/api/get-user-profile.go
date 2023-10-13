@@ -121,6 +121,7 @@ func (rt *_router) getUserProfile(w http.ResponseWriter, r *http.Request, ps htt
 
 	// Create the profile object
 	profile = Profile{
+		UserID:    userID,
 		Username:  username,
 		NumPhotos: uint64(len(photos)),
 		Followers: uint64(len(followers)),
