@@ -5,7 +5,7 @@ func (db *appdbimpl) GetFollowing(id uint64, limit uint64, offset uint64) ([]str
 
 	// Plain simple SELECT query
 	rows, err := db.c.Query(
-		`SELECT users.username FROM followers INNER JOIN users ON followers.followerid = users.usid WHERE followers.followerid = ? LIMIT ? OFFSET ?`, id, limit, offset)
+		`SELECT users.username FROM followers INNER JOIN users ON followers.userid = users.usid WHERE followers.followerid = ? LIMIT ? OFFSET ?`, id, limit, offset)
 	if err != nil {
 		return nil, err
 	}

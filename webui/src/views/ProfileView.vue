@@ -470,6 +470,7 @@ export default {
 		},
 
 		updateIsFollowing(flag) {
+			console.log("check pt 2:", flag)
 			this.isFollowing = flag
 		},
 	
@@ -525,73 +526,10 @@ export default {
 
 			<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
 
-
-
-			
-
-		
-		<!-- 
-		<button class="btn btn-primary" @click="openUsernameModal">Edit</button>
-
-
-		<div class="modal" :class="{ 'show': isUsernameModalOpen }">
-		<div class="modal-dialog">
-			<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Change Username</h5>
-				<button type="button" class="close" @click="closeUsernameModal">
-				<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<form @submit.prevent="changeUsername">
-				<div class="form-group">
-					<label for="newUsername">New Username</label>
-					<input
-					type="text"
-					class="form-control"
-					id="newUsername"
-					v-model="newUsername"
-					:pattern="usernamePattern"
-					title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
-					/>
-				</div>
-				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary">Save</button>
-					<button type="button" class="btn btn-secondary" @click="closeUsernameModal">Close</button>
-				</div>
-				</form>
-			</div>
-			</div>
-		</div>
-		</div> -->
 	
 
 			</div>
 			
-						
-
-
-				<!-- fix modal appearing by clicking on a button instead of being static 
-					<modal v-model="modalVisible" @modify="changeUsername">
-					<div class="input-group mb-3 w-25" v-if="isSameUser()">
-						<input
-					type="text"
-					class="form-control w-25"
-					placeholder="Your new username..."
-					v-model="newUsername"
-					:pattern="usernamePattern"
-					title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
-					/>
-
-						<div class="input-group-append" v-if="isSameUser()">
-						<button class="btn btn-outline-secondary" @click="changeUsername" >Modify</button>
-						</div>
-					</div>
-					</modal>  --> 
-
-					
-
 
 
 		<div v-if=!this.youAreBanned>
@@ -612,6 +550,7 @@ export default {
 							:showFollowersModal="showFollowersModal"
 							:userID="userProfile.userid" :sameUser="isSameUser()"
 							@update:showFollowersModal="showFollowersModal = $event" 
+							@following-check="updateIsFollowing"
 							/>
 					</div>
 	
@@ -622,8 +561,7 @@ export default {
 						<FollowingModal
 							:showFollowingModal="showFollowingModal"
 							:userID="userProfile.userid" 
-							@update:showFollowingModal="showFollowingModal = $event" 
-							@following-check="updateComments"
+							@update:showFollowingModal="showFollowingModal = $event"
 							/>
 					</div>
 					</div>
@@ -639,8 +577,6 @@ export default {
 				</div>
 				<br> <br> <br> <br>
 			</div>
-
-
 
 
 
@@ -674,8 +610,6 @@ export default {
 
 
 
-
-
 			<br> <br><br>
 			<div id="image-container"> 
 				<div v-if="isSameUser()"> 
@@ -701,12 +635,9 @@ export default {
 					<!-- <div v-if="isLoading">	
 						<LoadingSpinner></LoadingSpinner>
 					</div> 
-					<div v-else> 
-						
-					
-					
-			
-			<p>{{ showCommentModal }}</p>-->
+					<div v-else> -->
+
+
 					<img v-for="(image, index) in images" :key="image.pid" :src="imageURLS[image.pid]" :draggable="false" @click="showModal(index)"/>
 					
 				</div> 
@@ -734,34 +665,7 @@ export default {
 			</div>     
 			
 
-		<!-- <div class="input-group-append">
-			<button class="btn btn-sm btn-outline-primary" v-if="isSameUser()" @click="showUsernameModal()">Edit</button>
-		</div>  -->
 		<p v-if="error">{{ error }}</p>
-
-		<!-- 
-		<div class="modal fade" id="editUsernameModal" tabindex="-1" role="dialog" aria-labelledby="editUsernameModalLabel" aria-hidden="true" v-show="modalVisible">
-			<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-				<h5 class="modal-title" id="editUsernameModalLabel">Edit Username</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="hideUsernameModal()"></button>
-				</div>
-				<div class="modal-body">
-				<form>
-					<div class="mb-3">
-					<label for="modal-input" class="form-label">New Username</label>
-					<input type="text" class="form-control" id="modal-input" v-model="newUsername">
-					</div>
-				</form>
-				</div>
-				<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="hideUsernameModal()">Cancel</button>
-				<button type="button" class="btn btn-primary" v-if="isSameUser()" @click="updateUsername()">Confirm</button>
-				</div>
-			</div>
-			</div>
-		</div>  -->
 
 		</div>
 		<div v-else>

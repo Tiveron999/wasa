@@ -30,7 +30,7 @@ export default {
         if (!this.sameUser && followers) {
             // check if the user is already following so to update the button
             const isFollowing = followers.some(follower => follower.id === this.id);
-            console.log(isFollowing)
+            console.log("check check ", isFollowing)
 			      this.$emit('following-check', isFollowing);
             
         }
