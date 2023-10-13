@@ -48,8 +48,8 @@ func (rt *_router) banUser(w http.ResponseWriter, r *http.Request, ps httprouter
 
 	// stop following user you ban (may not be already following)
 	follower1 := Follower{
-		UserID:     BannerID,
-		FollowerID: toBeBannedID,
+		UserID:     toBeBannedID,
+		FollowerID: BannerID,
 	}
 	err = rt.db.UnfollowUser(follower1.FollowerToDatabase())
 	if errors.Is(err, database.ErrFollowerDoesNotExist) {
@@ -71,8 +71,8 @@ func (rt *_router) banUser(w http.ResponseWriter, r *http.Request, ps httprouter
 
 	// banned user can't see the banner's posts
 	follower2 := Follower{
-		UserID:     toBeBannedID,
-		FollowerID: BannerID,
+		UserID:     BannerID,
+		FollowerID: toBeBannedID,
 	}
 	err = rt.db.UnfollowUser(follower2.FollowerToDatabase())
 	if errors.Is(err, database.ErrFollowerDoesNotExist) {
