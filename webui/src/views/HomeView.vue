@@ -210,17 +210,10 @@ export default {
 
         <ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
 
+		<LoadingSpinner v-if="isLoading" />
+			<div v-else> 
         <div class="image-row">
-				<!-- <div v-if="isLoading">	
-					<LoadingSpinner></LoadingSpinner>
-				</div> 
-				<div v-else> 
-					
 				
-				@click="showCommentModal = true"
-			
-			
-			<CommentModal :showCommentModal="showCommentModal" @update:showCommentModal="showCommentModal = $event"></CommentModal>-->
 				<img v-for="(image, index) in images" :key="image.pid" :src="imageURLS[image.pid]" :draggable="false" @click="showModal(index)"/>
 				
 			</div> 
@@ -245,6 +238,7 @@ export default {
 					<div class="delete-button-container">
 						<button class="btn btn-sm-normal btn-outline-primary delete-photo" type="button" @click="deletePhoto(selectedImage.pid)">Delete</button>
 					</div>
+		</div>
     </div>
 </template>
 

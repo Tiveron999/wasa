@@ -631,13 +631,13 @@ export default {
 					</span>
 				</h5>
 				
+
+				<LoadingSpinner v-if="isLoading" />
+					<div v-else> 
+
+						
 				<div class="image-row">
-					<!-- <div v-if="isLoading">	
-						<LoadingSpinner></LoadingSpinner>
-					</div> 
-					<div v-else> -->
-
-
+					
 					<img v-for="(image, index) in images" :key="image.pid" :src="imageURLS[image.pid]" :draggable="false" @click="showModal(index)"/>
 					
 				</div> 
@@ -663,7 +663,7 @@ export default {
 						<button class="btn btn-sm-normal btn-outline-primary delete-photo" type="button" v-if="isSameUser()" @click="deletePhoto(selectedImage.pid)">Delete</button>
 					</div>
 			</div>     
-			
+		</div>
 
 		<p v-if="error">{{ error }}</p>
 
