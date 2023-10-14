@@ -581,15 +581,14 @@ export default {
 
 
 
-			<button v-if="isSameUser()" class="btn btn-sm-normal btn-outline-primary" @click="openUsernameModal" data-bs-toggle="modal" data-bs-target="#UsernameModal">Edit</button>
-
-			<div class="modal fade" id="UsernameModal" tabindex="-1" :class="{ 'show': isUsernameModalOpen }">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title">Change Username</h5>
+			<button v-if="isSameUser()" class="btn btn-sm-normal btn-outline-primary" @click="openUsernameModal">Edit</button>
+			<div class="username-modal fade" id="UsernameModal" tabindex="-1" v-if="isUsernameModalOpen" :class="{ 'show': isUsernameModalOpen }">
+				<div class="username-modal-dialog">
+					<div class="username-modal-content">
+						<div class="username-modal-header">
+							<h5 class="username-modal-title">Change Username</h5>
 						</div>
-						<div class="modal-body">
+						<div class="username-modal-body">
 							<input
 							type="text"
 							class="form-control"
@@ -599,7 +598,7 @@ export default {
 							title="Username must start with a letter and be between 6 and 15 characters long. Only alphanumeric characters and underscores are allowed."
 							/>
 						</div>
-						<div class="modal-footer">
+						<div class="username-modal-footer">
 							<button type="button" class="btn btn-sm-normal btn-outline-secondary green-bg"  @click="changeUsername">Save</button>
 							<button type="button" class="btn btn-sm-normal btn-outline-primary red-bg" @click="closeUsernameModal">Close</button>
 

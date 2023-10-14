@@ -488,6 +488,59 @@ body {
     margin-bottom: 1rem;
     }
 
+/* username modal */
+.username-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1050;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Style for the modal dialog */
+.username-modal-dialog {
+  max-width: 400px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Style for the modal content */
+.username-modal-content {
+  padding: 20px;
+}
+
+/* Style for the modal header */
+.username-modal-header {
+  text-align: center;
+  background-color: #3498db;
+  color: white;
+  padding: 10px;
+}
+
+/* Style for the modal title */
+.username-modal-title {
+  margin: 0;
+}
+
+/* Style for the modal body */
+.username-modal-body {
+  text-align: center;
+  padding: 10px;
+}
+
+/* Style for the input field */
+.form-control {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0;
+}
+
+/* Style for the modal footer */
+.username-modal-footer {
+  text-align: center;
+  padding: 10px;
+}
+
 
   /* profile info */
 .follow-button-wrapper {
