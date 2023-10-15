@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	// "fmt"
 	"net/http"
 	"strconv"
 
@@ -27,8 +26,6 @@ func (rt *_router) getCommentsList(w http.ResponseWriter, r *http.Request, ps ht
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-
-	// fmt.Println(comments)
 
 	// Convert comments to the desired frontend structure if needed
 	var frontendComments []Comment

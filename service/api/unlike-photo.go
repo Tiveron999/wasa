@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 
-	// "fmt"
 	"net/http"
 	"strconv"
 
@@ -44,9 +43,6 @@ func (rt *_router) unlikePhoto(w http.ResponseWriter, r *http.Request, ps httpro
 		return
 	}
 
-	// likes1, err := rt.db.GetLikesList(photoID, posterID)
-	// fmt.Println("likes 1", likes1)
-
 	err = rt.db.UnlikePhoto(likerID, photoID, posterID)
 	if errors.Is(err, database.ErrLikeDoesNotExist) {
 		// The like (indicated by `id`) does not exist, reject the action indicating an error on the client side.
@@ -61,7 +57,6 @@ func (rt *_router) unlikePhoto(w http.ResponseWriter, r *http.Request, ps httpro
 
 	// Request an unfiltered list of likes from the DB
 	likes, err := rt.db.GetLikesList(photoID, posterID)
-	// fmt.Println("likes 2", likes)
 
 	likesNumber := uint64(len(likes))
 

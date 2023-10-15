@@ -2,7 +2,7 @@ package api
 
 import (
 	"encoding/json"
-	// "fmt"
+
 	"net/http"
 	"strconv"
 	"time"
@@ -39,7 +39,6 @@ func (rt *_router) commentPhoto(w http.ResponseWriter, r *http.Request, ps httpr
 		Comment string `json:"comment"`
 	}
 
-	// fmt.Printf("please")
 	var req requestBodyComment
 	// Decode the JSON data into the requestBodyComment struct
 	err = json.NewDecoder(r.Body).Decode(&req)
@@ -50,8 +49,6 @@ func (rt *_router) commentPhoto(w http.ResponseWriter, r *http.Request, ps httpr
 
 	// Access the comment text
 	commentText := req.Comment
-
-	// fmt.Println(req.Comment)
 
 	comment = Comment{
 		CID:         0,

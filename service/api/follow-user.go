@@ -1,7 +1,6 @@
 package api
 
 import (
-	// "fmt"
 	"net/http"
 	"strconv"
 
@@ -10,7 +9,6 @@ import (
 )
 
 func (rt *_router) followUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	// fmt.Println("hi")
 	// Get the user's ID from the URL
 	toBeFollowedID, err := strconv.ParseUint(ps.ByName(("following_id")), 10, 64)
 	if err != nil {
@@ -21,8 +19,6 @@ func (rt *_router) followUser(w http.ResponseWriter, r *http.Request, ps httprou
 
 	// Get the Authorization header value
 	authorizationHeader := r.Header.Get("Authorization")
-	// fmt.Println(authorizationHeader)
-	// fmt.Println(authorizationHeader)
 
 	// Get the user ID from the Authorization header
 	toBeFollowerID, isValid := idFromAuthorizationHeader(authorizationHeader)
@@ -31,7 +27,7 @@ func (rt *_router) followUser(w http.ResponseWriter, r *http.Request, ps httprou
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
-	// fmt.Println(toBeFollowerID, toBeFollowedID)
+
 	// Any user is not allowed to follow themself
 	if toBeFollowedID == toBeFollowerID {
 		w.WriteHeader(http.StatusBadRequest)

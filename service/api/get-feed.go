@@ -2,7 +2,7 @@ package api
 
 import (
 	"encoding/json"
-	// "fmt"
+
 	"net/http"
 	"strconv"
 
@@ -50,13 +50,13 @@ func (rt *_router) getMyStream(w http.ResponseWriter, r *http.Request, ps httpro
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	// fmt.Println("what")
+
 	offsetUint, err := strconv.ParseUint(offset, 10, 64)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	// fmt.Println("hi")
+
 	// Request an unfiltered list of photos from the DB
 	photos, err = rt.db.GetMyStream(userID, laterThan, limitUint, offsetUint)
 

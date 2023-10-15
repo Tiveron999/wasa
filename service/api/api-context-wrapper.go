@@ -15,22 +15,8 @@ import (
 type httpRouterHandler func(http.ResponseWriter, *http.Request, httprouter.Params, reqcontext.RequestContext)
 
 // wrap parses the request and adds a reqcontext.RequestContext instance related to the request.
-// wrap parses the request and adds a reqcontext.RequestContext instance related to the request.
 func (rt *_router) wrap(fn httpRouterHandler) func(http.ResponseWriter, *http.Request, httprouter.Params) {
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-		// Print or log the request headers
-		// fmt.Println("Request headers:")
-		// for key, values := range r.Header {
-		// fmt.Printf("%s: %s\n", key, values)
-		// }
-
-		// Set CORS headers in the response
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, DELETE, PUT")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-type, Authorization")
-		// If your server allows credentials, set the "Access-Control-Allow-Credentials" header
-		// w.Header().Set("Access-Control-Allow-Credentials", "true")
-
 		// Respond to the pre-flight request with 200 OK
 		if r.Method == "OPTIONS" {
 			w.WriteHeader(http.StatusOK)
@@ -39,7 +25,6 @@ func (rt *_router) wrap(fn httpRouterHandler) func(http.ResponseWriter, *http.Re
 
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
-			// fmt.Println("bad")
 			w.WriteHeader(http.StatusUnauthorized)
 			return
 		}
