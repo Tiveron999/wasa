@@ -498,18 +498,15 @@ body {
   background-color: rgba(255, 255, 255, 0.8);
 }
 
-/* Style for the modal dialog */
 .username-modal-dialog {
   max-width: 400px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* Style for the modal content */
 .username-modal-content {
   padding: 20px;
 }
 
-/* Style for the modal header */
 .username-modal-header {
   text-align: center;
   background-color: #3498db;
@@ -517,25 +514,21 @@ body {
   padding: 10px;
 }
 
-/* Style for the modal title */
 .username-modal-title {
   margin: 0;
 }
 
-/* Style for the modal body */
 .username-modal-body {
   text-align: center;
   padding: 10px;
 }
 
-/* Style for the input field */
 .form-control {
   width: 100%;
   padding: 8px;
   margin: 5px 0;
 }
 
-/* Style for the modal footer */
 .username-modal-footer {
   text-align: center;
   padding: 10px;
@@ -698,7 +691,6 @@ body {
   z-index: 9999; /* Ensure it's above other content */
 }
 
-/* Comment Modal container */
 .comment-modal-dialog {
   background-color: #fff;
   max-width: 90%;
@@ -707,7 +699,6 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Comment Modal header */
 .comment-modal-header {
   display: flex;
   justify-content: space-between;
@@ -715,7 +706,6 @@ body {
   margin-bottom: 20px;
 }
 
-/* Close button */
 .comment-modal-close {
   cursor: pointer;
   background: none;
@@ -733,7 +723,6 @@ body {
   transform: translateX(188%);
 }
 
-/* Comment input */
 #commentInput {
   width: 100%;
   padding: 10px;
@@ -775,7 +764,6 @@ body {
   align-items: center;
 }
 
-/* Close button for comments */
 .comment-btn-secondary {
   cursor: pointer;
   background: none;
@@ -784,7 +772,6 @@ body {
   color: #007bff; /* Primary button color */
 }
 
-/* Style for the delete comment button */
 .delete-comment-button {
   background-color: #ff0000; 
   color: #ffffff; 
@@ -800,7 +787,6 @@ body {
   transform: translateX(226%);
 }
 
-/* Hover effect for the button */
 .delete-comment-button:hover {
   background-color: #cc0000; /* Darker red on hover */
 }
