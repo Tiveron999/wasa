@@ -262,7 +262,7 @@ export default {
 		})
 		.catch(error => {
 
-			if (error.response.status === 500) {                    // change error code
+			if (error.response.status === 500) {                   
 				// This username already exists error
 				alert('This username already exists.');
 			} else {
