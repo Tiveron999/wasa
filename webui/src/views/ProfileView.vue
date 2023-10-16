@@ -110,6 +110,7 @@ export default {
 		 	 {headers: { 'Content-Type': 'multipart/form-data', Authorization: 'Bearer ' + this.id}});
 		  
 			await this.getImages()
+			await this.getProfile()
 		
 		} catch (error) {
 		  console.error(error);
@@ -298,7 +299,7 @@ export default {
 			console.log(result)
 			this.followers += 1
 			console.log("followers", this.followers)
-			this.getProfile()
+			await this.getProfile()
 		} catch (e) {
 			console.error("error: ", e);
 			this.errormsg = e.toString();
@@ -309,7 +310,7 @@ export default {
 				const result = await this.$axios.delete(`/users/${this.id}/following/${this.$route.params.user_id}`, {headers: { Authorization: 'Bearer ' + this.id }});
 				console.log(result);
 				this.followers -= 1;
-				this.getProfile()
+				await this.getProfile()
 			} catch (e) {
 				console.error("error: ", e);
 				this.errormsg = e.toString();
