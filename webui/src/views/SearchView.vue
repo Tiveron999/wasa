@@ -21,20 +21,7 @@ export default {
 			}
 			this.loading = false;
 		},
-		/*async getProfile() {
-			try {
-				if (localStorage.getItem('isLoggedIn')) {
-					this.id = localStorage.getItem('userId');
-				}
-			
-				const res = await this.$axios.get('/users', {headers: {Authorization: 'Bearer ' + this.id}}); // {params: {username: this.username}}
-				console.log(res.data);
-				this.$router.push('/users/:user_id/profile')
-
-			} catch (err) {
-				console.log(err);
-			}
-		},*/
+		
 		searchUsers() {
 			this.user = {}; // (re-)initialize the user object
 
@@ -87,47 +74,6 @@ export default {
 }
 </script>
 
-
-<!-- <template>
-	<div>
-		<div
-			class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-			<h1 class="h2">WasaPhoto</h1>
-			<div class="btn-toolbar mb-2 mb-md-0">
-				<div class="btn-group me-2">
-					
-				</div>
-			</div>
-		</div>
-
-		<ErrorMsg v-if="errormsg" :msg="errormsg"></ErrorMsg>
-		<h6>
-			<span id = "type" class = "special">
-            Search
-			</span>
-        </h6>
-		 <form action="/users/search/:username" method="get">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username">
-            <input type="submit" value="Submit">
-        </form> 
-	</div>
-	<div>
-		<input v-model="username" placeholder="Enter username">
-		<button class="btn btn-sm-normal btn-outline-primary" @click="getProfile">Go to</button>
-	</div>
-	<div>
-    <input type="text" v-model="username" placeholder="Enter username" pattern="^[A-Za-z][A-Za-z0-9_]{5,14}$" required>
-    <button class="btn btn-sm-normal btn-outline-primary" @click="searchUsers">Search</button>
-   
-      <h4 v-if = user>User: {{ user }}</h4>
-      <p v-if = user>Number of uploaded photos: {{ user.num_photos }}</p>
-      <p v-if = user>Followers: {{ user.followers }}</p>
-      <p v-if = user>Following: {{ user.following }}</p>
-
-  </div> 
-</template>  -->
-
 <template>
 	<div>
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -148,8 +94,13 @@ export default {
 		<div class="card-body">
 			<h6 class="card-title">Search User</h6>
 			<div class="input-group">
-			<input type="text" v-model="username" class="form-control" placeholder="Enter username" pattern="^[A-Za-z][A-Za-z0-9_]{5,14}$" required>
-			<button class="btn btn-sm btn-outline-primary" @click="searchUsers">Search</button>
+				<div class="input-container">
+					<input type="text" v-model="username" class="form-control" placeholder="Enter username" pattern="^[A-Za-z][A-Za-z0-9_]{5,14}$" required>
+				</div>
+				<div class="button-container">
+					<button class="btn btn-sm btn-outline-primary bump-down-buttons" @click="searchUsers">Search</button>
+				</div>
+
 			</div>
 		</div>
 	</div>

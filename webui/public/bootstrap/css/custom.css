@@ -1047,3 +1047,18 @@ body {
 .following-container {
   display: inline;
 }
+
+/* fix annoying search display */
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.input-container {
+  flex: 1; 
+}
+
+.button-container {
+  margin-left: 15px;
+  margin-top: 0px;
+}
