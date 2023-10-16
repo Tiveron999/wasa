@@ -11,10 +11,17 @@ export default {
     showFollowersModal: Boolean,
     userID: Number,
     sameUser: Boolean,
+    followersnum: Number,
+  },
+
+  watch: {
+    followersnum (newvalue) {
+      // Call the method when the route changes
+      this.listFollowers()
+    }
   },
 
   methods: {  
-
     async listFollowers() {
 
 			try {

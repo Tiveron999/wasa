@@ -549,7 +549,7 @@ export default {
 						</div>
 						<FollowersModal
 							:showFollowersModal="showFollowersModal"
-							:userID="userProfile.userid" :sameUser="isSameUser()"
+							:userID="userProfile.userid" :sameUser="isSameUser()" :followersnum="userProfile.followers"
 							@update:showFollowersModal="showFollowersModal = $event" 
 							@following-check="updateIsFollowing"
 							/>
@@ -562,6 +562,7 @@ export default {
 						<FollowingModal
 							:showFollowingModal="showFollowingModal"
 							:userID="userProfile.userid" 
+							:followingsnum="userProfile.following"
 							@update:showFollowingModal="showFollowingModal = $event"
 							/>
 					</div>

@@ -10,6 +10,14 @@ export default {
   props: {
     showFollowingModal: Boolean,
     userID: Number,
+    followingsnum: Number,
+  },
+
+  watch: {
+    followingsnum (newvalue) {
+      // Call the method when the route changes
+      this.listFollowing()
+    }
   },
 
   methods: {
