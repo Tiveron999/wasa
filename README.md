@@ -1,7 +1,7 @@
 # Fantastic coffee (decaffeinated)
 
-This repository contains the basic structure for [Web and Software Application](http://gamificationlab.uniroma1.it/en/wasa/) homework project.
-It has been described in class.
+This repository contains the basic structure for a [Web and Software Application](http://gamificationlab.uniroma1.it/en/wasa/) homework project.
+The goal was to make a website that is a functioning Instagram-like replica with all the features one can expect.
 
 "Fantastic coffee (decaffeinated)" is a simplified version for the WASA course, not suitable for a production environment.
 The full version can be found in the "Fantastic Coffee" repository.
